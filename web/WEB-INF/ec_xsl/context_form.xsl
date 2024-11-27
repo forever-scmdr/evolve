@@ -19,8 +19,19 @@
 			<script type="text/javascript" src="js/gop-stop.js"></script>
 			<script>
 				setCookie("chotki_patsan", "ok", 30);
-				document.location.replace("/termobrest");
+				setTimeout(function(){document.location.href = "https://termobrest.ru/";},500);
 			</script>
+			<div class="spacer"></div>
+			<div class="container main-content">
+				<div class="row">
+					<div class="col-md-12">
+						<p>
+							<xsl:value-of select="$message"/>
+						</p>
+						<p>Вас автоматически перенаправит на <a href="{$base}">главную страницу</a></p>
+					</div>
+				</div>
+			</div>
 		</xsl:if>
 		
 		<xsl:if test="not($success)">		
@@ -28,6 +39,7 @@
 			<script type="text/javascript" src="js/gop-stop.js"></script>
 			<script type="text/javascript">
 				$(document).ready(function(){
+					$("a").attr({"onclick" : "return false;"});
 					$("body a").click(function(e){e.preventDefault(); alert(); return false;});
 					var cookie = getCookie("chotki_patsan");
 					if(typeof cookie == "undefined" || cookie == null){
@@ -62,6 +74,10 @@
 								<label for="xi">E-mail:*</label>
 								<input type="text" name="{$f/email/@input}" value="{$f/email}" class="form-control" id="xi"/>
 							</div>
+							<div class="form-group mandatory-input" title="обязательно для заполнения" style="display: none;">
+								<label>Дополнительный E-mail:*</label>
+								<input type="text" name="{$f/spam/@input}" value="{$f/spam}" class="form-control" />
+							</div>
 							<div class="form-group">
 								Для юридических лиц:
 							</div>
@@ -79,6 +95,7 @@
 							</div>
 							<button type="submit" class="btn btn-primary btn-block" onclick="$(this).closest('form').submit();">Отправить</button>
 						</form>
+						* — обязательное заполнение поля ввода данных
 					</div>
 				</div>
 			</div>

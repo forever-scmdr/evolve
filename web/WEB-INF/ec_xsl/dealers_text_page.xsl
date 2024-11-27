@@ -36,6 +36,9 @@
 					<li class="list-group-item">
 						<a href="{page/dealers_text_page_link}" class="active-link">Рейтинг дилеров</a>
 					</li>
+					<li class="list-group-item">
+						<a href="{page/all_partners_link}">Деловые партнёры СП «ТермоБрест» ООО</a>
+					</li>
 				</ul>
 			</div>
 			<div class="col-xs-12 col-sm-8 col-md-9">
@@ -54,23 +57,23 @@
 						<xsl:apply-templates select="/page/dealers/named_text_page" mode="content"/>
 					</div>
 				</div>
-<!-- 
+<!--
 				<div class="row">
 					<div class="col-xs-12 content-block bottom-links-block">
 						<div style="border: 1px solid #363636; padding: 10px; margin-top: 20px;">
 							<h3 style="text-align: center;">Продукция</h3>
 								<xsl:for-each select="/page/catalog/main_section">
-								
+
 								<xsl:if test="position() = 1">
 									<xsl:text disable-output-escaping="yes">
 										&lt;div class="sep"&gt;
 									</xsl:text>
 								</xsl:if>
-								
+
 								<a href="{/page/base}/{show_section}">
 									<xsl:value-of select="name"/>
 								</a>
-								
+
 								<xsl:if test="position() mod 3 = 0 and position() != last()">
 									<xsl:text disable-output-escaping="yes">
 									&lt;/div&gt;&lt;div class="sep"&gt;

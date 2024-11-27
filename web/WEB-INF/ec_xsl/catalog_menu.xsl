@@ -72,7 +72,9 @@
 				</ul>
 				<div class="hidden-sm">
 					<b>Помощь в подборе продукции:</b>
-					<a class="btn btn-default btn-block" type="button" data-toggle="modal" data-target="#pressure_calc">Расчет потерь давления</a>
+					<!-- <a class="btn btn-default btn-block" type="button" data-toggle="modal" data-target="#pressure_calc">Расчет потерь давления</a> -->
+					<!-- <a class="btn btn-default btn-block" href="https://drive.google.com/file/d/1-PkWf3AJEwQ2IiUwToREYD0m0rv4W0I6/view?usp=sharing" target="_blank">Расчет потерь давления</a>-->
+					<a class="btn btn-default btn-block" href="https://termobrest.ru/termobrest.exe" target="_blank">Расчет потерь давления</a>
 					<a class="btn btn-default btn-block" type="button" data-toggle="modal" data-target="#arm_calc">Подбор арматуры</a>
 				</div>
 			</div>
@@ -84,83 +86,84 @@
 						</div>
 					</div>
 				</div>
-				<div class="row">
-					<div class="col-xs-12">
-						<div class="path hidden-xs">
-							<a href="{$base}">Главная страница</a>
-							→
-							<a href="{page/catalog_link}">Газовая арматура</a>
-							→
-							<xsl:if test="$sec">
-								<a href="{$msec/show_section}"><xsl:value-of select="$msec/name"/></a>
+				<article>
+					<div class="row">
+						<div class="col-xs-12">
+							<div class="path hidden-xs">
+								<a href="{$base}">Главная страница</a>
 								→
-								<xsl:for-each select="page/catalog//section[.//section/@id = $sec/@id or ($prod and .//@id = $sec/@id)]">
-									<a href="{show_section}"><xsl:value-of select="name"/></a>
+								<a href="{page/catalog_link}">Газовая арматура</a>
+								→
+								<xsl:if test="$sec">
+									<a href="{$msec/show_section}"><xsl:value-of select="$msec/name"/></a>
 									→
-								</xsl:for-each>
-							</xsl:if>
-							<!-- <xsl:value-of select="$local_h1"/> -->
-						</div>
-						<h1 class="no-top-margin"><xsl:value-of select="$h1"/></h1>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-xs-12">
-						<div class="btn-toolbar">
-							<xsl:if test="$msec">
-								<div class="btn-group btn-group-sm hidden-xs hidden-sm">
-									<a class="btn btn-default" type="button" data-toggle="modal" data-target="#device_purpose">Предназначение</a>
-									<a class="btn btn-default" type="button" data-toggle="modal" data-target="#name_structure">
-										Структура <xsl:value-of select="if ($sec and $sec/serial_sample and $sec/serial_sample != '') then $sec/serial_sample else $msec/serial_sample" />
-									</a>
-								</div>
-								<div class="btn-group btn-group-sm hidden-xs hidden-sm">
-									<xsl:call-template name="FEEDBACK_BUTTON_1"/>
-									<xsl:call-template name="DOC_BUTTON_1"/>
-								</div>
-							</xsl:if>
-						</div>
-						<div class="btn-group btn-group-justified hidden-md hidden-lg" role="group">
-							<a class="btn btn-default" type="button" data-toggle="collapse" data-target="#q11-filter">Фильтр</a>
-							<div class="btn-group" role="group">
-								<a class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
-									Информация
-									<span class="caret"></span>
-								</a>
-								<ul class="dropdown-menu dropdown-menu-right">
-									<li>
-										<a href="#" data-toggle="modal" data-target="#device_purpose">Предназначение</a>
-									</li>
-									<li>
-										<a href="#" data-toggle="modal" data-target="#name_structure">
-										Структура <xsl:value-of select="if ($sec and $sec/serial_sample and $sec/serial_sample != '') then $sec/serial_sample else $msec/serial_sample" />
-										</a>
-									</li>
-									<li role="separator" class="divider"></li>
-									<li>
-										<a href="#" data-toggle="modal" data-target="#pressure_calc">Расчет потерь давления</a>
-									</li>
-									<li>
-										<a href="#" data-toggle="modal" data-target="#arm_calc">Подбор клапана</a>
-									</li>
-									<li role="separator" class="divider"></li>
-									<li>
-										<xsl:call-template name="FEEDBACK_BUTTON_2"/>
-									</li>
-									<li>
-										<xsl:call-template name="DOC_BUTTON_2"/>
-									</li>
-								</ul>
+									<xsl:for-each select="page/catalog//section[.//section/@id = $sec/@id or ($prod and .//@id = $sec/@id)]">
+										<a href="{show_section}"><xsl:value-of select="name"/></a>
+										→
+									</xsl:for-each>
+								</xsl:if>
+								<!-- <xsl:value-of select="$local_h1"/> -->
 							</div>
+							<h1 class="no-top-margin"><xsl:value-of select="$h1"/></h1>
 						</div>
-						<!-- Фильтр -->
-
-						<xsl:call-template name="FILTER"/>
-
-						<!-- /Фильтр -->
 					</div>
-				</div>
-				
+					<div class="row">
+						<div class="col-xs-12">
+							<div class="btn-toolbar">
+								<xsl:if test="$msec">
+									<div class="btn-group btn-group-sm hidden-xs hidden-sm">
+										<a class="btn btn-default" type="button" data-toggle="modal" data-target="#device_purpose">Предназначение</a>
+										<a class="btn btn-default" type="button" data-toggle="modal" data-target="#name_structure">
+											Структура <xsl:value-of select="if ($sec and $sec/serial_sample and $sec/serial_sample != '') then $sec/serial_sample else $msec/serial_sample" />
+										</a>
+									</div>
+									<div class="btn-group btn-group-sm hidden-xs hidden-sm">
+										<xsl:call-template name="FEEDBACK_BUTTON_1"/>
+										<xsl:call-template name="DOC_BUTTON_1"/>
+									</div>
+								</xsl:if>
+							</div>
+							<div class="btn-group btn-group-justified hidden-md hidden-lg" role="group">
+								<a class="btn btn-default" type="button" data-toggle="collapse" data-target="#q11-filter">Фильтр</a>
+								<div class="btn-group" role="group">
+									<a class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
+										Информация
+										<span class="caret"></span>
+									</a>
+									<ul class="dropdown-menu dropdown-menu-right">
+										<li>
+											<a href="#" data-toggle="modal" data-target="#device_purpose">Предназначение</a>
+										</li>
+										<li>
+											<a href="#" data-toggle="modal" data-target="#name_structure">
+											Структура <xsl:value-of select="if ($sec and $sec/serial_sample and $sec/serial_sample != '') then $sec/serial_sample else $msec/serial_sample" />
+											</a>
+										</li>
+										<li role="separator" class="divider"></li>
+										<li>
+											<a href="#" data-toggle="modal" data-target="#pressure_calc">Расчет потерь давления</a>
+										</li>
+										<li>
+											<a href="#" data-toggle="modal" data-target="#arm_calc">Подбор клапана</a>
+										</li>
+										<li role="separator" class="divider"></li>
+										<li>
+											<xsl:call-template name="FEEDBACK_BUTTON_2"/>
+										</li>
+										<li>
+											<xsl:call-template name="DOC_BUTTON_2"/>
+										</li>
+									</ul>
+								</div>
+							</div>
+							<!-- Фильтр -->
+
+							<xsl:call-template name="FILTER"/>
+
+							<!-- /Фильтр -->
+						</div>
+					</div>
+				</article>
 				<xsl:call-template name="INNER_CONTENT"/>
 				
 			</div>
@@ -202,8 +205,8 @@
 					<button type="button" class="close" data-dismiss="modal">
 						<span>×</span>
 					</button>
-					<h4 class="modal-title">
-						Структура наименования
+					<h4 class="modal-title" style="text-transform: uppercase;">
+						Структура
 						<xsl:value-of select="if ($sec and $sec/serial_sample and $sec/serial_sample != '') then $sec/serial_sample else $msec/serial_sample" />
 					</h4>
 				</div>
@@ -223,7 +226,7 @@
 					<button type="button" class="close" data-dismiss="modal">
 						<span>×</span>
 					</button>
-					<h4 class="modal-title">Предназначение</h4>
+					<h4 class="modal-title" style="text-transform: uppercase;">Предназначение</h4>
 				</div>
 				<div class="modal-body">
 					<xsl:value-of select="if ($sec and $sec/use and $sec/use != '') then $sec/use else $msec/use" disable-output-escaping="yes"/>

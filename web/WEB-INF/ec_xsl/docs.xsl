@@ -16,6 +16,10 @@
 	<!-- <xsl:variable name="title" select="concat($sec/name, ' - Документы и сертификаты')"/>	 -->
 
 
+	<xsl:variable name="local_title" select="concat($sec/name, ' - Документы')"/>
+	<xsl:variable name="local_description" select="concat('Вся необходимая документация СП «ТермоБрест» ',$sec/name )"/>
+
+
 	<!-- ****************************    СТРАНИЦА    ******************************** -->
 
 	<xsl:variable name="active_mmi" select="if(not(starts-with($sec/name, '3D-модели'))) then 'docs' else '3d'"/>
@@ -25,7 +29,7 @@
 	<div class="container main-content">
 		<div class="row">
 			<div class="col-sm-4 col-md-3 hidden-xs side-coloumn">
-				<h1 class="no-top-margin"><xsl:value-of select="if($seo/h1 != '') then $seo/h1 else $sec/name"/></h1>
+				<p style="font-size: 20px" class="no-top-margin"><xsl:value-of select="if($seo/h1 != '') then $seo/h1 else $sec/name"/></p>
 				<ul class="list-group side-menu">
 					<xsl:for-each select="$parent/doc_section">
 						<li class="list-group-item">
@@ -35,35 +39,37 @@
 				</ul>
 			</div>
 			<div class="col-xs-12 col-sm-8 col-md-9">
-				<div class="row">
-					<div class="col-xs-12">
-						<div class="path hidden-xs">
-							<a href="{$base}">Главная страница</a>
-							→
-							<xsl:if test="$parent = page/docs">
-								<a href="{page/all_docs_link}">Все документы</a>
-							</xsl:if>
-							<xsl:if test="$parent = page/three_dmodels">
-								<a href="{page/all_tdm_link}">Все 3D модели</a>
-							</xsl:if>
-							→
+				<article>
+					<div class="row">
+						<div class="col-xs-12">
+							<div class="path hidden-xs">
+								<a href="{$base}">Главная страница</a>
+								→
+								<xsl:if test="$parent = page/docs">
+									<a href="{page/all_docs_link}">Все документы</a>
+								</xsl:if>
+								<xsl:if test="$parent = page/three_dmodels">
+									<a href="{page/all_tdm_link}">Все 3D модели</a>
+								</xsl:if>
+								→
 
+							</div>
+							<h1 class="no-top-margin"><xsl:value-of select="$sec/name"/></h1>
 						</div>
-						<h2 class="no-top-margin"><xsl:value-of select="$sec/name"/></h2>
 					</div>
-				</div>
 
-				<div class="row section-items">
-					<xsl:for-each select="$sec/img_doc | $sec/file_doc">
-						<xsl:apply-templates select="current()"/>
-						<xsl:if test="position() mod 2 = 0">
-							<div class="clearfix hidden-md hidden-lg"></div>
-						</xsl:if>
-						<xsl:if test="position() mod 3 = 0">
-							<div class="clearfix hidden-xs hidden-sm"></div>
-						</xsl:if>
-					</xsl:for-each>
-				</div>
+					<div class="row section-items">
+						<xsl:for-each select="$sec/img_doc | $sec/file_doc">
+							<xsl:apply-templates select="current()"/>
+							<xsl:if test="position() mod 2 = 0">
+								<div class="clearfix hidden-md hidden-lg"></div>
+							</xsl:if>
+							<xsl:if test="position() mod 3 = 0">
+								<div class="clearfix hidden-xs hidden-sm"></div>
+							</xsl:if>
+						</xsl:for-each>
+					</div>
+				</article>
 <!-- 
 				<div class="row">
 					<div class="col-xs-12 content-block bottom-links-block">

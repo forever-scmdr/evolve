@@ -133,6 +133,23 @@
     <url-pattern>*.login</url-pattern>
   </servlet-mapping>
 
+  <servlet>
+    <servlet-name>SimpleCaptchaServlet</servlet-name>
+    <servlet-class>ecommander.application.extra.SimpleCaptchaServlet</servlet-class>
+    <init-param>
+      <param-name>width</param-name>
+      <param-value>250</param-value>
+    </init-param>
+    <init-param>
+      <param-name>height</param-name>
+      <param-value>75</param-value>
+    </init-param>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>SimpleCaptchaServlet</servlet-name>
+    <url-pattern>/CaptchaImg.png</url-pattern>
+  </servlet-mapping>
+
     <error-page>
     <error-code>404</error-code>
    <location>/error.jsp</location>

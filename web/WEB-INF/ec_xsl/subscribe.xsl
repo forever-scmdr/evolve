@@ -29,6 +29,10 @@
 						<label>E-mail:</label>
 						<input type="email" name="{$f/email/@input}" value="{$f/email}" class="form-control" id="xi"/>
 					</div>
+					<div class="form-group mandatory-input" title="обязательно для заполнения" style="display: none;">
+						<label>Дополнительный E-mail:*</label>
+						<input type="text" name="{$f/spam/@input}" value="{$f/spam}" class="form-control" />
+					</div>
 					<p>Что вам интересно?</p>
 					<xsl:for-each select="/page/news_section">
 						<div class="checkbox">
@@ -68,20 +72,13 @@
 	</div>
 	<script>
 		function getSubscribeForm() {
-			insertAjax('<xsl:value-of select="page/subscribe_link"/>', '<xsl:value-of select="$subs_ajax_id"/>', function() { initSelects(); });
+			insertAjax('<xsl:value-of select="concat('https://termobrest.ru/', page/subscribe_link)"/>', '<xsl:value-of select="$subs_ajax_id"/>', function() { <!--initSelects();--> });
 		}
 
 		$(document).ready(function() {
 			getSubscribeForm();
 		});
 		
-		function initSelects() {
-			$('select[value]').each(function() {
-				var value = $(this).attr('value');
-				if (value != '')
-					$(this).val(value);
-			});
-		}
 	</script>
 	</xsl:template>
 

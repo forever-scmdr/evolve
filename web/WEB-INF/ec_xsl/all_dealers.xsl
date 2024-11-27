@@ -47,6 +47,9 @@
 					<li class="list-group-item">
 						<a href="{page/dealers_text_page_link}">Рейтинг дилеров</a>
 					</li>
+					<li class="list-group-item">
+						<a href="{page/all_partners_link}">Деловые партнёры СП «ТермоБрест» ООО</a>
+					</li>
 				</ul>
 			</div>
 			<div class="col-xs-12 col-sm-8 col-md-9">
@@ -59,6 +62,16 @@
 						<h2 class="no-top-margin">Дилеры СП ТермоБрест ООО</h2>
 					</div>
 				</div>
+
+				<!-- <div class="row">
+					<div class="col-xs-12 content-block">
+						<p>
+							Приглашаем к сотрудничесвту организации:
+							<br/><b>Дальневотсочного округа РФ</b>
+							<br/><b>Казахстана</b>
+						</p>
+					</div>
+				</div> -->
 
 				<div class="row">
 					<div class="col-xs-12 content-block">
@@ -75,13 +88,16 @@
 								<div id="collapseRus" class="panel-collapse collapse" role="tabpanel">
 									<div class="panel-body">
 										<xsl:for-each select="//region[contains(name, 'ФО')]">
-											<xsl:apply-templates select="dealer" />
+											<xsl:apply-templates select="dealer[not(is_partner = 'да') and name != '']" />
 										</xsl:for-each>
+										<div class="row dealer">
+											<div class="col-md-12" style="text-align: center;"><b>Приглашаем к сотрудничеству организации Дальневосточнго ФО</b></div>
+										</div>
 									</div>
 								</div>
 							</div>
-							<xsl:for-each select="//region[not(contains(name, 'ФО')) and name != 'Китай']">
-								<xsl:if test="name != 'Западная Европа' and name != 'Китай'">
+							<xsl:for-each select="//region[not(contains(name, 'ФО'))]">
+								<xsl:if test="dealer[not(is_partner = 'да')]">
 									<div class="panel panel-default">
 										<div class="panel-heading" role="tab" id="heading{@id}">
 											<h4 class="panel-title">
@@ -92,13 +108,13 @@
 										</div>
 										<div id="collapse{@id}" class="panel-collapse collapse" role="tabpanel">
 											<div class="panel-body">
-												<xsl:apply-templates select="dealer" />
+												<xsl:apply-templates select="dealer[not(is_partner = 'да')]" />
 											</div>
 										</div>
 									</div>
 								</xsl:if>
-				
-								<xsl:if test="name = 'Западная Европа'">
+
+								<!-- <xsl:if test="name = 'Западная Европа'">
 									<div class="panel panel-default">
 										<div class="panel-heading" role="tab" id="headingOther">
 											<h4 class="panel-title">
@@ -109,33 +125,33 @@
 										</div>
 										<div id="collapseOther" class="panel-collapse collapse" role="tabpanel">
 											<div class="panel-body">
-												<xsl:apply-templates select="dealer" />
-												<!-- <xsl:apply-templates select="//region[name = 'Китай']/dealer" /> -->
+												<xsl:apply-templates select="dealer[not(is_partner = 'да')]" />
+												<xsl:apply-templates select="//region[name = 'Китай']/dealer" />
 											</div>
 										</div>
 									</div>
-								</xsl:if>
+								</xsl:if> -->
 							</xsl:for-each>
 						</div>
 					</div>
 				</div>
-<!-- 
+<!--
 				<div class="row">
 					<div class="col-xs-12 content-block bottom-links-block">
 						<div style="border: 1px solid #363636; padding: 10px; margin-top: 20px;">
 							<h3 style="text-align: center;">Продукция</h3>
 								<xsl:for-each select="/page/catalog/main_section">
-								
+
 								<xsl:if test="position() = 1">
 									<xsl:text disable-output-escaping="yes">
 										&lt;div class="sep"&gt;
 									</xsl:text>
 								</xsl:if>
-								
+
 								<a href="{/page/base}/{show_section}">
 									<xsl:value-of select="name"/>
 								</a>
-								
+
 								<xsl:if test="position() mod 3 = 0 and position() != last()">
 									<xsl:text disable-output-escaping="yes">
 									&lt;/div&gt;&lt;div class="sep"&gt;

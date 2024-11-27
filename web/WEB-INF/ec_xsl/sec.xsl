@@ -18,7 +18,14 @@
 	<xsl:variable name="critical_item" select="$sec|$msec"/>
 	<!-- <xsl:variable name="base" select="'https://termobrest.ru'"/> -->
 
+	<xsl:variable name="sec_tags" select="$sec/filter_tag"/>
+	<xsl:variable name="extra_tags" select="page/variables/tag"/>
+	<xsl:variable name="need_seo_progon" select="not($extra_tags)"/>
+
+
 	<xsl:variable name="local_title" select="if ($sec) then concat($msec/name, ' - ', $sec/name, ' - Каталог продукции') else concat($msec/name, ' - Каталог продукции')"/>
+	<xsl:variable name="extra_title" select="if ($extra_tags) then string-join($extra_tags, ' ') else ''"/>
+	<xsl:variable name="extra_description" select="if ($extra_tags) then string-join($extra_tags, ' ') else ''"/>
 	<xsl:variable name="seo" select="if($local_seo) then $local_seo else if ($sec) then $sec/seo else $msec/seo"/>
 
 
@@ -27,8 +34,6 @@
 	<xsl:variable name="base_url" select="page/source_link"/>
 	<xsl:variable name="page_url" select="page/base_link"/>
 
-	<xsl:variable name="sec_tags" select="$sec/filter_tag"/>
-	<xsl:variable name="extra_tags" select="page/variables/tag"/>
 
 	<xsl:variable name="tags_single">
 		<xsl:for-each select="distinct-values(page/main_section/section_tag/tag)">
@@ -58,17 +63,19 @@
 
 
 	<xsl:template name="FILTER">
-		
 	<xsl:if test="$groups != ''">
 		<div class="collapse in filter" id="q11-filter" style="font-size: 12px;"><!-- класс  in делает блок с параметрами открытым по-умолчанию -->
 			<div class="well">
 				<div class="row">
-					<xsl:variable name="pSortingValues" select="',Исходное состояние,Исполнение,Дополнительные устройства и исполнение корпуса,Регулирование,'"/>
+					<!-- <xsl:variable name="pSortingValues" select="',исходное состояние,исполнение,иополнительные устройства и исполнение корпуса,регулирование,'"/> -->
+					<xsl:variable name="pSortingValues" select="',материал корпуса,исходное состояние,исполнение клапана,дополнительные устройства и исполнение,присоединение,'"/>
 					<xsl:for-each select="$groups[. != '' and . != 'Корпус']">
-						<xsl:sort data-type="number" select="string-length(substring-before($pSortingValues,concat(',',.,',')))" />
+						<xsl:sort data-type="number" select="string-length(substring-before($pSortingValues,concat(',',lower-case(.),',')))" />
 						<xsl:variable name="group" select="." />
 						<div class="col-xs-12 col-sm-6 col-md-3">
-							<strong><xsl:value-of select="$group" /></strong>
+							<strong>
+								<xsl:value-of select="$group" />
+							</strong>
 							<xsl:for-each select="$tags_sorted[starts-with(., $group)]">
 								<xsl:choose>
 									<xsl:when test=". = $extra_tags">
@@ -142,13 +149,23 @@
 	<xsl:template name="INNER_CONTENT">
 		<!-- <xsl:value-of select="$source"/> -->
 	<div class="row section-items">
+		<xsl:if test="$extra_tags">
+			<p style="padding-left:15px">Выбранная конфигурация:</p> 
+			<xsl:for-each select="$extra_tags">
+			<p style="padding-left:15px"><b><xsl:value-of select="."/></b></p>
+			</xsl:for-each>
+		</xsl:if>
 		<xsl:for-each select="page//product">
 			<xsl:variable name="p" select="position()"/>
 			<div class="col-xs-6 col-sm-6 col-md-4">
 				<a href="{show_product}">
 					<img src="{@path}{img_small}" alt="{alt}" title="{alt}" style="max-width: 100%;" onerror="this.src = 'images/noimage.png'"/>
 				</a>
-				<a href="{show_product}"><xsl:value-of select="name"/></a>
+
+				<xsl:variable name="name" select="replace(replace(replace(name, 'Регуляторы - стабилизаторы давления ', ''), 'Регуляторы-стабилизаторы давления ', ''), 'Клапаны электромагнитные ', '')"/>
+					
+
+				<a href="{show_product}"><xsl:value-of select="concat(upper-case(substring($name, 1, 1)), substring($name, 2))"/></a>
 			</div>
 			<xsl:if test="$p mod 2 = 0">
 				<div class="clearfix hidden-md hidden-lg"></div>

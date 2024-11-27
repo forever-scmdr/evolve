@@ -17,13 +17,36 @@ import nl.captcha.backgrounds.GradiatedBackgroundProducer;
 import nl.captcha.servlet.CaptchaServletUtil;
 import nl.captcha.text.producer.DefaultTextProducer;
 import nl.captcha.text.renderer.DefaultWordRenderer;
+import nl.captcha.text.producer.TextProducer;
+
 /**
  * http://simplecaptcha.git.sourceforge.net/git/gitweb.cgi?p=simplecaptcha/
  * simplecaptcha;a=blob_plain;f=Java/src/nl/captcha/servlet/SimpleCaptchaServlet.java;hb=HEAD
  * @author EEEE
  *
  */
+
 public class SimpleCaptchaServlet extends HttpServlet {
+
+    private static class NumericTextProducer implements TextProducer {
+        private static final int DEFAULT_LENGTH = 5;
+        private static final char[] NUMBERS = { '0', '1', '2', '3', '4', '5', '6', '7',
+                '8', '9' };
+
+        private final TextProducer _txtProd;
+
+        public NumericTextProducer() {
+            this(DEFAULT_LENGTH);
+        }
+
+        public NumericTextProducer(int length) {
+            _txtProd = new DefaultTextProducer(length, NUMBERS);
+        }
+
+        @Override public String getText() {
+            return new StringBuffer(_txtProd.getText()).toString();
+        }
+    }
 	
 	public static final String NAME = "capt";
 	/**
@@ -72,13 +95,13 @@ public class SimpleCaptchaServlet extends HttpServlet {
 //        ColoredEdgesWordRenderer wordRenderer = new ColoredEdgesWordRenderer(COLORS, FONTS);
     	DefaultWordRenderer wordRenderer = new DefaultWordRenderer(COLORS, FONTS);
         Captcha captcha = new Captcha.Builder(_width, _height)
-        		.addText(new DefaultTextProducer(), wordRenderer)
+        		.addText(new NumericTextProducer(), wordRenderer)
 				.addBackground(new GradiatedBackgroundProducer())
         		.gimp()
 //				.gimp(new BlockGimpyRenderer(6))
 //				.gimp(new RippleGimpyRenderer())
 //        		.gimp(new StretchGimpyRenderer())
-				.addNoise()
+//				.addNoise()
 //        		.gimp(new DropShadowGimpyRenderer())
         		.build();
         req.getSession().setAttribute(NAME, captcha);

@@ -14,12 +14,12 @@
 
 	<xsl:variable name="critical_item"/>
 
-	
+
 
 	<!-- ****************************    СПЕЦ ВОЗМОЖНОСТИ    ******************************** -->
 
 	<xsl:decimal-format name="ru" decimal-separator="," grouping-separator="&#160;" />
-	
+
 	<xsl:function name="f:strip_html" as="xs:string">
 		<xsl:param name="html" as="xs:string?"/>
 		<xsl:if test="$html != ''">
@@ -32,7 +32,7 @@
 			<xsl:sequence select="''" />
 		</xsl:if>
 	</xsl:function>
-	
+
 	<xsl:function name="f:format_price" as="xs:string">
 		<xsl:param name="price" as="xs:string"/>
 		<xsl:value-of select="format-number(number($price), '###&#160;###,##', 'ru')"/>
@@ -46,9 +46,9 @@
 		<xsl:variable name="mod100" select="$number mod 100" />
 		<xsl:variable name="mod10" select="$number mod 10" />
 		<xsl:value-of select="if ($mod100 &gt; 10 and $mod100 &lt; 20) then $words[3]
-					     else if ($mod10 = 1) then $words[1]
-					     else if ($mod10 &gt; 0 and $mod10 &lt; 5) then $words[2]
-					     else $words[3]" />
+						 else if ($mod10 = 1) then $words[1]
+						 else if ($mod10 &gt; 0 and $mod10 &lt; 5) then $words[2]
+						 else $words[3]" />
 	</xsl:function>
 
 
@@ -68,7 +68,7 @@
 			<xsl:value-of select="name"/>
 		</a>
 	</xsl:template>
-	
+
 	<xsl:template match="footer_link[file and file != '']">
 		<xsl:param name="block"/>
 		<a href="{@path}{file}" class="btn btn-sm btn-success{' btn-block'[$block]}" type="button" data-toggle="modal">
@@ -80,16 +80,16 @@
 
 	<!-- ****************************    SEO (для всех страниц)    ******************************** -->
 
-	<xsl:variable name="source" select="page/source_link"/>
-	<xsl:variable name="eng_base" select="'http://termobrest.net'"/>
-<!-- 	<xsl:variable name="base" select="'https://termobrest.ru'"/> -->
-	<xsl:variable name="base" select="page/base"/>
+	<xsl:variable name="source" select="concat('/', page/source_link)"/>
+	<xsl:variable name="eng_base" select="'http://localhost:8080'"/>
+	<xsl:variable name="base" select="'http://localhost:8080'"/>
 	<xsl:variable name="local_seo" select="//url_seo[contains($source, url)]"/>
 
-	<xsl:variable name="canonical" select="if(page/@name = 'index') then '' else concat('/',tokenize($source, '\?')[1])"/>
-	<xsl:variable name="canonical_link" select="concat($base, if(not($local_seo)) then $canonical else $source)" />
+	<xsl:variable name="has_tag" select="page/variables/tag"/>
+	<xsl:variable name="canonical" select="if(page/@name = 'index') then '' else tokenize($source, '\?')[1]"/>
+	<xsl:variable name="canonical_link" select="concat($base, if(not($local_seo) and not($has_tag)) then $canonical else $source)" />
 
-	<xsl:variable name="eng_alternate_link" select="concat($eng_base, if(not($local_seo)) then $canonical else $source)" />	
+	<xsl:variable name="eng_alternate_link" select="concat($eng_base, if(not($local_seo)) then $canonical else $source)" />
 
 	<xsl:variable name="seo" select="if(not($local_seo)) then //seo else $local_seo"/>
 
@@ -98,12 +98,15 @@
 	<xsl:variable name="local_keywords" select="''"/>
 	<xsl:variable name="local_description" select="''"/>
 	<xsl:variable name="local_h1" select="''"/>
+	<xsl:variable name="extra_title" select="''"/>
+	<xsl:variable name="extra_keywords" select="''"/>
+	<xsl:variable name="extra_description" select="''"/>
 
 	<!-- SEO - это значения полей, которые получаются с учетом заданных (или не заданных) значений в айтеме SEO  -->
 	<!-- Их можно в качестве исключения использовать локально на страницах для установки ОСНОВНЫХ значений, если нужна какая-то особая логика  -->
-	<xsl:variable name="seo_title" select="if ($seo and $seo/title and $seo/title != '') then $seo/title else $local_title"/>
-	<xsl:variable name="seo_keywords" select="if ($seo and $seo/keywords and $seo/keywords != '') then $seo/keywords else $local_keywords"/>
-	<xsl:variable name="seo_description" select="if ($seo and $seo/description and $seo/description != '') then $seo/description else $local_description"/>
+	<xsl:variable name="seo_title" select="if ($seo and $seo/title and $seo/title != '') then concat($seo/title, ' ', $extra_title) else $local_title"/>
+	<xsl:variable name="seo_keywords" select="if ($seo and $seo/keywords and $seo/keywords != '') then concat($seo/keywords, ' ', $extra_keywords) else $local_keywords"/>
+	<xsl:variable name="seo_description" select="if ($seo and $seo/description and $seo/description != '') then concat($seo/description, ' ', $extra_description) else $local_description"/>
 	<xsl:variable name="seo_h1" select="if ($seo and $seo/h1 and $seo/h1 != '') then $seo/h1 else $local_h1"/>
 
 	<!-- ОСНОВНЫЕ значения, используются для вывода соответствующих полей странице, которая возвращается пользователю -->
@@ -111,13 +114,15 @@
 	<xsl:variable name="keywords" select="$seo_keywords"/>
 	<xsl:variable name="description" select="$seo_description"/>
 
-	<xsl:variable name="h1" select="$seo_h1"/>	
+	<xsl:variable name="h1" select="$seo_h1"/>
 
 
 	<xsl:template name="TITLE">
 		<title><xsl:value-of select="$title"/></title>
 		<meta property="og:title" content="{$title}" />
 	</xsl:template>
+
+	<xsl:variable name="need_seo_progon" select="true()"/>
 
 
 
@@ -127,15 +132,15 @@
 <xsl:template name="DOCTYPE">
 <xsl:text disable-output-escaping="yes">&lt;!DOCTYPE html&gt;</xsl:text>
 </xsl:template>
-	
+
 	<xsl:template name="CONTENT"/>
-	
+
 	<xsl:template name="SCRIPTS"/>
 
 	<xsl:template name="POPUPS"/>
 
 	<xsl:template name="CATALOG_MARKUP"/>
-	
+
 
 	<xsl:variable name="active_mmi" select="'index'"/>
 	<xsl:variable name="proddd" select="page" />
@@ -164,12 +169,22 @@ xmlns:fb="http://ogp.me/ns/fb#">
 
 
 		<meta property="og:url" content="{$canonical_link}" />
- 		<base href="{$base}" /> 
-<!--		<base href="{page/base}" /> -->
+		<base href="{$base}" />
 		<link rel="canonical" href="{$canonical_link}" />
 		<link rel="alternate" href="{$eng_alternate_link}" hreflang="en" />
 		<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
 		<meta name="viewport" content="width=device-width, initial-scale=1"/>
+		<!-- Global site tag (gtag.js) - Google Analytics -->
+		<script async="async" src="https://www.googletagmanager.com/gtag/js?id=UA-456325-50"></script>
+		<script>
+		  window.dataLayer = window.dataLayer || [];
+		  function gtag(){dataLayer.push(arguments);}
+		  gtag('js', new Date());
+
+		  gtag('config', 'UA-456325-50');
+		</script>
+		<!-- END_Global site tag (gtag.js) - Google Analytics -->
+
 		<xsl:call-template name="TITLE" />
 		<xsl:if test="$keywords"><meta name="keywords" content="{$keywords}" /></xsl:if>
 		<xsl:if test="$description">
@@ -187,56 +202,48 @@ xmlns:fb="http://ogp.me/ns/fb#">
 		<xsl:if test="page/@name != 'prod'">
 			<meta property="og:image" content="{$base}/sitefiles/1/76/77/696/697/termobrest___building.jpg" />
 		</xsl:if>
-		<xsl:if test="page/@name=('index','armtorg', 'sec')">
+		<xsl:if test="page/@name=('index', 'context_form_success','armtorg', 'sec')">
 			<meta property="og:type" content="website" />
 		</xsl:if>
 		<meta name="yandex-verification" content="6ed4821288e67a3f" />
 		<meta name="google-site-verification" content="XUUvG4jtRNlzOvCXj4mUhja4izcZrVAr0Bf4KZjQt_U" />
-		<link rel="stylesheet" href="css/app.css?version=1.2"/>
+		<link rel="stylesheet" href="css/app.css?version=1.6"/>
+		<link rel="stylesheet" href="css/styles.css?version=1.1"/>
+		<link rel="stylesheet" href="css/styles-seo.css?version=1.5"/>
+		<link rel="stylesheet" href="css/fixes.css?version=1.2"/>
 		<link rel="stylesheet" href="fotorama/fotorama.css"/>
-		
-		<script>
-		  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-		  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-		  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-		  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-		
-		  ga('create', 'UA-456325-50', 'auto');
-		  ga('send', 'pageview');
-		
-		</script>
-
+		 
 		<!-- Yandex.Metrika counter -->
 		<script type="text/javascript">
-    (function (d, w, c) {
-        (w[c] = w[c] || []).push(function() {
-            try {
-                w.yaCounter44439058 = new Ya.Metrika({
-                    id:44439058,
-                    clickmap:true,
-                    trackLinks:true,
-                    accurateTrackBounce:true,
-                    webvisor:true,
-                    trackHash:true
-                });
-            } catch(e) { }
-        });
+	(function (d, w, c) {
+		(w[c] = w[c] || []).push(function() {
+			try {
+				w.yaCounter44439058 = new Ya.Metrika({
+					id:44439058,
+					clickmap:true,
+					trackLinks:true,
+					accurateTrackBounce:true,
+					webvisor:true,
+					trackHash:true
+				});
+			} catch(e) { }
+		});
 
-        var n = d.getElementsByTagName("script")[0],
-            s = d.createElement("script"),
-            f = function () { n.parentNode.insertBefore(s, n); };
-        s.type = "text/javascript";
-        s.async = true;
-        s.src = "https://mc.yandex.ru/metrika/watch.js";
+		var n = d.getElementsByTagName("script")[0],
+			s = d.createElement("script"),
+			f = function () { n.parentNode.insertBefore(s, n); };
+		s.type = "text/javascript";
+		s.async = true;
+		s.src = "https://mc.yandex.ru/metrika/watch.js";
 
-        if (w.opera == "[object Opera]") {
-            d.addEventListener("DOMContentLoaded", f, false);
-        } else { f(); }
-    })(document, window, "yandex_metrika_callbacks");
+		if (w.opera == "[object Opera]") {
+			d.addEventListener("DOMContentLoaded", f, false);
+		} else { f(); }
+	})(document, window, "yandex_metrika_callbacks");
 		</script>
 <!-- /Yandex.Metrika counter -->
-		
-<xsl:if test="page/@name=('index','armtorg')">
+
+<xsl:if test="page/@name=('index', 'context_form_success','armtorg')">
 		<style type="text/css">
 			<xsl:text disable-output-escaping="yes">
 			.cf7 &gt; .slide-image, #mobile-slide-image &gt; .mobile-slide-image{
@@ -286,9 +293,9 @@ xmlns:fb="http://ogp.me/ns/fb#">
 	  "url": "http://termobrest.ru/",
 	  "name": "ТермоБрест",
 	  "contactPoint": {
-	    "@type": "ContactPoint",
-	    "telephone": "+375 (162) 53-64-80",
-	    "contactType": "Организация сбыта продукции"
+		"@type": "ContactPoint",
+		"telephone": "+375 (162) 53-64-80",
+		"contactType": "Организация сбыта продукции"
 	  }
 	}
 	</script>
@@ -321,8 +328,8 @@ xmlns:fb="http://ogp.me/ns/fb#">
 			"name": <xsl:value-of select="concat('&#34;',$h1, '&#34;')"/>,
 			"image": "https://termobrest.ru/sitefiles/1/5/6/257/vn1n_02.jpg",
 			 "description": <xsl:value-of select="concat('&#34;',substring(f:strip_html($proddd/text), 1,200), '&#34;')"/>,
-		    "brand": "Термобрест",
-		    "sku": <xsl:value-of select="concat('&#34;&#91;', $proddd/@id, '&#93;&#34;')"/>,
+			"brand": "Термобрест",
+			"sku": <xsl:value-of select="concat('&#34;&#91;', $proddd/@id, '&#93;&#34;')"/>,
 			"aggregateRating": {
 				"@type": "AggregateRating",
 				"ratingCount": "21",
@@ -335,155 +342,150 @@ xmlns:fb="http://ogp.me/ns/fb#">
 		}
 	</script>
 </xsl:if>
-		<!-- Google Tag Manager -->
-
-<script>
-(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-                                  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-
-                                  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-                                  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-
-                                ga('create', 'UA-456325-50', 'auto'); ga( 'require', ‘displayfeatures’);
-
-                                  ga('send', 'pageview'); /* Accurate bounce rate by time */
-
-                                If (!document.referrer || document.referrer.split (‘/’) [2] .indexOf(location.hostname) != 0) setTimeout(function() {ga (‘send’, ‘event’, ‘Новый посетитель’, location.pathname);}, 1500;                 </script>
-
-
-<!-- End Google Tag Manager -->
+	
 	</head>
 	<body>
-		<xsl:if test="page/@name=('index','armtorg')"><xsl:attribute name="class" select="'main-page'"/></xsl:if>		
-		
-			<!-- Google Tag Manager (noscript) -->
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-57QWHFQ"
-height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-<!-- End Google Tag Manager (noscript) -->
+		<xsl:if test="page/@name=('index', 'context_form_success','armtorg')"><xsl:attribute name="class" select="'main-page'"/></xsl:if>
 
 		<div class="height-wrapper">
-			
-			<div class="header-wrapper hidden-xs navbar-fixed-top">
-				<div class="container">
-					<a href="{$base}" class="logo-placeholder"></a>
-					<form method="post" action="{page/search_link}" class="navbar-form navbar-left hidden-xs">
-						<div class="form-group">
-							<input value="{page/variables/q}" name="q" type="text" class="form-control" placeholder="Поиск по каталогу" />
-						</div>
-						<button type="submit" class="btn btn-default" onclick="$(this).closest('form').submit()">&#160;</button>
-					</form>
-					<img src="img/logos_top.png" alt="" />
-				</div>
-			</div>
-			
-			<nav class="navbar navbar-default">
-				<div class="container">
-					<!-- Brand and toggle get grouped for better mobile display -->
-					<div class="navbar-header">
-						<button type="button" class="navbar-toggle collapsed"
-							data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"
-							aria-expanded="false">
-							<span class="sr-only">Toggle navigation</span>
-							<span class="icon-bar"></span>
-							<span class="icon-bar"></span>
-							<span class="icon-bar"></span>
-						</button>
-						<a class="navbar-brand hidden-sm hidden-md hidden-lg" href="#">
-							<img src="img/termobrest_logo.png" alt="" />
-						</a>
-					</div>
-		
-					<!-- Collect the nav links, forms, and other content for toggling -->
-					<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-						<ul class="nav navbar-nav">
-							<a href="http://termobrest.net"><span>ENG</span>|РУС</a>
-							<li class="dropdown{' active-link'[$active_mmi = 'catalog']}"> <!-- класс active выделяет текущий раздел -->
-								<a href="{//catalog_link}" id="catalog-link" class="prevent dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Газовая арматура</a>
-								<ul class="dropdown-menu">
-									<xsl:for-each select="page/catalog/main_section">
-										<li><a href="{show_section}"><xsl:value-of select="name"/></a></li>
-									</xsl:for-each>
-									<li><a href="{page/new_products_link}">Новинки</a></li>
-								</ul>
-							</li>
-							<li class="dropdown{' active-link'[$active_mmi = 'about']}">
-								<a href="{page/about/about_section[1]/show_section}" class="prevent dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">О компании</a>
-								<ul class="dropdown-menu">
-									<xsl:for-each select="page/about//about_section">
-										<li>
-											<a href="{show_section}"><xsl:value-of select="name"/></a>
-										</li>
-									</xsl:for-each>
-								</ul>
-							</li>
-							<li class="dropdown{' active-link'[$active_mmi = 'news']}">
-								<a href="{page/news/news_section[1]/show_section}" class="prevent dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Новости</a>
-								<ul class="dropdown-menu">
-									<xsl:for-each select="page/news/news_section">
-										<li><a href="{show_section}"><xsl:value-of select="name"/></a></li>
-									</xsl:for-each>
-								</ul>
-							</li>
-							<li class="dropdown{' active-link'[$active_mmi = 'docs']}">
-								<a href="{page/docs/doc_section[1]/show_section}" class="prevent dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Документы</a>
-								<ul class="dropdown-menu">
-									<xsl:for-each select="page/docs/doc_section">
-										<li>
-											<a href="{show_section}"><xsl:value-of select="name"/></a>
-										</li>
-									</xsl:for-each>
-								</ul>
-							</li>
-							<li class="dropdown{' active-link'[$active_mmi = '3d']}">
-								<a href="{page/three_dmodels/doc_section[1]/show_section}" class="prevent dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">3D модели</a>
-								<ul class="dropdown-menu">
-									<xsl:for-each select="page/three_dmodels/doc_section">
-										<li>
-											<a href="{show_section}"><xsl:value-of select="name"/></a>
-										</li>
-									</xsl:for-each>
-								</ul>
-							</li>
-							<li class="dropdown{' active-link'[$active_mmi = 'dealers']}">
-								<a href="{page/dealers_link}" class="prevent dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Дилеры</a>
-								<ul class="dropdown-menu">
-									<li>
-										<a href="{page/dealers_link}">Карта дилеров</a>
-									</li>
-									<li>
-										<a href="{page/all_dealers_link}">Дилеры СП «ТермоБрест» ООО</a>
-									</li>
-									<li>
-										<a href="{page/dealers_text_page_link}">Рейтинг дилеров</a>
-									</li>
-								</ul>
-							</li>
-							<li class="{'active-link'[$active_mmi = 'contacts']}">
-								<a href="{page/contacts_link}">Контакты</a>
-							</li>
-						</ul>
-						<form method="post" action="{page/search_link}" class="navbar-form navbar-left hidden-sm hidden-md hidden-lg">
+
+			<header>
+				<div class="header-wrapper hidden-xs navbar-fixed-top">
+					<div class="container">
+						<a href="{$base}" class="logo-placeholder"></a>
+						<form method="post" action="{page/search_link}" class="navbar-form navbar-left hidden-xs">
 							<div class="form-group">
 								<input value="{page/variables/q}" name="q" type="text" class="form-control" placeholder="Поиск по каталогу" />
 							</div>
 							<button type="submit" class="btn btn-default" onclick="$(this).closest('form').submit()">&#160;</button>
 						</form>
-					</div><!-- /.navbar-collapse -->
-				</div><!-- /.container-fluid -->
-			</nav>
-			
-			<xsl:call-template name="CONTENT" />
-			<xsl:if test="$seo/progon != ''">
-				<div class="container main-content">
-					<div class="row">
-						<div class="col-xs-12 col-sm-12 col-md-12">
-							<div style="color: #545454; font-size: 12px;">
-								<xsl:value-of select="$seo/progon" disable-output-escaping="yes"/>
+						<img src="img/logos_top.png" alt="" />
+					</div>
+				</div>
+
+				<nav class="navbar navbar-default">
+					<div class="container">
+						<!-- Brand and toggle get grouped for better mobile display -->
+						<div class="navbar-header">
+							<button type="button" class="navbar-toggle collapsed"
+								data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"
+								aria-expanded="false">
+								<span class="sr-only">Toggle navigation</span>
+								<span class="icon-bar"></span>
+								<span class="icon-bar"></span>
+								<span class="icon-bar"></span>
+							</button>
+							<a class="navbar-brand hidden-sm hidden-md hidden-lg" href="#">
+								<img src="img/termobrest_logo.png" alt="" />
+							</a>
+						</div>
+
+						<!-- Collect the nav links, forms, and other content for toggling -->
+						<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+							<ul class="nav navbar-nav">
+								<a href="https://termobrest.net"><span>ENG</span>|РУС</a>
+								<li class="dropdown{' active-link'[$active_mmi = 'catalog']}"> <!-- класс active выделяет текущий раздел -->
+									<a href="{//catalog_link}" id="catalog-link" class="prevent dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Газовая арматура</a>
+									<ul class="dropdown-menu">
+										<xsl:for-each select="page/catalog/main_section">
+											<li><a href="{show_section}"><xsl:value-of select="name"/></a></li>
+										</xsl:for-each>
+										<li><a href="{page/new_products_link}">Новинки</a></li>
+									</ul>
+								</li>
+								<li class="dropdown{' active-link'[$active_mmi = 'about']}">
+									<a href="{page/about/about_section[1]/show_section}" class="prevent dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">О компании</a>
+									<ul class="dropdown-menu">
+										<xsl:for-each select="page/about//about_section">
+											<li>
+												<a href="{show_section}"><xsl:value-of select="name"/></a>
+											</li>
+										</xsl:for-each>
+									</ul>
+								</li>
+								<li class="dropdown{' active-link'[$active_mmi = 'news']}">
+									<a href="{page/news/news_section[1]/show_section}" class="prevent dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Новости</a>
+									<ul class="dropdown-menu">
+										<xsl:for-each select="page/news/news_section">
+											<li><a href="{show_section}"><xsl:value-of select="name"/></a></li>
+										</xsl:for-each>
+									</ul>
+								</li>
+								<li class="dropdown{' active-link'[$active_mmi = 'docs']}">
+									<a href="{page/docs/doc_section[1]/show_section}" class="prevent dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Документы</a>
+									<ul class="dropdown-menu">
+										<xsl:for-each select="page/docs/doc_section[name != 'ПРАЙС-ЛИСТ для потребителей РФ']">
+											<li>
+												<a href="{show_section}"><xsl:value-of select="name"/></a>
+											</li>
+										</xsl:for-each>
+									</ul>
+								</li>
+								<li class="dropdown{' active-link'[$active_mmi = '3d']}">
+									<a href="{page/three_dmodels/doc_section[1]/show_section}" class="prevent dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">3D модели</a>
+									<ul class="dropdown-menu">
+										<xsl:for-each select="page/three_dmodels/doc_section">
+											<li>
+												<a href="{show_section}"><xsl:value-of select="name"/></a>
+											</li>
+										</xsl:for-each>
+									</ul>
+								</li>
+								<li class="dropdown{' active-link'[$active_mmi = 'dealers']}">
+									<a href="{page/dealers_link}" class="prevent dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Дилеры</a>
+									<ul class="dropdown-menu">
+										<li>
+											<a href="{page/dealers_link}">Карта дилеров / партнеров</a>
+										</li>
+										<li>
+											<a href="{page/all_dealers_link}">Дилеры СП «ТермоБрест» ООО</a>
+										</li>
+										<li>
+											<a href="{page/all_partners_link}">Деловые партнеры СП «ТермоБрест» ООО</a>
+										</li>
+										<li>
+											<a href="{page/dealers_text_page_link}">Рейтинг дилеров</a>
+										</li>
+										<li>
+											<a href="https://termobrest.ru/docs/prais_list/">
+												ПРАЙС-ЛИСТ для потребителей РФ
+											</a>
+										</li>
+									</ul>
+								</li>
+								<li class="{'active-link'[$active_mmi = 'contacts']}">
+									<a href="{page/contacts_link}">Контакты</a>
+								</li>
+								<li class="new-link">
+								<!-- <li class="new-link {'active-link'[$active_mmi = 'about']}"> -->
+									<a style="font-weight:bold" href="https://e-catalogue.termobrest.ru/">Электронный каталог</a>
+								</li>
+							</ul>
+							<form method="post" action="{page/search_link}" class="navbar-form navbar-left hidden-sm hidden-md hidden-lg">
+								<div class="form-group">
+									<input value="{page/variables/q}" name="q" type="text" class="form-control" placeholder="Поиск по каталогу" />
+								</div>
+								<button type="submit" class="btn btn-default" onclick="$(this).closest('form').submit()">&#160;</button>
+							</form>
+						</div><!-- /.navbar-collapse -->
+					</div><!-- /.container-fluid -->
+				</nav>
+
+			</header>
+			<main>
+				<xsl:call-template name="CONTENT" />
+				<xsl:if test="$seo/progon != '' and not(page/@name=('index', 'context_form_success','armtorg')) and $need_seo_progon">
+					<div class="container main-content">
+						<div class="row">
+							<div class="col-xs-12 col-sm-12 col-md-12">
+								<div style="color: #545454; font-size: 12px;">
+									<xsl:value-of select="$seo/progon" disable-output-escaping="yes"/>
+								</div>
 							</div>
 						</div>
 					</div>
-				</div>
-			</xsl:if>
+				</xsl:if>
+			</main>
 			<footer class="footer">
 				<div class="container">
 					<div class="col-sm-10">
@@ -514,7 +516,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 						<img src="images/brest1000.png" alt="Бресту 1000 лет" title="Бресту 1000 лет" style="display: inline-block; margin-left: 24px; vertical-align: top;"/>
 					</div>
 					<div class="col-sm-2" style="padding: 0;">
-						<div class="icons-links">
+						<a href="{page/contacts_link}" class="btn btn-sm btn-success" style="width: 100%; padding:0; margin-top: 30px">Обратная связь</a>
+						<div class="icons-links" style="margin-top:0;">
 							<a href="https://www.facebook.com/termobrest.ru/">
 								<img src="images/soc-2.png" alt=""/>
 							</a>
@@ -527,39 +530,41 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 							<a href="https://vk.com/termobrest">
 								<img src="images/soc-1.png" alt=""/>
 							</a>
-							
+							<a href="https://t.me/termobrest">
+								<img src="images/telegram.png" alt=""/>
+							</a>
 						</div>
 					</div>
 					<!-- <div class="col-sm-12">
 						<iframe src="//widget.stapico.ru/?q=termobrest.ru&amp;s=100&amp;w=3&amp;h=3&amp;b=1&amp;p=2&amp;effect=2" allowtransparency="true" frameborder="0" scrolling="no" style="border:none;overflow:hidden;width:356px; height: 481px" />
-					
+
 						<div class="fb-page" data-href="https://www.facebook.com/termobrest.ru" data-tabs="timeline" data-width="300" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><blockquote cite="https://www.facebook.com/termobrest.ru" class="fb-xfbml-parse-ignore"><a href="https://www.facebook.com/termobrest.ru">СП "ТермоБрест"</a></blockquote></div>
 					</div> -->
 				</div>
 			</footer>
-		
+
 		</div>
 
 		<script type="text/javascript" src="js/jquery-1.12.0.min.js"></script>
-
-	<xsl:if test="page/@name=('index','armtorg')">
+		
+	<xsl:if test="page/@name=('index','context_form_success','armtorg')">
 		<script type="text/javascript">
 		$(document).ready(function() {
 		  $(".cf7_controls").on('click', 'a', function(e) {
-		  	e.preventDefault();
-		  	if(typeof sliderTimeout != "undefined"){
-		  		clearTimeout(sliderTimeout);
-		  	}
-			
+			e.preventDefault();
+			if(typeof sliderTimeout != "undefined"){
+				clearTimeout(sliderTimeout);
+			}
+
 			var newImage = $(this).index();
 			el = $(this).closest(".cf7");
-			showSlide(newImage, el);		
+			showSlide(newImage, el);
 		  });
-	
+
 		  autoplay();
-	
+
 		});
-	
+
 		function autoplay(){
 			$(".cf7").each(function(){
 				next = $(this).children(".slide-image.opaque").next(".slide-image").index();
@@ -568,9 +573,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 			});
 			sliderTimeout = setTimeout(autoplay, 7000);
 		}
-	
+
 		function showSlide(index, el){
-	
+
 			el.children(".slide-image").removeClass("opaque");
 			$("#mobile-slide-image").children(".mobile-slide-image").removeClass("opaque");
 			el.find(".txt").removeClass("opaque");
@@ -594,7 +599,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 		<script type="text/javascript">
 			<xsl:text disable-output-escaping="yes">
 				$(document).ready(function(){
-					
+
 					windowWidth = window.innerWidth ? window.innerWidth : $(window).width();
 
 					if (windowWidth &gt; 767) {
@@ -612,7 +617,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 							});
 							<!-- document.location.href = $(this).attr("href"); -->
 
-						
+
 						style = ".dropdown:hover &gt; .dropdown-menu {display: block;}"
 						$("head").append("&lt;style type='text/css' &gt;"+style+"&lt;/style&gt;");
 					}else{
@@ -620,7 +625,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 							e.preventDefault();
 						});
 					}
-				});				
+				});
 			</xsl:text>
 		</script>
 
@@ -641,7 +646,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 	</body>
 	</html>
 	</xsl:template>
-	
+
 
 	<!-- ****************************    БЛОКИ НА СТРАНИЦЕ    ******************************** -->
 
@@ -666,17 +671,17 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 		</div>
 	</div>
 	</xsl:template>
-	
+
 	<xsl:template match="picture_pair">
 	<a href="{@path}{big}" data-caption="{name}"><img src="{@path}{small}" height="65" alt="{name}"/></a>
 	</xsl:template>
-	
+
 <!-- 	<xsl:template match="video">
 	<a href="{link}" data-caption="{@path}{big}" title="{name}"><img src="{@path}{small}" height="65" alt="{name}"/></a>
 	</xsl:template> -->
 
 	<!-- ****************************    Добавление параметра к ссылке    ******************************** -->
-	
+
 	<xsl:function name="f:addQueryVar" as="xs:string">
 		<xsl:param name="link" as="xs:string"/>
 		<xsl:param name="name" as="xs:string"/>
@@ -685,27 +690,27 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 	</xsl:function>
 
 	<!-- ****************************    Добавление параметра к ссылке    ******************************** -->
-	
+
 	<!-- Усановка параметра, если его нет, или замена значения параметра (в том числе удаление) -->
 	<xsl:function name="f:set_url_param" as="xs:string">
 		<xsl:param name="url" as="xs:string"/>
 		<xsl:param name="name" as="xs:string"/>
 		<xsl:param name="value"/>
 		<xsl:variable name="val_enc" select="encode-for-uri(string($value))"/>
-		<xsl:value-of 
+		<xsl:value-of
 			select="if (not($val_enc) or $val_enc = '') then replace(replace($url, concat('(\?|&amp;)', $name, '=', '.*?($|&amp;)'), '$1'), '&amp;$|\?$', '')
 					else if (contains($url, concat($name, '='))) then replace($url, concat($name, '=', '.*?($|&amp;)'), concat($name, '=', $value, '$1'))
 					else if (contains($url, '?')) then concat($url, '&amp;', $name, '=', $val_enc)
 					else concat($url, '?', $name, '=', $val_enc)"/>
 	</xsl:function>
-	
+
 	<!-- Добавление параметра, даже если такой параметр уже есть (множественные значения) -->
 	<xsl:function name="f:add_url_param" as="xs:string">
 		<xsl:param name="url" as="xs:string"/>
 		<xsl:param name="name" as="xs:string"/>
 		<xsl:param name="value"/>
 		<xsl:variable name="val_enc" select="encode-for-uri($value)"/>
-		<xsl:value-of 
+		<xsl:value-of
 			select="if (contains($url, '?')) then concat($url, '&amp;', $name, '=', $val_enc)
 					else concat($url, '?', $name, '=', $val_enc)"/>
 	</xsl:function>
@@ -723,10 +728,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 		<!--
 		<xsl:value-of select="if (string-length($start) = 0) then $start else concat($start, $end)"/>
 		-->
-		<xsl:value-of 
+		<xsl:value-of
 			select="replace(replace($url, concat('(\?|&amp;)', $name, '=', $val_enc, '($|&amp;)'), '$1'), '&amp;$|\?$', '')"/>
 	</xsl:function>
-	
+
 	<xsl:template match="*" mode="LINK_ADD_VARIABLE_QUERY">
 		<xsl:param name="name"/>
 		<xsl:param name="value"/>

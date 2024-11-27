@@ -13,6 +13,7 @@
 	<xsl:variable name="sec" select="$ni/news_section"/>
 
 	<xsl:variable name="title" select="if(not($seo/title)) then concat($ni/header, ' - ', $sec/name) else $seo/title"/>
+	<xsl:variable name="local_description" select="concat('Последние актуальные новости СП «ТермоБрест» ', $title)"/>
 
 	<xsl:variable name="news_src" select="page/news"/>
 	<xsl:variable name="heading" select="'Новости'"/>
@@ -29,7 +30,7 @@
 	<div class="container main-content">
 		<div class="row">
 			<div class="col-sm-4 col-md-3 hidden-xs side-coloumn">
-				<h1 class="no-top-margin"><xsl:value-of select="$heading"/></h1>
+				<p style="font-size: 28px;" class="no-top-margin"><xsl:value-of select="$heading"/></p>
 				<ul class="list-group side-menu">
 					<xsl:for-each select="$news_src//news_section">
 						<li class="list-group-item">
@@ -42,6 +43,7 @@
 				</div>
 			</div>
 			<div class="col-xs-12 col-sm-8 col-md-9">
+				<article>
 				<div class="row">
 					<div class="col-xs-12">
 						<div class="path hidden-xs">
@@ -50,14 +52,18 @@
 							<a href="{$sec/show_section}"><xsl:value-of select="$sec/name"/></a>
 							→
 						</div>
-						<h2 class="no-top-margin"><xsl:value-of select="$ni/header"/></h2>
+						<h1 class="no-top-margin"><xsl:value-of select="$ni/header"/></h1>
 					</div>
 				</div>
 				<div class="row">
 					<div class="col-xs-12 content-block">
+						<!-- <p style="font-size: 16px;">
+							<a href="{$ni/fullscreen_link}">Полноэкранный режим</a>
+						</p> -->
 						<xsl:value-of select="$ni/text" disable-output-escaping="yes"/>
 					</div>
 				</div>
+				</article>
 			</div>
 		</div>
 	</div>

@@ -17,9 +17,8 @@
 	<xsl:template match="/">
 		<div class="result" id="fform">
 			<xsl:if test="not($success)">
-				<p>Опишите,&nbsp;что
-					ищете и мы передадим ваш запрос в отдел продаж. Менеджеры
-					свяжутся с вами сами, если смогут предложить искомое.
+				<p>
+					Оставьте заявку, и наш специалист свяжется с вами, чтобы ответить на ваши вопросы
 				</p>
 				<xsl:if test="$message">
 					<p style="color: red"><xsl:value-of select="$message"/></p>
@@ -46,6 +45,10 @@
 						<label>E-mail:*</label>
 						<input type="text" name="{$f/email/@input}" value="{$f/email}" class="form-control"/>
 					</div>
+					<div class="form-group mandatory-input" title="обязательно для заполнения" style="display: none;">
+						<label>Дополнительный E-mail:*</label>
+						<input type="text" name="{$f/spam/@input}" value="{$f/spam}" class="form-control" />
+					</div>
 					<div class="form-group">
 						<label for="xi">Текст сообщения:*</label>
 						<textarea class="form-control" name="{$f/message/@input}"><xsl:value-of select="$f/message"/></textarea>
@@ -56,7 +59,7 @@
 			</xsl:if>
 			<xsl:if test="$success">
 				<p><xsl:value-of select="$message"/></p>
-				<p><a onlick="insertAjax('{page/feedback_form_link}', 'fform'); return false;">Написать еще сообщение</a></p>
+				<p><a style="cursor: pointer;" onclick="insertAjax('{page/feedback_link}', 'fform'); return false;">Написать еще сообщение</a></p>
 				<script>
 					dataLayer.push({'event':'Помощь специалиста - отправлено'});
 				</script>

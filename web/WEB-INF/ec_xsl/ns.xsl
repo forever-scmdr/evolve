@@ -13,6 +13,7 @@
 	<xsl:variable name="critical_item" select="$sec"/>
 
 	<xsl:variable name="title" select="if($seo/title != '') then $seo/title else $sec/name"/>
+	<xsl:variable name="local_description" select="$title"/>
 
 	<xsl:template match="news_item_pages">
 	<div class="btn-group pagination" role="group">
@@ -67,10 +68,10 @@
 				<div class="row section-items">
 					<xsl:for-each select="$sec/news_item">
 						<div class="col-xs-6 col-sm-6 col-md-4">
-							<a href="{show_news_item}">
+							<a href="{if(fullscreen_only = '1') then show_fullscreen else show_news_item}">
 								<img src="{@path}{main_pic}" alt="" style="max-width: 100%;"/>
 							</a>
-							<a href="{show_news_item}"><xsl:value-of select="header"/></a>
+							<a href="{if(fullscreen_only = '1') then show_fullscreen else show_news_item}"><xsl:value-of select="header"/></a>
 						</div>
 						<xsl:if test="position() mod 2 = 0">
 							<div class="clearfix hidden-md hidden-lg"></div>

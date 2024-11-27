@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?> 
 <site>
 
 	<include-definition name="COMMON_AND_LINKS">
@@ -14,6 +14,7 @@
 		<link name="search_link" target="search" />
 		<link name="dealers_link" target="dealers" />
 		<link name="all_dealers_link" target="all_dealers" />
+		<link name="all_partners_link" target="all_partners" />
 		<link name="contacts_link" target="contacts" />
 		<link name="pressure_calc_link" target="pressure_calc" />
 		<link name="arm_calc_link" target="arm_calc" />
@@ -30,14 +31,14 @@
 				</link>
 			</item>
 		</item>
-
+	
 		<!-- Разделы о компании -->
 		<item name="about" id="mab" cacheable="true">
 			<item name="about_section" id="as_1">
 				<link name="show_section" target="about">
 					<var name="sec" item="as_1" style="translit" />
 				</link>
-				<item name="about_section" id="as_2">
+				<item name="about_section" id="as_2">sd
 					<link name="show_section" target="about">
 						<var name="sec" item="as_2" style="translit" />
 					</link>
@@ -106,7 +107,7 @@
 				</item>
 			</item>
 		</item>
-		
+
 		<item name="footer" cacheable="true" >
 			<item name="footer_link" />
 		</item>
@@ -162,8 +163,23 @@
 			<var name="sec" style="translit" />
 			<var name="tag" />
 		</variables>
-		<item name="section" id="sec" reference-var="sec" />
+		<!-- <item name="section" id="sec" reference-var="sec" />
+ -->
+		<item name="section" id="sec" reference-var="sec" >
+			<item name="seo">
+				<item name="meta"/>
+			</item>
+		</item>
+		<item name="filter_seo">
+			<item name="url_seo">
+				<item name="meta"/>
+			</item>
+		</item>
+
 		<item name="main_section" id="sms" reference-var="m_sec">
+			<item name="seo">
+				<item name="meta"/>
+			</item>
 			<link name="show_section" target="i-sec">
 				<var name="m_sec" item="sms" style="translit" />
 			</link>
@@ -298,7 +314,7 @@
 
 
 
-	<page name="armtorg" template="index" cacheable="true">
+	<page name="armtorg" template="index_test" cacheable="true">
 		<include name="COMMON_AND_LINKS" />
 		<item name="main">
 			<item name="seo">
@@ -340,7 +356,7 @@
 	</page>
 
 
-	<page name="sec" template="sec" cacheable="true" cache-vars="m_sec sec">
+	<page name="sec" template="sec" cacheable="false" cache-vars="m_sec sec">
 		<variables>
 			<var name="m_sec" style="translit" />
 			<var name="sec" style="translit" />
@@ -521,6 +537,9 @@
 				<link name="show_news_item" target="ni">
 					<var name="ni" item="ni" style="translit" />
 				</link>
+				<link name="show_fullscreen" target="fullscreen">
+					<var name="sec" item="ni" style="translit" />
+				</link>
 			</item>
 		</item>
 		<include name="COMMON_AND_LINKS" />
@@ -539,6 +558,37 @@
 					<var name="sec" item="ns" style="translit" />
 				</link>
 			</parent-of>
+			<link name="fullscreen_link" target="fullscreen">
+				<var name="sec" item="sni" style="translit" />
+			</link>
+		</item>
+		<include name="COMMON_AND_LINKS" />
+	</page>
+
+
+	<page name="news_rss" template="news_rss" cacheable="true">
+		<!-- <headers Content-Type="application/rss+xml"/> -->
+		<headers Content-Type="application/xml"/>
+		<item name="news_section" id="rss" cacheable="true">
+			<item name="seo">
+				<item name="meta"/>
+			</item>
+			<item name="news_item" id="ni">
+				<filter>
+					<sorting direction="DESC">
+						<var value="date" />
+					</sorting>
+				</filter>
+				<link name="show_news_item" target="ni">
+					<var name="ni" item="ni" style="translit" />
+				</link>
+				<link name="show_fullscreen" target="fullscreen">
+					<var name="sec" item="ni" style="translit" />
+				</link>
+			</item>
+			<link name="show_section" target="ns">
+				<var name="sec" item="rss" style="translit" />
+			</link>
 		</item>
 		<include name="COMMON_AND_LINKS" />
 	</page>
@@ -602,7 +652,33 @@
 			</item>
 			<item name="page_part" ><item name="pic" tag="picture_pair"/></item>
 		</item>
+		<link name="fullscreen_link" target="fullscreen">
+			<var name="sec" var="sec" style="translit" />
+		</link>
 		<include name="COMMON_AND_LINKS" />
+	</page>
+
+	<page name="fullscreen" cacheable="true" cache-vars="sec" template="fullscreen">
+		<variables>
+			<var name="sec" style="translit" />
+		</variables>
+		<item name="news_item" id="ni" reference-var="sec" cacheable="true" cache-vars="sec">
+			<item name="seo">
+				<item name="meta"/>
+			</item>
+			<item name="page_part" ><item name="pic" tag="picture_pair"/></item>
+			<parent-of name="news_section" id="ns">
+				<link name="show_section" target="ns">
+					<var name="sec" item="ns" style="translit" />
+				</link>
+			</parent-of>
+			<link name="ni_back" target="ni">
+				<var name="ni" item="ni" style="translit"/>
+			</link>
+			<link name="about_back" target="about">
+				<var name="ni" item="ni" style="translit"/>
+			</link>
+		</item>
 	</page>
 
 	<page name="dealers" template="dealers" cacheable="true">
@@ -613,6 +689,13 @@
 	</page>
 
 	<page name="all_dealers" template="all_dealers" cacheable="true">
+		<item name="dealer_region" cacheable="true" tag="region">
+			<item name="dealer" />
+		</item>
+		<include name="COMMON_AND_LINKS" />
+	</page>
+
+	<page name="all_partners" template="all_partners" cacheable="true">
 		<item name="dealer_region" cacheable="true" tag="region">
 			<item name="dealer" />
 		</item>
@@ -751,7 +834,7 @@
 	<page name="i-arm_calc" template="i_arm_calc" cacheable="true">
 		<include name="IFRAME_LINKS" />
 	</page>
-	
+
 
 
 	<!-- ****************************** Форма обратной связи (AJAX) ****************************** -->
@@ -763,7 +846,7 @@
 		</variables>
 		<item name="contacts" cacheable="true" />
 		<form item-name="feedback_form" restore-var="message" tag="form">
-			<link name="submit_link" target="process_feedback">
+			<link name="submit_link" target="process_alt_feedback">
 				<var name="src_page" value="contacts" />
 				<var name="template" value="feedback_email"/>
 			</link>
@@ -777,13 +860,14 @@
 			<var name="message" />
 		</variables>
 		<form item-name="feedback_form" restore-var="message" tag="form" id="feedback">
-			<link name="submit_link" target="process_feedback" >
+			<link name="submit_link" target="process_alt_feedback" >
 				<var name="template" value="feedback_email"/>
 				<var name="message" var="message"/>
 			</link>
 		</form>
+		<link name="feedback_link" target="feedback"/>
 	</page>
-	
+
 	<page name="feedback_email" template="feedback_templates/feedback">
 <!-- 		<session> -->
 <!-- 			<item name="feedback_form"/> -->
@@ -792,23 +876,21 @@
 	</page>
 
 	<page name="paper_catalog" template="paper_catalog" cacheable="true" cache-vars="message">
+		<headers X-Frame-Options="ALLOWALL" Access-Control-Allow-Origin="*" />
 		<variables>
 			<var name="result" />
 			<var name="message" />
 		</variables>
 		<link name="paper_form_link" target="paper_catalog" />
 		<form item-name="paper_form" restore-var="message" tag="form">
-			<link name="submit_link" target="process_feedback" >
-				<var name="required" value="message,email"/>
-				<var name="topic" value="Получить бумажный каталог" />
+			<link name="submit_link" target="process_paper" >
 				<var name="original_src" value="paper_catalog"/>
 				<var name="src_page" value="paper_catalog" />
-				<var name="required" value="email,address,organization,phone,name"/>
 				<var name="template" value="paper_email"/>
 			</link>
 		</form>
 	</page>
-	
+
 	<page name="paper_email" template="feedback_templates/feedback">
 <!-- 		<session> -->
 <!-- 			<item name="paper_form"/> -->
@@ -817,6 +899,7 @@
 	</page>
 
 	<page name="feedback_two" template="feedback2" cacheable="true" cache-vars="message">
+		<headers X-Frame-Options="ALLOWALL" Access-Control-Allow-Origin="*" />
 		<variables>
 			<var name="result" />
 			<var name="message" />
@@ -824,17 +907,87 @@
 		<link name="feedback_form_link2" target="feedback_two" />
 		<form item-name="otz_form" restore-var="message" tag="form">
 			<!-- <link name="submit_link" target="process_check"> -->
-			<link name="submit_link" target="process_feedback">
+			<link name="submit_link" target="process_alt_feedback">
 				<var name="topic" value="Отзыв о работе сайта" />
 				<var name="original_src" value="feedback_two"/>
 				<var name="src_page" value="feedback_two" />
-				<!-- <var name="target_src" value="process_feedback" /> -->
+				<!-- <var name="target_src" value="process_alt_feedback" /> -->
 				<var name="required" value="message,name"/>
 				<var name="template" value="otz_email"/>
 			</link>
 		</form>
 	</page>
-	
+
+	<page name="context_form" template="context_form">
+		<variables>
+			<var name="result" />
+			<var name="message" />
+		</variables>
+		<form item-name="context_form" restore-var="message" tag="form" id="feedback">
+			<link name="submit_link" target="process_alt_feedback" >
+				<var name="template" value="feedback_email"/>
+				<var name="message" var="message"/>
+				<var name="src_page" value="context_form"/>
+				<var name="required" value="name,email,phone"/>
+				<var name="email" value="termovalve@mail.ru"/>
+				<var name="topic" value="переход по контекстной рекламе"/>
+			</link>
+		</form>
+		<include name="COMMON_AND_LINKS" />
+	</page>
+	<page name="context_form_google" template="context_form">
+		<variables>
+			<var name="result" />
+			<var name="message" />
+		</variables>
+		<form item-name="context_form" restore-var="message" tag="form" id="feedback">
+			<link name="submit_link" target="process_alt_feedback" >
+				<var name="template" value="feedback_email"/>
+				<var name="message" var="message"/>
+				<var name="src_page" value="context_form"/>
+				<var name="success_page" value="context_form_success"/>
+				<var name="required" value="name,email,phone"/>
+				<var name="email" value="termovalve@mail.ru"/>
+				<var name="topic" value="переход по контекстной рекламе"/>
+			</link>
+		</form>
+		<include name="COMMON_AND_LINKS" />
+	</page>
+
+	<page name="context_form_success" template="index">
+		<variables>
+			<var name="result" />
+			<var name="message" />
+		</variables>
+		<item name="main">
+			<item name="seo">
+				<item name="meta"/>
+			</item>
+		</item>
+		<item name="slide" cacheable="true" />
+		<item name="news" id="nid" cacheable="true" tag="id_news">
+			<item name="news_section" id="ns">
+				<item name="news_item" id="ni">
+					<filter>
+						<limit>
+							<var value="3" />
+						</limit>
+						<sorting direction="DESC">
+							<var value="date" />
+						</sorting>
+					</filter>
+					<link name="show_news_item" target="ni">
+						<var name="ni" item="ni" style="translit" />
+					</link>
+				</item>
+				<link name="show_section" target="ns">
+					<var name="sec" item="ns" style="translit" />
+				</link>
+			</item>
+		</item>
+		<include name="COMMON_AND_LINKS" />
+	</page>
+
 	<page name="otz_email" template="feedback_templates/feedback">
 <!-- 		<session> -->
 <!-- 			<item name="otz_form"/> -->
@@ -850,10 +1003,10 @@
 		</variables>
 		<form item-name="get_doc_form" restore-var="message" tag="form">
 <!-- 			<link name="submit_link" target="process_check" > -->
-			<link name="submit_link" target="process_feedback" >
+			<link name="submit_link" target="process_alt_feedback" >
 <!-- 				<var name="original_src" value="get_doc"/> -->
 				<var name="src_page" value="get_doc" />
-				<var name="required" value="email, mark, name, organization, phone"/> 
+				<var name="required" value="email, mark, name, organization, phone"/>
 				<var name="template" value="get_doc_email"/>
 			</link>
 		</form>
@@ -868,6 +1021,7 @@
 
 	<!-- Рассылка -->
 	<page name="subscribe_form" template="subscribe">
+		<headers X-Frame-Options="ALLOWALL" Access-Control-Allow-Origin="*" />
 		<variables>
 			<var name="result" />
 			<var name="message" />
@@ -875,7 +1029,7 @@
 		<item name="news_section" />
 		<form item-name="agent" restore-var="message" tag="form">
 			<!-- <link name="submit_link" target="process_check" > -->
-			<link name="submit_link" target="subscribe_action" >	
+			<link name="submit_link" target="subscribe_action" >
 				<!-- <var name="original_src" value="subscribe_form"/> -->
 				<var name="src_page" value="subscribe_form" />
 				<!-- <var name="target_src" value="subscribe_action" /> -->
@@ -887,7 +1041,7 @@
 		</form>
 		<link name="subscribe_form_link" target="subscribe_form" />
 	</page>
-	
+
 	<page name="agent_email" template="feedback_templates/feedback">
 <!-- 		<session> -->
 <!-- 			<item name="agent_form"/> -->
@@ -912,13 +1066,51 @@
 	</page>
 
 
-	<page name="process_feedback">
+	<page name="process_alt_feedback">
 		<variables>
-			<var name="email" value="bio@forever-ds.com" /><!-- info@termobrest.ru, sproject@termobrest.ru, forever@forever-ds.com, forever@forever-ds.com  -->
+			<var name="email" value="info@termobrest.ru" />
 			<var name="required" value="name,organization,email,message" />
 			<var name="topic" value="Обратная связь" />
 			<var name="src_page" value="feedback" />
-			<var name="success_page"/>
+			<var name="success_page" />
+			<var name="spam" value="spam" />
+			<var name="answer" />
+		</variables>
+		<link name="success" target-var="src_page">
+			<var name="result" value="success" />
+			<var name="message" value="Сообщение отправлено, спасибо!" />
+		</link>
+		<link name="success_page" target-var="success_page">
+			<var name="result" value="success" />
+			<var name="message" value="Сообщение отправлено, спасибо!" />
+		</link>
+		<link name="error_not_set" target-var="src_page">
+			<var name="result" value="error" />
+			<var name="message" value="Заполните, пожалуйста, обязательные поля" />
+		</link>
+		<link name="general_error" target-var="src_page">
+			<var name="result" value="error" />
+			<var name="message" value="Отправка сообщения временно недоступна! Попробуйте позже" />
+		</link>
+		<link name="capcha_error" target-var="src_page">
+			<var name="result" value="error" />
+			<var name="message" value="Неверная капча" />
+		</link>
+		<command class="ecommander.application.extra.NonemptyEmailCommand">
+			<result name="success" type="redirect" />
+			<result name="error_not_set" type="redirect" />
+			<result name="general_error" type="redirect" />
+		</command>
+	</page>
+
+
+	<page name="process_paper">
+		<variables>
+			<var name="email" value="info@termobrest.ru" />
+			<var name="required" value="name,phone,email,address,organization" />
+			<var name="topic" value="Получить бумажный каталог" />
+			<var name="src_page" value="feedback" />
+			<var name="success_page" />
 			<var name="spam" value="spam" />
 		</variables>
 		<link name="success" target-var="src_page">
@@ -944,9 +1136,11 @@
 		</command>
 	</page>
 
+
+
 	<page name="process_check">
 		<variables>
-			<var name="email" value="info@termobrest.ru, sproject@termobrest.ru, forever@forever-ds.com" /><!-- info@termobrest.ru, sproject@termobrest.ru, forever@forever-ds.com, egor@forever-ds.com -->
+			<var name="email" value="info@termobrest.ru" />
 			<var name="required" value="email" />
 			<var name="topic"/>
 			<var name="src_page" />
@@ -1039,7 +1233,7 @@
 	<page name="subscribe_action">
 		<variables>
 			<var name="src_page" value="subscribe_form" />
-			<var name="email" value="info@termobrest.ru, sproject@termobrest.ru, forever@forever-ds.com" />
+			<var name="email" value="info@termobrest.ru" />
 		</variables>
 		<link name="success" target-var="src_page">
 			<var name="result" value="success" />
@@ -1087,7 +1281,7 @@
 		</item>
 		<link name="index_link" target="index" />
 		<link name="refuse_link" target="refuse" />
-		
+
 	</page>
 
 
@@ -1099,32 +1293,6 @@
 		<command class="ecommander.extra.AgentFileCommand" clear-cache="yes">
 			<result name="success" type="redirect" />
 		</command>
-	</page>
-	
-	
-	<page name="context_form" template="context_form">
-		<variables>
-			<var name="result" />
-			<var name="message" />
-		</variables>
-		<form item-name="context_form" restore-var="message" tag="form" id="feedback">
-			<link name="submit_link" target="process_feedback" >
-				<var name="template" value="feedback_email"/>
-				<var name="message" var="message"/>
-				<var name="src_page" value="context_form"/>
-				<var name="success_page" value="context_form_success"/>
-				<var name="required" value="name,email,phone"/>
-				<var name="topic" value="переход по контекстной рекламе"/>
-			</link>
-		</form>
-		<include name="COMMON_AND_LINKS" />
-	</page>
-	<page name="context_form_success" template="context_form">
-		<variables>
-			<var name="result" />
-			<var name="message" />
-		</variables>
-		<include name="COMMON_AND_LINKS" />
 	</page>
 
 
@@ -1146,7 +1314,7 @@
 
 	<!-- <page name="reject" template="reject">
 		<variables>
-			<var name="email" value="info@termobrest.ru, sproject@termobrest.ru, forever@forever-ds.com, bio@forever-ds.com"/>
+			<var name="email" value="info@termobrest.ru"/>
 			<var name="client_email"/>
 			<var name="organization"/>
 		</variables>
@@ -1154,7 +1322,7 @@
 	</page> -->
 	<page name="reject" template="reject">
 		<variables>
-			<var name="email" value="info@termobrest.ru, sproject@termobrest.ru"/>
+			<var name="email" value="info@termobrest.ru"/>
 			<var name="client_email"/>
 			<var name="organization"/>
 		</variables>
@@ -1173,7 +1341,7 @@
 			<var name="organization"/>
 		</variables>
 	</page>
-	
+
 	<page name="create_export_xml">
 		<variables>
 			<var name="action"/>

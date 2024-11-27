@@ -54,7 +54,7 @@
 		</div>
 		<xsl:variable name="all_docs" select="/page/img_doc | /page/file_doc"/>							
 		<xsl:if test="$all_docs">
-			<div class="col-md-6 hidden-xs hidden-sm documents-download">
+			<div class="col-md-6 col-xs-12 documents-download">
 				<h3 class="no-top-margin">Документация</h3>
 				<xsl:for-each-group select="$all_docs" group-by="@id">
 					<xsl:variable name="pos" select="position()"/>
@@ -106,7 +106,7 @@
 							<xsl:value-of select="$proddd/text" disable-output-escaping="yes"/>
 						</div>
 					</div>
-					<div role="tabpanel" class="tab-pane active" id="mods">
+					<div role="tabpanel" class="tab-pane" id="mods">
 						<div class="col-xs-12" style="padding-top: 2rem;">
 							<!-- <h3>Модификации</h3> -->
 							<xsl:value-of select="$proddd/size" disable-output-escaping="yes"/>
@@ -129,6 +129,43 @@
 			<!-- tabs end -->
 		</div>
 	</div>
+
+	<xsl:if test="$proddd/@id = '474'">
+		<div class="row" style="margin-top: 30px; margin-bottom: 20px;">
+			<div class="col-xs-12">
+				<h2>Похожие товары</h2>
+			</div>
+		</div>
+		<div class="row section-items">
+			<div class="col-xs-12">
+				<div class="col-xs-6 col-sm-6 col-md-4">
+					<a href="prod/cerii_vn_dvuhpozitsionnye_muftovye/">
+						<img src="sitefiles/1/5/6/473/vn3_4_6_st.jpg" alt="Клапан электромагнитный газовый ВН1Н-6 СТ. ТЕРМОБРЕСТ." title="Клапан электромагнитный газовый ВН1Н-6 СТ. ТЕРМОБРЕСТ." style="max-width: 100%;" onerror="this.src = 'images/noimage.png'" />
+					</a>
+					<a href="prod/cerii_vn_dvuhpozitsionnye_muftovye/">Муфтовые DN 15-32, стальные</a>
+				</div>
+
+				<div class="col-xs-6 col-sm-6 col-md-4">
+					<a href="prod/cerii_vn_dvuhpozitsionnye_muftovye/">
+						<img src="sitefiles/1/5/6/473/vn3_4_6_st.jpg" alt="Клапан электромагнитный газовый ВН1Н-6 СТ. ТЕРМОБРЕСТ." title="Клапан электромагнитный газовый ВН1Н-6 СТ. ТЕРМОБРЕСТ." style="max-width: 100%;" onerror="this.src = 'images/noimage.png'" />
+					</a>
+					<a href="prod/cerii_vn_dvuhpozitsionnye_muftovye/">Муфтовые DN 15-32, стальные</a>
+				</div>
+
+				<div class="clearfix hidden-md hidden-lg"></div>
+
+				<div class="col-xs-6 col-sm-6 col-md-4">
+					<a href="prod/cerii_vn_dvuhpozitsionnye_muftovye/">
+						<img src="sitefiles/1/5/6/473/vn3_4_6_st.jpg" alt="Клапан электромагнитный газовый ВН1Н-6 СТ. ТЕРМОБРЕСТ." title="Клапан электромагнитный газовый ВН1Н-6 СТ. ТЕРМОБРЕСТ." style="max-width: 100%;" onerror="this.src = 'images/noimage.png'" />
+					</a>
+					<a href="prod/cerii_vn_dvuhpozitsionnye_muftovye/">Муфтовые DN 15-32, стальные</a>
+				</div>
+
+				<div class="clearfix hidden-xs hidden-sm"></div>
+			</div>
+		</div>		
+	</xsl:if>
+
 </xsl:template>
 
 <xsl:template match="file_doc">

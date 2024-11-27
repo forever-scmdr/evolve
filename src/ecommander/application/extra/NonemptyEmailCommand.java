@@ -9,6 +9,7 @@ import javax.mail.Multipart;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMultipart;
 import javax.mail.util.ByteArrayDataSource;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.lang3.ArrayUtils;
@@ -29,6 +30,7 @@ import ecommander.pages.elements.PagePE;
 import ecommander.pages.elements.ResultPE;
 import ecommander.pages.elements.variables.StaticVariablePE;
 import ecommander.users.User;
+import nl.captcha.Captcha;
 /**
  * Отправка сообщения на email с валидацией (проверка заполненности определенных полей).
  * В случае если не все обязательные поля заполнены, возвращается ошибка и отсылка не осуществляется
@@ -61,6 +63,16 @@ public class NonemptyEmailCommand extends Command {
 
 	@Override
 	public ResultPE execute() throws Exception {
+
+		Captcha captcha = (Captcha) getSessionObject("capt");
+
+		String answer = getVarSingleValue("answer");
+		if (!captcha.isCorrect(answer))
+		{
+			return getResult("capcha_error");
+		}
+
+
 		String topic = getVarSingleValue("topic");
 		String emailTo = getVarSingleValue("email");
 		String requiredStr = getVarSingleValue("required");
@@ -86,9 +98,9 @@ public class NonemptyEmailCommand extends Command {
 			return getRollbackResult("error_not_set");
 		}
 		// Если обнаружен спам - просто вернуть успешный результат без отправки письма
-		if (isSpam(spamStr, postForm)) {
-			return getResult("success");
-		}
+//		if (isSpam(spamStr, postForm)) {
+//			return getResult("success");
+//		}
 		try {
 			// Если есть шаблон письма
 			ExecutablePagePE emailPage = null;

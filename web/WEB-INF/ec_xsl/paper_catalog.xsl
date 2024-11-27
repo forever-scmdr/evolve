@@ -50,6 +50,10 @@
 						<label for="xi">E-mail:*</label>
 						<input type="text" name="{$f/email/@input}" value="{$f/email}" class="form-control" id="xi"/>
 					</div>
+					<div class="form-group mandatory-input" title="обязательно для заполнения" style="display: none;">
+						<label>Дополнительный E-mail:*</label>
+						<input type="text" name="{$f/spam/@input}" value="{$f/spam}" class="form-control" />
+					</div>
 					<button type="submit" class="btn btn-primary btn-block" onclick="postForm($(this).closest('form'), '{$paper_ajax_id}'); return false;">Отправить заявку</button>
 				</form>
 			</xsl:if>
@@ -79,7 +83,7 @@
 
 	<script>
 		function getPaperForm() {
-			insertAjax('<xsl:value-of select="page/paper_form_link"/>', '<xsl:value-of select="$paper_ajax_id"/>', function() { initSelects(); });
+			insertAjax('<xsl:value-of select="concat('https://termobrest.ru/',page/paper_form_link)"/>', '<xsl:value-of select="$paper_ajax_id"/>', function() { initSelects(); });
 		}
 
 		$(document).ready(function() {

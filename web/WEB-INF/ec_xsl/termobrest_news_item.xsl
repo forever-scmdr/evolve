@@ -23,10 +23,14 @@
 	<div class="container main-content" style="width: 100%;">
 		<div class="row">
 			<div class="col-xs-12 content-block">
-				<h1>
+				<header>
+					<h1>
 					<xsl:value-of select="$ni/header"/>
-				</h1>
+					</h1>
+				</header>
+				<article>
 				<xsl:value-of select="$ni/text" disable-output-escaping="yes"/>
+				</article>
 				<p>
 					<a href="{concat(page/base,'/', 'termobrest_news')}">К списку новостей →</a>
 				</p>

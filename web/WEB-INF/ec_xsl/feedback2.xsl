@@ -47,6 +47,10 @@
 						<label for="xi">E-mail:</label>
 						<input type="text" name="{$f/email/@input}" value="{$f/email}" class="form-control" id="xi"/>
 					</div>
+					<div class="form-group mandatory-input" title="обязательно для заполнения" style="display: none;">
+						<label>Дополнительный E-mail:*</label>
+						<input type="text" name="{$f/spam/@input}" value="{$f/spam}" class="form-control" />
+					</div>
 					<div class="form-group">
 						<label for="xi">Текст отзыва:*</label>
 						<textarea type="" name="{$f/message/@input}" class="form-control" id="xi"><xsl:value-of select="$f/message"/></textarea>
@@ -84,20 +88,13 @@
 
 	<script>
 		function getForm2() {
-			insertAjax('<xsl:value-of select="page/feedback_form_link2"/>', '<xsl:value-of select="$feed2_ajax_id"/>', function() { initSelects(); });
+			insertAjax('<xsl:value-of select="concat('https://termobrest.ru/',page/feedback_form_link2)"/>', '<xsl:value-of select="$feed2_ajax_id"/>', function() { <!--initSelects();--> });
 		}
 
 		$(document).ready(function() {
 			getForm2();
 		});
 		
-		function initSelects() {
-			$('select[value]').each(function() {
-				var value = $(this).attr('value');
-				if (value != '')
-					$(this).val(value);
-			});
-		}
 	</script>
 	</xsl:template>
 	

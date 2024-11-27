@@ -15,6 +15,10 @@
 	<xsl:variable name="src_after" select="substring-after($src, 'i-')" />
 	<xsl:variable name="canonical" select="concat($src_before, $src_after)"/>
 
+	<xsl:variable name="source" select="$canonical"/>
+	<xsl:variable name="local_seo" select="//url_seo[contains($source, url)]"/>
+	<xsl:variable name="seo" select="if(not($local_seo)) then //seo[1] else $local_seo"/>
+
 	<!-- ****************************    СПЕЦ ВОЗМОЖНОСТИ    ******************************** -->
 
 	<xsl:decimal-format name="ru" decimal-separator="," grouping-separator="&#160;" />
@@ -86,36 +90,33 @@
 	<body style="background: #fff; padding-top: 0;position:absolute;">
 		<div id="contentWrap" style="padding:0; margin:0; height:auto;">
 			<xsl:call-template name="CONTENT"/>
+
+			<!-- <xsl:if test="$seo/progon != ''">
+				<div class="container main-content">
+					<div class="row">
+						<div class="col-xs-12 col-sm-12 col-md-12">
+							<div style="color: #545454; font-size: 12px;">
+								<xsl:value-of select="$seo/progon" disable-output-escaping="yes"/>
+							</div>
+						</div>
+					</div>
+				</div>
+			</xsl:if> -->
+
 			<div style="padding-bottom:12px;clear:both;" data-iframe-height=""></div>
+
 		</div>
 		<script type="text/javascript" src="js/jquery-1.12.0.min.js"></script>
 		<script src="js/bootstrap.min.js"></script>
 		<script type="text/javascript" src="js/jquery.form.min.js"></script>
 		<script type="text/javascript" src="js/ajax.js"></script>
 		<script type="text/javascript" src="fotorama/fotorama.js"></script>
+		<script type="text/javascript" src="js/frame.js"></script>
 		<xsl:call-template name="SCRIPTS"/>
 		<xsl:call-template name="POPUPS"/>
 		<xsl:call-template name="FEEDBACK_FORM_2"/>
 		<xsl:call-template name="SUBSCRIBE_FORM"/>
-		<!-- <script type="text/javascript">
-			$(document).ready(function() {
-				$(".fancybox").fancybox();
-				$(".fancybox-full").fancybox({
-					afterShow: function() {
-						$('<div class="fancybox-fullsize" title="Esc - закрыть"></div>').appendTo(this.skin).click(function() {
-						  $.fancybox.toggle();
-						  $(this).toggleClass('fancybox-fullsize fancybox-fullsize-r');
-						});
-					  }
-				});
-				$('.popupButton').click(function() {
-					$('#' + $(this).attr('rel')).fadeIn(200);
-				});
-				$('.close').click(function() {
-					$(this).closest('.popup-container').fadeOut(200);
-				});
-			});
-		</script> -->
+
 		<xsl:if test="/page/@name != 'termobrest_news' and /page/@name != 'termobrest_news_item'">
 			<script type="text/javascript" src="{$base}/js/postmessage.js"></script>
 			<script type="text/javascript" src="{$base}/js/iframe-script.js"></script>
