@@ -37,6 +37,7 @@
 						<xsl:for-each select="page/cart/bought">
 							<xsl:variable name="p" select="product"/>
 							<xsl:variable name="price" select="if (f:num($p/price) != 0) then f:exchange_cur(., 'price', 0) else 'по запросу'"/>
+							<xsl:variable name="has_price" select="not($price = 'по запросу')"/>
 							<xsl:variable name="sum" select="if (f:num($p/price) != 0) then f:exchange_cur(., 'sum', 0) else ''"/>
 							<xsl:variable name="plain_section" select="$p/plain_section"/>
                             <xsl:variable name="plain" select="if ($p/section_name and not($p/section_name = '')) then $p/section_name else $p/plain_section/name"/>
@@ -92,7 +93,9 @@
 									<span class="text-label">Кол-во</span>
 
 									<input type="number" value="{f:num(qty)}" name="{input/qty/@input}" class="input qty-input" data-old="{f:num(qty)}" style="width: 70px"
-										   min="{if ($p/min_qty) then f:num($p/min_qty) else 1}" max="{f:num($p/qty)}" step="{if ($p/step) then f:num($p/step) else $step_default}" />
+										   min="{if ($p/min_qty) then f:num($p/min_qty) else 1}"
+										   max="{if ($has_price and $p/qty) then f:num($p/qty) else 100000000}"
+										   step="{if ($p/step) then f:num($p/step) else $step_default}" />
 								</div>
 								<xsl:if test="not($sum = '')">
 									<div class="cart-item__sum">

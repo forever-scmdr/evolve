@@ -60,7 +60,7 @@
 			<div class="cart-confirm__table">
 				<table>
 					<tr>
-						<td>Код</td>
+<!--						<td>Код</td>-->
 						<td>Наименование</td>
 						<td>Поставщик</td>
 						<td>Количество</td>
@@ -78,7 +78,7 @@
 						<xsl:variable name="plain" select="if ($p/section_name and not($p/section_name = '')) then $p/section_name else $p/plain_section/name"/>
                         <xsl:variable name="pc" select="$prcat[name = $plain]"/>
 						<tr>
-							<td><xsl:value-of select="$p/code"/></td>
+<!--							<td><xsl:value-of select="$p/code"/></td>-->
 							<td><xsl:value-of select="$p/name"/></td>
 							<td><xsl:value-of select="$pc/other_name"/></td>
 							<td><xsl:value-of select="qty"/></td>

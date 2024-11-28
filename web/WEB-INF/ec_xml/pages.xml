@@ -1277,10 +1277,12 @@
 		</session>
 		<new item="user_phys" id="user_phys">
 			<parameter-input ref="user_phys" form="customer_phys"/>
+			<extra-input name="password2" ref="user_phys" form="register"/>
 			<extra-input name="extrafile" ref="user_phys" form="customer_form"/>
 		</new>
 		<new item="user_jur" id="user_jur">
 			<parameter-input ref="user_jur" form="customer_jur"/>
+			<extra-input name="password2" ref="user_jur" form="register"/>
 			<extra-input name="extrafile" ref="user_jur" form="customer_form"/>
 		</new>
 		<link name="recalculate_link" target="cart_action" type="itemform">
@@ -1622,9 +1624,11 @@
 		</link>
 		<new item="user_phys" id="user_phys">
 			<parameter-input ref="user_phys" form="register"/>
+			<extra-input name="password2" ref="user_phys" form="register"/>
 		</new>
 		<new item="user_jur" id="user_jur">
 			<parameter-input ref="user_jur" form="register"/>
+			<extra-input name="password2" ref="user_jur" form="register"/>
 		</new>
 		<link name="confirm_link" target="register_action" type="itemform">
 			<var name="action" value="register"/>

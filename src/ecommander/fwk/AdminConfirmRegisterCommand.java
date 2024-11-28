@@ -48,6 +48,11 @@ public class AdminConfirmRegisterCommand extends BasicRegisterCommand {
 		if (form.isValueEmpty(PASSWORD_PARAM)) {
 			return getResult("not_set");
 		}
+		String password = form.getStringValue(PASSWORD_PARAM);
+		String password2 = form.getStringExtra(PASSWORD2_INPUT);
+		if (!StringUtils.equals(password, password2)) {
+			return getResult("not_set");
+		}
 		String userName = (StringUtils.isEmpty(form.getStringValue(EMAIL_PARAM)))? form.getStringValue(PHONE_PARAM) : form.getStringValue(EMAIL_PARAM);
 		Item userItem = ItemQuery.loadSingleItemByParamValue(USER_ITEM, EMAIL_PARAM, userName);
 		if (userItem != null || UserMapper.userNameExists(userName)) {
@@ -120,7 +125,7 @@ public class AdminConfirmRegisterCommand extends BasicRegisterCommand {
 				EmailUtils.sendGmailDefault(customerEmail, "Регистрация на сайте " + getUrlBase(), regularMP);
 
 		} catch (Exception e) {
-			ServerLogger.error("error while sinding email about registration", e);
+			ServerLogger.error("error while sending email about registration", e);
 		}
 	}
 

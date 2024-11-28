@@ -200,17 +200,8 @@ public abstract class BasicCartManageCommand extends Command {
 		Multipart shopMultipart = new MimeMultipart();
 		MimeBodyPart shopTextPart = new MimeBodyPart();
 		shopMultipart.addBodyPart(shopTextPart);
-		LinkPE shopEmailLink = LinkPE.newDirectLink("link", "shop_email", false);
-		ExecutablePagePE shopTemplate;
-		try {
-			shopTemplate = getExecutablePage(shopEmailLink.serialize());
-		} catch (PageNotFoundException e) {
-			shopTemplate = null;
-		}
-		if (shopTemplate == null) {
-			shopEmailLink = LinkPE.newDirectLink("link", "order_email", false);
-			shopTemplate = getExecutablePage(shopEmailLink.serialize());
-		}
+		LinkPE shopEmailLink = LinkPE.newDirectLink("link", "order_email", false);
+		ExecutablePagePE shopTemplate = getExecutablePage(shopEmailLink.serialize());
 		ByteArrayOutputStream shopEmailBytes = new ByteArrayOutputStream();
 		PageController.newSimple().executePage(shopTemplate, shopEmailBytes);
 		shopTextPart.setContent(shopEmailBytes.toString("UTF-8"), shopTemplate.getResponseHeaders().get(PagePE.CONTENT_TYPE_HEADER)
@@ -269,7 +260,10 @@ public abstract class BasicCartManageCommand extends Command {
 		//
 
 		// 1. Сначала нужно попробовать текущего пользователя (если он залогинен)
-		Item userItem = new ItemQuery(USER_ITEM).setUser(getInitiator()).loadFirstItem();
+		Item userItem = null;
+		if (getInitiator().inGroup(REGISTERED_GROUP)) {
+			userItem = new ItemQuery(USER_ITEM).setUser(getInitiator()).loadFirstItem();
+		}
 
 		// 2. Потом надо попробовать загружить пользователя по введенному email
 		if (userItem == null) {
@@ -287,7 +281,6 @@ public abstract class BasicCartManageCommand extends Command {
 				form.setContextParentId(ItemTypeRegistry.getPrimaryAssoc(), regCatalog.getId());
 				form.setOwner(UserGroupRegistry.getGroup(User.USER_DEFAULT_GROUP), User.ANONYMOUS_ID);
 				executeCommandUnit(SaveItemDBUnit.get(form).ignoreUser().noTriggerExtra());
-				sendConfirmRegistrationEmail(form, getUrlBase(), shopEmail);
 				userItem = form;
 			}
 		}
@@ -321,6 +314,9 @@ public abstract class BasicCartManageCommand extends Command {
 
 		// Подтвердить изменения
 		commitCommandUnits();
+
+		// 5. Выслать письмо администратору на подтверждение нового регистрации пользователя
+		sendConfirmRegistrationEmail(userItem, getUrlBase(), shopEmail);
 
 		cart.setValue(PROCESSED_PARAM, (byte)1);
 		cart.setExtra(IN_PROGRESS, null);

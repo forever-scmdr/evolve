@@ -58,6 +58,7 @@
 						<xsl:call-template name="USER_JUR_INPUTS">
 							<xsl:with-param name="inp" select="$inp"/>
 							<xsl:with-param name="vals" select="page/jur"/>
+							<xsl:with-param name="register" select="true()"/>
 						</xsl:call-template>
 						<div class="form__item">
 							<label class="form-label" for="formid">Комментарий:</label>

@@ -54,7 +54,7 @@
 								<xsl:if test="not($prod)">
 									<xsl:value-of select="name"/>
 								</xsl:if>
-								<div class="past-product__artnumber">Артикул: <xsl:value-of select="if ($prod) then $prod/code else code"/></div>
+<!--								<div class="past-product__artnumber">Артикул: <xsl:value-of select="if ($prod) then $prod/code else code"/></div>-->
 								<div class="past-product__old-price">
 <!--									<span>Цена: <xsl:value-of select="$price"/> руб.</span>-->
 									<span>Кол-во: <xsl:value-of select="qty"/> шт.</span>

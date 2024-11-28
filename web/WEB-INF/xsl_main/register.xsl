@@ -34,8 +34,8 @@
 		<div class="tabs tabs_product">
 			<xsl:if test="$message and not($success)">
 				<div class="alert alert-danger">
-					<h4>Ошибка</h4>
-					<p><xsl:value-of select="$message"/></p>
+					<h3>Ошибка: </h3>
+					<p> <b><span style="color:red; margin-left: 10px;"><xsl:value-of select="$message"/></span></b></p>
 				</div>
 			</xsl:if>
 			<xsl:if test="$message and $success">
@@ -53,7 +53,7 @@
 
 				<div class="tab-container" id="tab_login" style="{'display: none'[not($is_login)]}">
 					<div class="text form__text">
-						<p>Введите адрес электрнной почты и пароль.</p>
+						<p>Введите адрес электронной почты и пароль.</p>
 					</div>
 					<form action="{page/submit_login}" method="post" onsubmit="lock('tab_login')">
 						<div class="form__item">

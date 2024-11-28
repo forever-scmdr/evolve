@@ -24,13 +24,11 @@ import java.util.HashSet;
  * Created by E on 5/4/2018.
  */
 public abstract class BasicRegisterCommand extends Command {
-
 	public static final String REGISTERED_CATALOG_ITEM = "registered_catalog";
-
 	public static final String EMAIL_PARAM = "email";
 	public static final String PHONE_PARAM = "phone";
 	public static final String PASSWORD_PARAM = "password";
-
+	public static final String PASSWORD2_INPUT = "password2";
 	public static final String REGISTERED_GROUP = "registered";
 	public static final String USER_ITEM = "user";
 	protected static final String CART_ITEM = "cart";
@@ -48,11 +46,15 @@ public abstract class BasicRegisterCommand extends Command {
 		if (form.isValueEmpty(PASSWORD_PARAM)) {
 			return getResult("not_set");
 		}
+		String password = form.getStringValue(PASSWORD_PARAM);
+		String password2 = form.getStringValue(PASSWORD2_INPUT);
+		if (!StringUtils.equals(password, password2)) {
+			return getResult("not_set");
+		}
 		Item catalog = ItemUtils.ensureSingleRootItem(REGISTERED_CATALOG_ITEM, User.getDefaultUser(),
 				UserGroupRegistry.getDefaultGroup(), User.ANONYMOUS_ID);
 		String userName = (StringUtils.isEmpty(form.getStringValue(EMAIL_PARAM)))? form.getStringValue(PHONE_PARAM) : form.getStringValue(EMAIL_PARAM);
 		//String userName = form.getStringValue(EMAIL_PARAM);
-		String password = form.getStringValue(PASSWORD_PARAM);
 		User newUser = new User(userName, password, "registered user", User.ANONYMOUS_ID);
 		newUser.addGroup(REGISTERED_GROUP, UserGroupRegistry.getGroup(REGISTERED_GROUP), User.SIMPLE);
 		try {

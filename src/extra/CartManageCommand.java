@@ -156,6 +156,12 @@ public class CartManageCommand extends BasicCartManageCommand implements ItemNam
 					hasError = true;
 				}
 			}
+			String password = form.getStringValue(BasicRegisterCommand.PASSWORD_PARAM);
+			String password2 = form.getStringExtra(BasicRegisterCommand.PASSWORD2_INPUT);
+			if (!StringUtils.equals(password, password2)) {
+				getItemForm().setValidationError(form.getId(), BasicRegisterCommand.PASSWORD_PARAM, "Подтверждение пароля не совпадает с паролем");
+				hasError = true;
+			}
 			removeSessionForm("customer_phys");
 			saveSessionForm("customer_jur");
 		}

@@ -74,13 +74,13 @@
 		<xsl:if test="$register">
 			<div class="form__item">
 				<label class="form-label" for="formid">*Пароль:</label>
-				<input class="input form__element" type="text" id="formid"
+				<input class="input form__element" type="password" id="formid"
 					   name="{$inp/password/@input}" value="{$inp/password}" error="{$inp/password/@validation-error}"/>
 			</div>
 			<div class="form__item">
 				<label class="form-label" for="formid">*Подтвердите пароль:</label>
-				<input class="input form__element" type="text" id="formid"
-					   name="" value="{$inp/password}" error="{$inp/password/@validation-error}"/>
+				<input class="input form__element" type="password" id="formid"
+					   name="{$inp/password2/@input}" value="{$inp/password2}" error="{$inp/password2/@validation-error}"/>
 			</div>
 		</xsl:if>
 		<div class="form__item">
