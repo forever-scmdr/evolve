@@ -41,6 +41,19 @@
 							</label>
 						</div>
 					</xsl:for-each>
+					<div>
+						<script type="text/javascript">
+							function reloadCaptcha(){
+								var d = new Date();
+								$(".captcha").attr("src", "/CaptchaImg.png?"+d.getTime());
+							}
+						</script>
+
+						<img id="captcha_image" class="captcha" alt="captcha image" src="/CaptchaImg.png"/>
+						<img src="images/button_reload.png" onclick="reloadCaptcha()" alt="reload" width="40" height="40"/>
+						<input name="answer" />
+					</div>
+
 					<button type="submit" class="btn btn-primary btn-block" onclick="postForm($(this).closest('form'), '{$subs_ajax_id}'); return false;">Подписаться</button>
 					<button type="button" class="btn btn-info btn-block" onclick="$(this).closest('form').attr('action', '{//dismiss_link}'); postForm($(this).closest('form'), '{$subs_ajax_id}'); return false;">Отписаться от всего</button>
 				</form>

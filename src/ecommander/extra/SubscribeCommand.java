@@ -1,5 +1,6 @@
 package ecommander.extra;
 
+import nl.captcha.Captcha;
 import org.apache.commons.lang3.StringUtils;
 
 import ecommander.application.extra.EmailUtils;
@@ -25,6 +26,20 @@ public class SubscribeCommand extends Command {
 
 	@Override
 	public ResultPE execute() throws Exception {
+		Captcha captcha = (Captcha) getSessionObject("capt");
+
+		String answer = getVarSingleValue("answer");
+		if (answer == null)
+		{
+			answer = "";
+		}
+
+		if (!captcha.isCorrect(answer))
+		{
+			saveSessionForm();
+			return getRollbackResult("capcha_error");
+		}
+
 		try{
 		ItemHttpPostForm postForm = getItemForm();
 		Agent subscriber = Agent.get(postForm.createItem(User.getDefaultUser()));

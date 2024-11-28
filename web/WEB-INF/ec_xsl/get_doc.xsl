@@ -61,6 +61,19 @@
 							<xsl:value-of select="if ($f/mark != '') then $f/mark else page/variables/mark"/>
 						</textarea>
 					</div>
+					<div>
+						<script type="text/javascript">
+							function reloadCaptcha(){
+								var d = new Date();
+								$(".captcha").attr("src", "/CaptchaImg.png?"+d.getTime());
+							}
+						</script>
+
+						<img id="captcha_image" class="captcha" alt="captcha image" src="/CaptchaImg.png"/>
+						<img src="images/button_reload.png" onclick="reloadCaptcha()" alt="reload" width="40" height="40"/>
+						<input name="answer" />
+					</div>
+
 					<button type="submit" class="btn btn-primary btn-block" onclick="postForm($(this).closest('form'), '{$gd_ajax_id}', initSelects); return false;">Отправить запрос</button>
 				</form>
 			</xsl:if>

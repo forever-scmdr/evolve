@@ -1074,7 +1074,7 @@
 			<var name="src_page" value="feedback" />
 			<var name="success_page" />
 			<var name="spam" value="spam" />
-			<var name="answer" />
+			<var name="answer" value="" />
 		</variables>
 		<link name="success" target-var="src_page">
 			<var name="result" value="success" />
@@ -1112,6 +1112,7 @@
 			<var name="src_page" value="feedback" />
 			<var name="success_page" />
 			<var name="spam" value="spam" />
+			<var name="answer" value="" />
 		</variables>
 		<link name="success" target-var="src_page">
 			<var name="result" value="success" />
@@ -1128,6 +1129,10 @@
 		<link name="general_error" target-var="src_page">
 			<var name="result" value="error" />
 			<var name="message" value="Отправка сообщения временно недоступна! Попробуйте позже" />
+		</link>
+		<link name="capcha_error" target-var="src_page">
+			<var name="result" value="error" />
+			<var name="message" value="Неверная капча" />
 		</link>
 		<command class="ecommander.application.extra.NonemptyEmailCommand">
 			<result name="success" type="redirect" />
@@ -1234,6 +1239,7 @@
 		<variables>
 			<var name="src_page" value="subscribe_form" />
 			<var name="email" value="info@termobrest.ru" />
+			<var name="answer" value="" />
 		</variables>
 		<link name="success" target-var="src_page">
 			<var name="result" value="success" />
@@ -1250,6 +1256,10 @@
 		<link name="general_error" target-var="src_page">
 			<var name="result" value="error" />
 			<var name="message" value="Действие не может быть выполнено. Попробуйте позже" />
+		</link>
+		<link name="capcha_error" target-var="src_page">
+			<var name="result" value="error" />
+			<var name="message" value="Неверная капча" />
 		</link>
 		<command class="ecommander.extra.SubscribeCommand">
 			<result name="cancel_success" type="redirect" />

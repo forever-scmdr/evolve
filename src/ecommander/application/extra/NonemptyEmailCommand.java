@@ -67,11 +67,16 @@ public class NonemptyEmailCommand extends Command {
 		Captcha captcha = (Captcha) getSessionObject("capt");
 
 		String answer = getVarSingleValue("answer");
-		if (!captcha.isCorrect(answer))
+		if (answer == null)
 		{
-			return getResult("capcha_error");
+			answer = "";
 		}
 
+		if (!captcha.isCorrect(answer))
+		{
+			saveSessionForm();
+			return getRollbackResult("capcha_error");
+		}
 
 		String topic = getVarSingleValue("topic");
 		String emailTo = getVarSingleValue("email");

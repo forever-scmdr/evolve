@@ -111,11 +111,11 @@
 									<script type="text/javascript">
 										function reloadCaptcha(){
 											var d = new Date();
-											$("#captcha_image").attr("src", "/CaptchaImg.png?"+d.getTime());
+											$(".captcha").attr("src", "/CaptchaImg.png?"+d.getTime());
 										}
 									</script>
 
-									<img id="captcha_image" alt="captcha image" src="/CaptchaImg.png"/>
+									<img id="captcha_image" class="captcha" alt="captcha image" src="/CaptchaImg.png"/>
 									<img src="images/button_reload.png" onclick="reloadCaptcha()" alt="reload" width="40" height="40"/>
 									<input name="answer" />
 								</div>
