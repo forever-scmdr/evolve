@@ -243,45 +243,45 @@ public class OkWebClient {
 			if (response.body() == null) {
 				return response;
 			}
+			// Отдельно для сайта digikey.com
+			// На нем есть ошибка - неверно указан размер ответа, поэтому надо делать отдельную логическую ветку
+			boolean isDigikey = StringUtils.contains(response.request().url().toString(), "digikey.");
 
-			//check if we have gzip response
+		//check if we have gzip response
 			String contentEncoding = response.headers().get("Content-Encoding");
 			if (StringUtils.isBlank(contentEncoding))
 				contentEncoding = response.headers().get("Content-Type");
 
 			//this is used to decompress gzipped responses
 			if (contentEncoding != null && StringUtils.containsIgnoreCase(contentEncoding,"gzip")) {
-				long contentLength = response.body().contentLength();
-				Headers strippedHeaders = response.headers().newBuilder().build();
-				byte[] bytesIn = response.body().bytes();
-				InputStream is = new GzipCompressorInputStream(new ByteArrayInputStream(bytesIn));
-				ByteArrayOutputStream bufferOut = new ByteArrayOutputStream();
-				int nRead;
-				byte[] data = new byte[4];
-				try {
-					while ((nRead = is.read(data, 0, data.length)) != -1) {
-						bufferOut.write(data, 0, nRead);
+				// Если digikey - у них ошибка в длине ответа
+				if (isDigikey) {
+					byte[] bytesIn = response.body().bytes();
+					InputStream is = new GzipCompressorInputStream(new ByteArrayInputStream(bytesIn));
+					ByteArrayOutputStream bufferOut = new ByteArrayOutputStream();
+					int nRead;
+					byte[] data = new byte[4];
+					try {
+						while ((nRead = is.read(data, 0, data.length)) != -1) {
+							bufferOut.write(data, 0, nRead);
+						}
+					} catch (Exception e) {
+						ServerLogger.error("eeee", e);
 					}
-				} catch (Exception e) {
-					ServerLogger.error("eeee", e);
+					bufferOut.flush();
+					byte[] targetArray = bufferOut.toByteArray();
+					ResponseBody newBody = ResponseBody.create(targetArray, response.body().contentType());
+					return response.newBuilder().body(newBody).build();
 				}
-				bufferOut.flush();
-				byte[] targetArray = bufferOut.toByteArray();
-				ResponseBody newBody = ResponseBody.create(response.body().contentType(), targetArray);
-				return response.newBuilder().body(newBody).build();
-				/*
-				BufferedSource src = Okio.buffer(Okio.source(new GzipCompressorInputStream(response.body().source().inputStream(), false)));
-				return response.newBuilder().headers(strippedHeaders)
-						.body(new RealResponseBody(response.body().contentType().toString(), contentLength, src))
-						.build();
-
-				 */
-				/* Так работает, если правильно указана длина contentLength. Если не правильно - ошибка
-				GzipSource responseBody = new GzipSource(response.body().source());
-				return response.newBuilder().headers(strippedHeaders)
-						.body(new RealResponseBody(response.body().contentType().toString(), contentLength, Okio.buffer(responseBody)))
-						.build();
-				 */
+				// Так работает, если правильно указана длина contentLength. Если не правильно - ошибка
+				else {
+					long contentLength = response.body().contentLength();
+					Headers strippedHeaders = response.headers().newBuilder().build();
+					GzipSource responseBody = new GzipSource(response.body().source());
+					return response.newBuilder().headers(strippedHeaders)
+							.body(new RealResponseBody(response.body().contentType().toString(), contentLength, Okio.buffer(responseBody)))
+							.build();
+				}
 			}
 			else if (contentEncoding != null && StringUtils.equalsIgnoreCase(contentEncoding, "br")) {
 				long contentLength = response.body().contentLength();
