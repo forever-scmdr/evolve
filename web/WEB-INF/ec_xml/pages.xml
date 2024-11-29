@@ -1199,6 +1199,7 @@
 			<var name="code"/>
 			<var name="qty"/>
 			<var name="email" value="order.site@youhuo.pro"/><!-- egor@forever-ds.com -->
+			<var name="register_email" value="Feedback.site@youhuo.pro"/>
 			<var name="order_dir" value="WEB-INF/js_orders"/>
 			<var name="cart_cookie" scope="cookie"/>
 			<var name="mandatory_jur" value="email, organization, orgn, kpp, inn, address, contact_name, contact_phone"/>

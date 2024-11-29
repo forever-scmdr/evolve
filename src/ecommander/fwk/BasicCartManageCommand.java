@@ -148,6 +148,7 @@ public abstract class BasicCartManageCommand extends Command {
 		// Сохранение формы в сеансе (для унификации с персональным айтемом анкеты)
         Item form = getItemForm().getItemSingleTransient();
         boolean isPhys = form.getTypeId() == ItemTypeRegistry.getItemType(ItemNames.USER_PHYS).getTypeId();
+		boolean isUserRegistered = getInitiator().inGroup(REGISTERED_GROUP);
         // TODO добавить логику выбора параметра цены (оптовая или розничная)
         //recalculateCart(isPhys ? PRICE_PARAM : PRICE_OPT_PARAM);
         recalculateCart();
@@ -195,6 +196,7 @@ public abstract class BasicCartManageCommand extends Command {
 
 		final String customerEmail = getItemForm().getItemSingleTransient().getStringValue("email");
 		final String shopEmail = getVarSingleValue("email");
+		final String registerEmail = getVarSingleValue("register_email");
 
 		// Письмо для продавца
 		Multipart shopMultipart = new MimeMultipart();
@@ -238,8 +240,9 @@ public abstract class BasicCartManageCommand extends Command {
 			return getResult("email_send_failed").setVariable("message", "Не удалось отправить сообщение на указанный ящик");
 		}
 		// Отправка на ящик магазина
+		String shopTopic = regularTopic + (isUserRegistered ? "" : " [не зарегистрирован]");
 		try {
-			EmailUtils.sendGmailDefault(shopEmail, regularTopic, shopMultipart);
+			EmailUtils.sendGmailDefault(shopEmail, shopTopic, shopMultipart);
 		} catch (Exception e) {
 			ServerLogger.error("Unable to send email", e);
 			cart.setExtra(IN_PROGRESS, null);
@@ -261,11 +264,11 @@ public abstract class BasicCartManageCommand extends Command {
 
 		// 1. Сначала нужно попробовать текущего пользователя (если он залогинен)
 		Item userItem = null;
-		if (getInitiator().inGroup(REGISTERED_GROUP)) {
+		if (isUserRegistered) {
 			userItem = new ItemQuery(USER_ITEM).setUser(getInitiator()).loadFirstItem();
 		}
 
-		// 2. Потом надо попробовать загружить пользователя по введенному email
+		// 2. Потом надо попробовать загрузить пользователя по введенному email
 		if (userItem == null) {
 			String email = form.getStringValue(EMAIL_PARAM);
 			if (StringUtils.isNotBlank(email))
@@ -316,7 +319,7 @@ public abstract class BasicCartManageCommand extends Command {
 		commitCommandUnits();
 
 		// 5. Выслать письмо администратору на подтверждение нового регистрации пользователя
-		sendConfirmRegistrationEmail(userItem, getUrlBase(), shopEmail);
+		sendConfirmRegistrationEmail(userItem, getUrlBase(), registerEmail);
 
 		cart.setValue(PROCESSED_PARAM, (byte)1);
 		cart.setExtra(IN_PROGRESS, null);
