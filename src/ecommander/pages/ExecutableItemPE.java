@@ -453,6 +453,7 @@ public class ExecutableItemPE extends ItemPE implements ExecutableItemContainer,
 			return null;
 		}
 		// Если айтем - ссылка на другой страничный айтем, загрузка не требуется (нужно только скопировать найденные ранее айтемы)
+		/*
 		if (hasReference() && getReference().isPageReference()) {
 			getReference().getPageItem().execute();
 			AllFoundIterator iter = getReference().getPageItem().getAllFoundItemIterator();
@@ -461,6 +462,7 @@ public class ExecutableItemPE extends ItemPE implements ExecutableItemContainer,
 			loaded = true;
 			loadedFromCache = true;
 		}
+		*/
 		// Загрузка
 		if (!loaded) {
 			HashMap<Long, Integer> quantities = new HashMap<>();
@@ -528,21 +530,27 @@ public class ExecutableItemPE extends ItemPE implements ExecutableItemContainer,
 
 		// Загрузка из БД
 		if (!isSession()) {
+			// Создание запроса
+			ItemQuery query = new ItemQuery(getItemName());
+			boolean needLoading = !hasParent() || (loadedIds != null && loadedIds.size() > 0);
 			// Если есть ссылка, то нет нужды в конструировании запроса
 			if (hasReference()) {
 				if (getReference().isUrlKeyUnique()) {
 					return ItemQuery.loadByUniqueKey(getReference().getKeysUnique());
 				} else {
-					List<String> values = getReference().getValuesArray();
-					if (getReference().isVarParamReference())
-						return ItemQuery.loadByParamValue(getItemName(), getReference().getParamName(), values);
-					else
-						return ItemQuery.loadByIdsString(values, getItemName());
+					if (getReference().isVarParamReference()) {
+						return ItemQuery.loadByParamValue(getItemName(), getReference().getParamName(), getReference().getValuesArray());
+					} else if (getReference().isUrlReference()) {
+						return ItemQuery.loadByIdsString(getReference().getValuesArray(), getItemName());
+					} else {
+						List<Long> refIds = getReference().getItemIds();
+						if (refIds.size() == 0)
+							needLoading = false;
+						else
+							query.setReference(refIds);
+					}
 				}
 			}
-			// Создание запроса
-			ItemQuery query = new ItemQuery(getItemName());
-			boolean needLoading = !hasParent() || (loadedIds != null && loadedIds.size() > 0);
 			// Добавление критерия предка
 			if (needLoading && hasParent()) {
 				if (getQueryType() == Type.ANCESTOR) {

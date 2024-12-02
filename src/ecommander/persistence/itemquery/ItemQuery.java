@@ -133,7 +133,8 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 	private boolean isIdSequential = false; // последовательная пакетная загрузка в порядке возрастания ID айтема
 	private long idSequentialStart = -1; // начальный ID айтема для последовательной загрузки (не включен в результат)
 	private String sqlForLog = null; // SQL последнего выполненного запроса
-	
+	private Long[] referenceItemIds = null; // ID айтемов, на которые есть ссылка (reference)
+
 	public ItemQuery(ItemType itemDesc, Byte... status) {
 		this.itemDescStack.push(itemDesc);
 		if (status.length > 0) {
@@ -209,6 +210,19 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 		this.isParent = true;
 		return setParentId(childId, isTransitive, assocName);
 	}
+
+	/**
+	 * Загруженные айтемы, на которые ссылается загружаемый айтем
+	 * Т.е. поиск будет происходить только среди заданных здесь айтемов
+	 * @param ids
+	 * @return
+	 */
+	public ItemQuery setReference(Collection<Long> ids) {
+		if (ids != null && ids.size() > 0)
+			this.referenceItemIds = ids.toArray(new Long[0]);
+		return this;
+	}
+
 	/**
 	 * Установить группировку (параметр, значение которого извлекается)
 	 * @param paramName
@@ -234,9 +248,10 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 	 * Для дерева нужно дополнительно извлекать прямого родителя для каждого айтема
 	 * @param tree
 	 */
-	public void setNeedTree(boolean tree) {
+	public ItemQuery setNeedTree(boolean tree) {
 		this.isTree = tree;
 		this.isTransitive = tree;
+		return this;
 	}
 	/**
 	 * Установить группировку (параметр, значение которого извлекается)
@@ -616,6 +631,10 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 		return fulltext != null;
 	}
 
+	public final boolean hasRefernce() {
+		return referenceItemIds != null;
+	}
+
 	/**
 	 * Если запрос должен вернуть пустое множество, возвращается true
 	 * @return
@@ -789,7 +808,7 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 		}
 		// Установить критерий статуса айтема
 		if (status.size() < ITEM_STATUS_COUNT)
-			query.getSubquery(Const.STATUS).AND().col_IN("I." + I_STATUS).byteIN(status.toArray(new Byte[0]));
+			query.getSubquery(Const.STATUS).AND().col_IN(I_DOT + I_STATUS).byteIN(status.toArray(new Byte[0]));
 		// Если был полнотекстовый поиск, выполнить его и добавить критерий найденных ID
 		if (hasFulltext())
 			query.getSubquery(Const.WHERE).AND().col_IN(I_DOT + I_ID).longIN(fulltext.getLoadedIds());
@@ -823,7 +842,7 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 						} else {
 							orderBy.sql(P_DOT + IP_WEIGHT);
 							// Оптимизация извлечения - если есть лимит и если он небольшой, ограничить
-							// только первыми несколькими записями (чтобы был задействован весь мндекс для сортировки)
+							// только первыми несколькими записями (чтобы был задействован весь индекс для сортировки)
 							if (hasLimit() && limit.getPage() == 1 && limit.getLimit() < 5) {
 								query.getSubquery(Const.WHERE).AND()
 										.col(P_DOT + IP_WEIGHT, " < ").int_(Item.WEIGHT_STEP * limit.getLimit() * 2);
@@ -833,6 +852,19 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 				} else {
 					orderBy.sql(I_DOT + I_ID);
 				}
+			}
+		}
+
+		// Применение референса
+		if (hasRefernce()) {
+			TemplateQuery orderBy = query.getSubquery(Const.ORDER);
+			query.getSubquery(Const.WHERE).AND().col_IN(I_DOT + I_ID).longIN(referenceItemIds);
+			if (orderBy != null) {
+				if (orderBy.isEmpty())
+					orderBy.sql(" ORDER BY ");
+				else
+					orderBy.sql(", ");
+				orderBy.sql("FIELD (" + I_DOT + I_ID + ", ").longArray(referenceItemIds).sql(")");
 			}
 		}
 

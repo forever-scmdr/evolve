@@ -28,7 +28,7 @@ public class Strings
 	/**
 	 * This method ensures that the output String has only valid XML unicode characters as specified by the XML 1.0 standard. For reference,
 	 * please see <a href="http://www.w3.org/TR/2000/REC-xml-20001006#NT-Char">the standard</a>. This method will return an empty String if the
-	 * input is null or empty.
+	 * input is null or empty.0
 	 * 
 	 * @param in
 	 *            The String whose non-valid characters we want to remove.
@@ -146,15 +146,37 @@ public class Strings
 		return english.toString();
 	}
 
+	private static String translitOld(String russian) {
+		StringBuilder english = new StringBuilder("");
+		char[] undefinedChars = russian.toLowerCase().toCharArray();
+		for(int i = 0; i < undefinedChars.length; i++) {
+			String letter = ENGLISH_REPLACEMENT_LETTERS.get(undefinedChars[i]);
+			if (letter != null) {
+				english.append(letter);
+			} else {
+				english.append(undefinedChars[i]);
+			}
+		}
+		return english.toString();
+	}
+
     /**
      * Создать строку, которая не содержит русских символов, спецсимволов и может являться именем XML элемента
      * @param invalid
      * @return
      */
     public static String createXmlElementName(String invalid) {
-    	String halfValid = translit(invalid.trim());
-    	if (StringUtils.isBlank(halfValid))
-    		return null;
+    	String halfValid = translitOld(invalid.trim());
+    	if (StringUtils.isBlank(halfValid)){
+    		StringBuilder sb = new StringBuilder();
+    		sb.append("u");
+    		char[] chars = invalid.toCharArray();
+    		for(int i = 0; i< chars.length; i++){
+    			int ic = (int)chars[i];
+    			sb.append('-').append(Integer.toHexString(ic));
+			}
+    		return sb.toString();
+		}
     	if (StringUtils.contains(DIGITS, halfValid.charAt(0)) || halfValid.charAt(0) == '.')
     		return StringUtils.substring("_" + halfValid, 0, 254);
     	return StringUtils.substring(halfValid, 0, 254);

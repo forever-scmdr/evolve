@@ -330,32 +330,29 @@
 		<request>
 			<var name="search"/>
 		</request>
-		<list item="news_item" id="prod" tag="news_item">
+
+		<list item="news_item" id="prod_search" tag="news_item_serch">
 			<filter>
-				<fulltext limit="24" compare="EVERY">
+				<fulltext limit="200" compare="EVERY">
 					<var var="search"/>
 				</fulltext>
+			</filter>
+			<link name="show_news_item" target="news_item" type="exclusive">
+				<var name="sni" ref="prod_search" style="translit"/>
+			</link>
+		</list>
+		<list item="news_item" id="prod" ref="prod_search" tag="news_item">
+			<filter>
 				<sorting direction="DESC">
 					<var value="date"/>
 				</sorting>
+				<limit><var value="24" /></limit>
 			</filter>
 			<link name="show_news_item" target="news_item" type="exclusive">
 				<var name="sni" ref="prod" style="translit"/>
 			</link>
-			<!-- <link name="show_small_news_item" target="small_news_item" type="exclusive">
-				<var name="sni" ref="prod" style="translit"/>
-			</link> -->
-			<!-- <ancestor item="news_item" id="ni">
-				<link name="show_page" target="news_item" type="exclusive">
-					<var name="sni" ref="ni" style="translit"/>
-				</link>
-			</ancestor>
-			<ancestor item="small_news_item" id="sni">
-				<link name="show_page" target="small_news_item" type="exclusive">
-					<var name="sni" ref="sni" style="translit"/>
-				</link>
-			</ancestor> -->
 		</list>
+
 		<list item="small_news_item" id="prod1" tag="news_item">
 			<filter>
 				<fulltext limit="24" compare="EVERY">
@@ -1233,7 +1230,7 @@
 	</page>
 
 	<page name="rss" template="rss">
-		<headers content-type="text/xml"/>
+		<headers Content-Type="text/xml"/>
 		<request>
 			<var name="tag"/>
 			<!-- <var name="yesterday"/> -->

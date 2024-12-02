@@ -103,6 +103,18 @@ public class ReferencePE implements PageElement {
 			return new ArrayList<>(0);
 		return variable.writeAllValues();
 	}
+
+	/**
+	 * Получить ID всех найденных айтемов
+	 * @return
+	 */
+	public List<Long> getItemIds() {
+		// Получить значение переменной, в которой хранится ID айтема (или значение параметра), нужного для загрузки
+		ExecutableItemPE pageItem = pageModel.getItemPEById(pageItemId);
+		if (pageItem != null)
+			return pageItem.getFoundItemIds();
+		return new ArrayList<>();
+	}
 	/**
 	 * Получить название параметра
 	 * @return
