@@ -31,7 +31,7 @@
 			timeBetweenEvictionRunsMillis="10000"
 			minEvictableIdleTimeMillis="60000"
 			username="root"
-			password="eeee"
+			password="1515"
 			driverClassName="com.mysql.jdbc.Driver"
 			url="jdbc:mysql://localhost:3306/belchip?allowMultiQueries=true&amp;useUnicode=true&amp;characterEncoding=utf8"
 	/>

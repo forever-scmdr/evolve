@@ -26,6 +26,7 @@ public class Product
     public final static String IS_SERVICE = "is_service";
     public final static String OFFER_ID = "offer_id";
     public final static String AVAILABLE = "available";
+    public final static String AVAILABLE2 = "available2";
     public final static String GROUP_ID = "group_id";
     public final static String URL = "url";
     public final static String CATEGORY_ID = "category_id";
@@ -328,6 +329,28 @@ public class Product
 
     public boolean contains_available(Byte value) {
         return containsValue("available", value);
+    }
+
+    public void set_available2(Double value) {
+        setValue("available2", value);
+    }
+
+    public void setUI_available2(String value)
+        throws Exception
+    {
+        setValueUI("available2", value);
+    }
+
+    public Double get_available2() {
+        return getDoubleValue("available2");
+    }
+
+    public Double getDefault_available2(Double defaultVal) {
+        return getDoubleValue("available2", defaultVal);
+    }
+
+    public boolean contains_available2(Double value) {
+        return containsValue("available2", value);
     }
 
     public void set_group_id(String value) {

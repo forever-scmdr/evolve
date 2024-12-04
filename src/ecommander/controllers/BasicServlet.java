@@ -83,8 +83,8 @@ public abstract class BasicServlet extends HttpServlet {
 				request.setAttribute(PAGES_ERRORS_NAME, errors.getResults().getStructureErrors());
 				if (errors.getResults().getException() != null)
 					request.setAttribute(EXCEPTION_NAME, printException(errors.getResults().getException()));
-			} else if (e instanceof ClientAbortException) {
-				return;
+			//} else if (e instanceof ClientAbortException) {
+			//	return;
 			} else {
 				request.setAttribute(EXCEPTION_NAME, printException(e));
 			}

@@ -210,7 +210,7 @@
 		</link>
 		<link name="set_sort_name_asc" target="$page" copy-page-vars="yes" type="exclusive">
 			<var name="sort1" value="name"/>
-			<var name="sort2" value="name_extra"/>
+			<!--var name="sort2" value="name_extra"/-->
 			<var name="sort3" value="available"/>
 			<var name="dir1" value="ASC"/>
 			<var name="dir2" value="ASC"/>
@@ -219,7 +219,7 @@
 		</link>
 		<link name="set_sort_name_desc" target="$page" copy-page-vars="yes" type="exclusive">
 			<var name="sort1" value="name"/>
-			<var name="sort2" value="name_extra"/>
+			<!--var name="sort2" value="name_extra"/-->
 			<var name="sort3" value="available"/>
 			<var name="dir1" value="DESC"/>
 			<var name="dir2" value="ASC"/>
@@ -247,7 +247,15 @@
 		<link name="set_sort_available" target="$page" copy-page-vars="yes" type="exclusive">
 			<var name="sort1" value="available"/>
 			<var name="sort2" value="name"/>
-			<var name="sort3" value="name_extra"/>
+			<!--var name="sort3" value="name_extra"/-->
+			<var name="dir1" value="DESC"/>
+			<var name="dir2" value="ASC"/>
+			<var name="dir3" value="ASC"/>
+			<var name="page" value="1"/>
+		</link>
+		<link name="set_sort_available2" target="$page" copy-page-vars="yes" type="exclusive">
+			<var name="sort1" value="available2"/>
+			<var name="sort2" value="name"/>
 			<var name="dir1" value="DESC"/>
 			<var name="dir2" value="ASC"/>
 			<var name="dir3" value="ASC"/>
@@ -655,7 +663,7 @@
 			</list>
 		</single>
 
-		<list item="product" id="display_product" tag="product" ref="product">
+		<list item="product" id="display_product" tag="product" ref="product plain_product">
 			<filter>
 				<!--
 				<parameter name="code" sign="=" compare="SOME">
@@ -684,14 +692,14 @@
 			</ancestor>
 		</list>
 
-		<list item="product" id="display_plain_product" tag="product" ref="plain_product">
-			<filter>
+		<!--list item="product" id="display_plain_product" tag="product" ref="plain_product">
+			<filter-->
 				<!--
 				<parameter name="code" sign="=" compare="SOME">
 					<var ref="product" parameter="code" />
 				</parameter>
 				-->
-				<sorting direction-var="dir1">
+				<!--sorting direction-var="dir1">
 					<var var="sort1" />
 				</sorting>
 				<sorting direction-var="dir2">
@@ -702,7 +710,7 @@
 				</sorting>
 			</filter>
 			<include name="PRODUCT_PARAMS_LINKS" replace="$prod:display_plain_product"/>
-		</list>
+		</list-->
 
 		<include name="COMMON"/>
 		<include name="CATALOG_PAGE_LINKS" replace="$page:search"/>
@@ -767,7 +775,7 @@
 			</list>
 		</single>
 
-		<list item="product" id="display_product" tag="product" ref="product">
+		<list item="product" id="display_product" tag="product" ref="product plain_product">
 			<filter>
 				<sorting direction-var="dir1">
 					<var var="sort1" />
@@ -791,7 +799,7 @@
 			</ancestor>
 		</list>
 
-		<list item="product" id="display_plain_product" tag="product" ref="plain_product">
+		<!--list item="product" id="display_plain_product" tag="product" ref="plain_product">
 			<filter>
 				<sorting direction-var="dir1">
 					<var var="sort1" />
@@ -804,7 +812,7 @@
 				</sorting>
 			</filter>
 			<include name="PRODUCT_PARAMS_LINKS" replace="$prod:display_plain_product"/>
-		</list>
+		</list-->
 
 
 		<include name="COMMON"/>

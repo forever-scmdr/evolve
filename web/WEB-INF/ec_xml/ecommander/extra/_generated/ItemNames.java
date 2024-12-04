@@ -496,6 +496,7 @@ public interface ItemNames {
         String IS_SERVICE = "is_service";
         String OFFER_ID = "offer_id";
         String AVAILABLE = "available";
+        String AVAILABLE2 = "available2";
         String GROUP_ID = "group_id";
         String URL = "url";
         String CATEGORY_ID = "category_id";
@@ -667,6 +668,7 @@ public interface ItemNames {
         String IS_SERVICE = "is_service";
         String OFFER_ID = "offer_id";
         String AVAILABLE = "available";
+        String AVAILABLE2 = "available2";
         String GROUP_ID = "group_id";
         String URL = "url";
         String CATEGORY_ID = "category_id";
@@ -1121,6 +1123,7 @@ public interface ItemNames {
         String IS_SERVICE = "is_service";
         String OFFER_ID = "offer_id";
         String AVAILABLE = "available";
+        String AVAILABLE2 = "available2";
         String GROUP_ID = "group_id";
         String URL = "url";
         String CATEGORY_ID = "category_id";

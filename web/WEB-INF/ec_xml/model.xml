@@ -297,6 +297,7 @@
         <parameter name="is_service" type="byte" caption="Услуга" description="если да то 1" domain="0-1"/>
         <parameter name="offer_id" type="string" caption="Код предложения" description="в яндекс маркете"/>
 		<parameter name="available" type="byte" caption="В наличии" description="в яндекс маркете"/><!-- avlb -->
+		<parameter name="available2" type="double" caption="В наличии (для альтернативной сортировки) " description="1 - есть в наличии, 0.5 - на складах, 0 - нет в наличии"/>
 		<parameter name="group_id" type="string" caption="Номер группы" description="для группировки подобных товаров (разные цвета)"/>
 		<parameter name="url" type="string" caption="Урл исходной страницы" description="с исходного сайта"/>
 		<parameter name="category_id" type="string" caption="Номер конечного раздела"/>

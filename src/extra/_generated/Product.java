@@ -26,6 +26,7 @@ public class Product
     public final static String IS_SERVICE = "is_service";
     public final static String OFFER_ID = "offer_id";
     public final static String AVAILABLE = "available";
+    public final static String AVAILABLE2 = "available2";
     public final static String GROUP_ID = "group_id";
     public final static String URL = "url";
     public final static String CATEGORY_ID = "category_id";
@@ -310,6 +311,10 @@ public class Product
 
     public void set_available(Byte value) {
         setValue("available", value);
+    }
+
+    public void set_available2(Double value) {
+        setValue("available2", value);
     }
 
     public void setUI_available(String value)

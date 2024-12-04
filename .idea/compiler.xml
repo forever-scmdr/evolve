@@ -2,6 +2,8 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <option name="DEFAULT_COMPILER" value="Eclipse" />
-    <bytecodeTargetLevel target="1.8" />
+    <bytecodeTargetLevel target="17">
+      <module name="evolve" target="8" />
+    </bytecodeTargetLevel>
   </component>
 </project>

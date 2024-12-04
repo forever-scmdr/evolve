@@ -166,11 +166,13 @@ public class CatalogCreationHandler_3 extends DefaultHandler {
 						bigArts.add(codeInt);
 					}
 					product.setValue(Product.AVAILABLE, avlb);
+					product.setValue(Product.AVAILABLE2, (double) avlb);
 					
 					if("Услуга".equalsIgnoreCase(name)) {
 						product.setValue("is_service", (byte)1);
 						product.setValue(IConst.QTY_ELEMENT, 100000d);
 						product.setValue(Product.AVAILABLE, (byte)1);
+						product.setValue(Product.AVAILABLE2, (double)1);
 					} else {
 						product.setValue("is_service", (byte)0);
 					}

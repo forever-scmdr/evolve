@@ -29,17 +29,17 @@ public class ReferencePE implements PageElement {
 	
 	private String pageVarName = null;
 	private String paramName = null;
-	private String pageItemId = null;
+	private String pageItemIds = null;
 	private ExecutablePagePE pageModel = null;
 	
-	private ReferencePE(String pageVarName, String paramName, String pageItemId) {
+	private ReferencePE(String pageVarName, String paramName, String pageItemIds) {
 		this.pageVarName = pageVarName;
-		this.pageItemId = pageItemId;
+		this.pageItemIds = pageItemIds;
 		this.paramName = paramName;
 	}
 	
-	private ReferencePE(String pageVarName, String paramName, String pageItemId, ExecutablePagePE parentPage) {
-		this(pageVarName, paramName, pageItemId);
+	private ReferencePE(String pageVarName, String paramName, String pageItemIds, ExecutablePagePE parentPage) {
+		this(pageVarName, paramName, pageItemIds);
 		this.pageModel = parentPage;
 	}
 	
@@ -47,8 +47,8 @@ public class ReferencePE implements PageElement {
 		return new ReferencePE(pageVarName, null, null);
 	}
 	
-	public static ReferencePE createPageReference(String pageItemId) {
-		return new ReferencePE(null, null, pageItemId);
+	public static ReferencePE createPageReference(String pageItemIds) {
+		return new ReferencePE(null, null, pageItemIds);
 	}
 	
 	public static ReferencePE createParameterUrlReference(String pageVarName, String paramName) {
@@ -64,7 +64,7 @@ public class ReferencePE implements PageElement {
 	}
 	
 	public boolean isPageReference() {
-		return pageItemId != null && paramName == null;
+		return pageItemIds != null && paramName == null;
 	}
 
 	public boolean isUrlKeyUnique() {
@@ -86,7 +86,7 @@ public class ReferencePE implements PageElement {
 	}
 
 	public PageElement createExecutableClone(PageElementContainer container, ExecutablePagePE parentPage) {
-		ReferencePE clone = new ReferencePE(pageVarName, paramName, pageItemId, parentPage);
+		ReferencePE clone = new ReferencePE(pageVarName, paramName, pageItemIds, parentPage);
 		if (container != null)
 			((ReferenceContainer)container).addReference(clone);
 		return clone;
@@ -110,10 +110,19 @@ public class ReferencePE implements PageElement {
 	 */
 	public List<Long> getItemIds() {
 		// Получить значение переменной, в которой хранится ID айтема (или значение параметра), нужного для загрузки
-		ExecutableItemPE pageItem = pageModel.getItemPEById(pageItemId);
-		if (pageItem != null)
-			return pageItem.getFoundItemIds();
-		return new ArrayList<>();
+		ArrayList<Long> Ids = new ArrayList<>();
+
+		ArrayList<String> itemIds = new ArrayList<>(Arrays.asList(pageItemIds.split(" ")));
+
+		for(String itemId: itemIds) {
+			ExecutableItemPE pageItem = pageModel.getItemPEById(itemId);
+
+			if (pageItem != null) {
+				Ids.addAll(pageItem.getFoundItemIds());
+			}
+		}
+
+		return Ids;
 	}
 	/**
 	 * Получить название параметра
@@ -127,16 +136,28 @@ public class ReferencePE implements PageElement {
 	 * @return
 	 */
 	public ExecutableItemPE getPageItem() {
-		return pageModel.getItemPEById(pageItemId);
+		return pageModel.getItemPEById(pageItemIds);
 	}
 
 	public void validate(String elementPath, ValidationResults results) {
 		// Есть ли айтем с заданным ID
 		boolean hasVariable = pageVarName != null && pageModel.getInitVariablePE(pageVarName) != null;
-		boolean hasItem = pageItemId != null && pageModel.getItemPEById(pageItemId) != null;
+		boolean hasItem = true;
+
+		if (pageItemIds != null)
+		{
+			ArrayList<String> itemIds = new ArrayList<>(Arrays.asList(pageItemIds.split(" ")));
+
+			for(String itemId: itemIds) {
+				hasItem = itemId != null && pageModel.getItemPEById(itemId) != null;
+
+				if (!hasItem) break;
+			}
+		}
+
 		if (!hasVariable && !hasItem)
 			results.addError(elementPath + " > " + getKey(), "There is neither variable '" + pageVarName + "' nor page item '"
-					+ pageItemId + "'");
+					+ pageItemIds + "'");
 		// TODO <fix> доделать валидацию (содержится ли параметр в айтеме)
 	}
 

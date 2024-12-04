@@ -200,7 +200,7 @@
 						<span>Сортировка:</span>
 						<select value="{$pv/sort1}{$pv/dir1}{$pv/sort2}{$pv/dir2}" onchange="window.location.href = $(this).find(':selected').attr('link')">
 							<option value="availableDESC" link="{page/set_sort_relevance}">Без сортировки</option>
-							<option value="availableDESCnameASC" link="{page/set_sort_available}">По наличию</option>
+							<option value="available2DESCnameASC" link="{page/set_sort_available2}">По наличию</option>
 							<option value="availableDESCpriceASC" link="{page/set_sort_price_asc}">Сначала дешевые</option>
 							<option value="availableDESCpriceDESC" link="{page/set_sort_price_desc}">Сначала дорогие</option>
 							<option value="nameASCname_extraASC" link="{page/set_sort_name_asc}">По алфавиту А→Я</option>

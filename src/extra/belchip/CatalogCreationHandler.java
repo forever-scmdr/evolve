@@ -130,12 +130,14 @@ public class CatalogCreationHandler extends DefaultHandler {
 						bigArts.add(codeInt);
 					}					
 					top.setValue(Product.AVAILABLE, avlb);
+					top.setValue(Product.AVAILABLE2, (double) avlb);
 
 					/*
 					if("Услуга".equalsIgnoreCase(name)) {
 						top.setValue("is_service", (byte)1);
 						top.setValue(IConst.QTY_ELEMENT, 100000d);
 						top.setValue(Product.AVAILABLE, (byte)1);
+						top.setValue(Product.AVAILABLE2, (double) 1);
 					} else {
 						top.setValue("is_service", (byte)0);
 					}
@@ -146,6 +148,7 @@ public class CatalogCreationHandler extends DefaultHandler {
 					if (top.getByteValue(Product.IS_SERVICE, (byte) 0) == (byte) 1) {
 						top.setValue(Product.QTY, 100000d);
 						top.setValue(Product.AVAILABLE, (byte) 1);
+						top.setValue(Product.AVAILABLE2, (double) 1);
 					} else {
 						top.setValue(Product.IS_SERVICE, (byte) 0);
 					}
