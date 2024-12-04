@@ -313,10 +313,6 @@ public class Product
         setValue("available", value);
     }
 
-    public void set_available2(Double value) {
-        setValue("available2", value);
-    }
-
     public void setUI_available(String value)
         throws Exception
     {

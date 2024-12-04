@@ -205,7 +205,7 @@ public class ImportPlainCatalog extends IntegrateBase implements ItemNames {
 							prod.set_qty(src.getDoubleValue(QTY_HEADER));
 							prod.set_is_service((byte) 0);
 							prod.set_available((byte) -1);
-							prod.set_available2(0.5);
+							prod.setValue("available2", 0.5);
 							prod.set_min_qty(minQty > 0.01 ? minQty : 1);
 							prod.set_step(step == null || step < 0.01 ? 1 : step);
 							if (StringUtils.isBlank(prod.get_unit()))
