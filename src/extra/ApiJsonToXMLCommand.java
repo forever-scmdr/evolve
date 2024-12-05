@@ -43,7 +43,7 @@ public class ApiJsonToXMLCommand extends Command {
 		}
 		try {
 			//String response = OkWebClient.getInstance().getString(urlToGet);
-			OkWebClient.getInstance().setProxy("91.235.136.192", 3128, "sankon", "yNUtRh6mp2hc");
+			//OkWebClient.getInstance().setProxy("91.235.136.192", 3128, "sankon", "yNUtRh6mp2hc");
 			String response = OkWebClient.getInstance().getStringHeaders(urlToGet, tokenHeaderName, token);
 			String xml = JsoupUtils.transformJsonToXml(response, rootElementName, replacements);
 			return getResult("success").setValue(xml);
