@@ -142,6 +142,7 @@
 	<!--/////////////                                                                      ////////////-->
 
 	<assoc name="catalog_link" caption="Ссылка в каталоге" transitive="true" ag-id="6" ag-hash="-1147981728"/>
+	<assoc name="general_link" caption="Ссылка общего назначения" transitive="true"/>
 
 	<item name="original_gallery" caption="Исходная галерея" ag-id="1209" ag-hash="743720676" >
 		<parameter name="watermark_filename"  type="string" caption="Название файла водяного знака"/>
@@ -542,7 +543,7 @@
 		<parameter name="sum" type="currency" format="#.###" caption="Полная стоимость"/>
 		<parameter name="sum_vendor" type="currency" format="#.###" caption="Стоимость заказа товара у исходного продавца" description="с учетом исходной цены поставщика"/>
 		<parameter name="aux" type="string" caption="Дополнительный каталог"/>
-		<parameter name="outer_product" type="plain-text" caption="Дополнительный каталог"/>
+		<parameter name="outer_product" type="plain-text" caption="Параметры продукта из внешнего источника (не каталог сайта)"/>
 		<child item="product" single="true"/>
 	</item>
 
@@ -603,9 +604,9 @@
 		<parameter name="payment" type="string" caption="название электронной системы оплаты"/>
 		<child item="purchase"/>
 		<child item="bom_catalog" single="true"/>
-		<on-create class="ecommander.fwk.ManageUsers$OnCreate"/>
-		<on-update class="ecommander.fwk.ManageUsers$OnUpdate"/>
-		<on-delete class="ecommander.fwk.ManageUsers$OnDelete"/>
+		<on-create class="ecommander.fwk.ManageUsers.OnCreateRegistered"/>
+		<on-update class="ecommander.fwk.ManageUsers.OnUpdateRegistered"/>
+		<on-delete class="ecommander.fwk.ManageUsers.OnDeleteRegistered"/>
 	</item>
 
 	<item name="user_jur" caption="Юридическое лицо" super="user" ag-id="23" ag-hash="-266151405">
@@ -631,11 +632,28 @@
 		<parameter name="comment" type="string" caption="Дополнительно" />
 	</item>
 
+	<item name="manager" caption="Менеджер" description="отдельная группа manager">
+		<parameter name="email" type="string" caption="E-mail"/>
+		<parameter name="phone" type="string" caption="Телефон"/>
+		<parameter name="password" type="string" caption="Пароль"/>
+		<parameter name="registered" type="byte" caption="Флаг зарегистрированности" domain="0-1" default="0"/>
+		<child item="manager_users" single="true"/>
+		<on-create class="ecommander.fwk.ManageUsers.OnCreateRegistered"/>
+		<on-update class="ecommander.fwk.ManageUsers.OnUpdateRegistered"/>
+		<on-delete class="ecommander.fwk.ManageUsers.OnDeleteRegistered"/>
+	</item>
+
 
 	<item name="registered_catalog" caption="Каталог пользователей" children-sorting="DESC" children-per-page="50" ag-id="822" ag-hash="-755203236">
 		<parameter name="users_file" type="file" caption="Файл пользователей"/>
 		<child item="user"/>
 	</item>
+
+
+	<item name="manager_users" caption="Пользователи менеджера">
+		<child item="user" assoc="general_link"/>
+	</item>
+
 
 	<!--/////////////                                                                      ////////////-->
 	<!--/////////////                            END РЕГИСТРАЦИЯ                           ////////////-->

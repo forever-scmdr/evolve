@@ -1,46 +1,53 @@
 package ecommander.fwk;
 
-import ecommander.controllers.PageController;
 import ecommander.model.*;
-import ecommander.pages.ExecutablePagePE;
-import ecommander.pages.LinkPE;
-import ecommander.pages.PageModelRegistry;
-import ecommander.pages.PagePE;
 import ecommander.persistence.commandunits.*;
 import ecommander.persistence.common.PersistenceCommandUnit;
 import org.apache.commons.lang3.StringUtils;
-
-import javax.mail.Multipart;
-import javax.mail.internet.MimeBodyPart;
-import javax.mail.internet.MimeMultipart;
-import java.io.ByteArrayOutputStream;
 
 /**
  * Created by E on 19/6/2018.
  */
 public class ManageUsers extends DBPersistenceCommandUnit implements ErrorCodes {
 
-	public static class OnCreate implements ItemEventCommandFactory {
-
+	public static class OnCreateRegistered implements ItemEventCommandFactory {
 		@Override
 		public PersistenceCommandUnit createCommand(Item item) throws Exception {
-			return new ManageUsers(item, CREATE);
+			return new ManageUsers(item, CREATE, REGISTERED_GROUP);
 		}
 	}
 
-	public static class OnUpdate implements ItemEventCommandFactory {
-
+	public static class OnUpdateRegistered implements ItemEventCommandFactory {
 		@Override
 		public PersistenceCommandUnit createCommand(Item item) throws Exception {
-			return new ManageUsers(item, UPDATE);
+			return new ManageUsers(item, UPDATE, REGISTERED_GROUP);
 		}
 	}
 
-	public static class OnDelete implements ItemEventCommandFactory {
-
+	public static class OnDeleteRegistered implements ItemEventCommandFactory {
 		@Override
 		public PersistenceCommandUnit createCommand(Item item) throws Exception {
-			return new ManageUsers(item, DELETE);
+			return new ManageUsers(item, DELETE, REGISTERED_GROUP);
+		}
+	}
+	public static class OnCreateManager implements ItemEventCommandFactory {
+		@Override
+		public PersistenceCommandUnit createCommand(Item item) throws Exception {
+			return new ManageUsers(item, CREATE, MANAGER_GROUP);
+		}
+	}
+
+	public static class OnUpdateManager implements ItemEventCommandFactory {
+		@Override
+		public PersistenceCommandUnit createCommand(Item item) throws Exception {
+			return new ManageUsers(item, UPDATE, MANAGER_GROUP);
+		}
+	}
+
+	public static class OnDeleteManager implements ItemEventCommandFactory {
+		@Override
+		public PersistenceCommandUnit createCommand(Item item) throws Exception {
+			return new ManageUsers(item, DELETE, MANAGER_GROUP);
 		}
 	}
 
@@ -50,15 +57,19 @@ public class ManageUsers extends DBPersistenceCommandUnit implements ErrorCodes 
 
 	public static final String EMAIL_PARAM = "email";
 	public static final String PASSWORD_PARAM = "password";
-	public static final String REGISTERED = "registered";
+	public static final String REGISTERED_PARAM = "registered";
+	public static final String MANAGER_GROUP = "manager";
+	public static final String REGISTERED_GROUP = "registered";
 
 
 	private Item userItem;
 	private byte mode;
+	private String groupName;
 
-	public ManageUsers(Item item, byte mode) {
+	public ManageUsers(Item item, byte mode, String groupName) {
 		this.userItem = item;
 		this.mode = mode;
+		this.groupName = groupName;
 	}
 
 
@@ -105,14 +116,14 @@ public class ManageUsers extends DBPersistenceCommandUnit implements ErrorCodes 
 	}
 
 	private void makeRegistered() throws Exception {
-		Parameter regParam = userItem.getParameterByName(REGISTERED);
+		Parameter regParam = userItem.getParameterByName(REGISTERED_PARAM);
 		if (userItem.isPersonal()) {
-			if (userItem.getByteValue(REGISTERED) != (byte) 1) {
-				userItem.setValue(REGISTERED, (byte) 1);
+			if (userItem.getByteValue(REGISTERED_PARAM) != (byte) 1) {
+				userItem.setValue(REGISTERED_PARAM, (byte) 1);
 				executeCommand(SaveItemDBUnit.get(userItem).noTriggerExtra().ignoreUser());
 			}
 			return;
-		} else if (userItem.getByteValue(REGISTERED) == (byte) 0) {
+		} else if (userItem.getByteValue(REGISTERED_PARAM) == (byte) 0) {
 			return;
 		}
 		String userName = userItem.getStringValue(EMAIL_PARAM);
@@ -121,7 +132,7 @@ public class ManageUsers extends DBPersistenceCommandUnit implements ErrorCodes 
 			throw new EcommanderException(ErrorCodes.VALIDATION_FAILED, "User name or password is empty");
 		}
 		User newUser = new User(userName, password, "registered user", User.ANONYMOUS_ID);
-		newUser.addGroup(REGISTERED, UserGroupRegistry.getGroup(REGISTERED), User.SIMPLE);
+		newUser.addGroup(groupName, UserGroupRegistry.getGroup(groupName), User.SIMPLE);
 		try {
 			executeCommand(new SaveNewUserDBUnit(newUser).ignoreUser());
 		} catch (UserExistsExcepion e) {
@@ -130,7 +141,7 @@ public class ManageUsers extends DBPersistenceCommandUnit implements ErrorCodes 
 				return;
 			throw e;
 		}
-		executeCommand(ChangeItemOwnerDBUnit.newUser(userItem, newUser.getUserId(), UserGroupRegistry.getGroup(REGISTERED)).ignoreUser());
+		executeCommand(ChangeItemOwnerDBUnit.newUser(userItem, newUser.getUserId(), UserGroupRegistry.getGroup(groupName)).ignoreUser());
 
 		// Отправка письма
 		/*

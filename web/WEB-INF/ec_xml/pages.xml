@@ -2148,6 +2148,88 @@
 
 
 
+
+
+	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
+	<!--/////////////                                                                      ////////////-->
+	<!--/////////////                       		МЕНЕДЖЕР 	               	           ////////////-->
+	<!--/////////////                                                                      ////////////-->
+	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
+
+
+
+
+	<include-definition name="MANAGER_COMMON">
+		<personal>
+			<!--
+			<single item="manager" tag="registration">
+				<filter>
+					<parameter name="registered">
+						<var value="1"/>
+					</parameter>
+				</filter>
+			</single>
+			-->
+		</personal>
+		<usergroup name="0dmin">
+			<list item="optional_modules" cacheable="true">
+				<list item="module"/>
+			</list>
+		</usergroup>
+		<single item="currencies" cacheable="true"/>
+		<link name="index_link" target="index"/>
+		<link name="catalog_link" target="catalog"/>
+		<link name="search_link" target="search"/>
+		<link name="search_api_link" target="search_api"/>
+		<link name="admin_search_link" target="admin_search"/>
+		<link name="search_catalog_link" target="search_catalog"/>
+		<link name="search_plain_link" target="search_plain"/>
+		<link name="search_ajax_link" target="search_ajax"/>
+		<link name="boms_link" target="boms"/>
+		<link name="input_bom_link" target="input_bom" type="itemform"/>
+		<link name="validate_bom_link" target="validate_bom_ajax" type="itemform"/>
+		<link name="excel_search_link" target="excel_search" type="itemform"/>
+
+		<!-- REGISTRATION -->
+		<link name="register_link" target="register"/>
+		<link name="login_form_link" target="login_form_ajax"/>
+		<link name="login_link" target="register">
+			<var name="login" value="true"/>
+		</link>
+		<link name="personal_ajax_link" target="personal_ajax"/>
+		<link name="set_currency" target-var="$pagename" copy-page-vars="yes">
+			<var name="cur" value=""/>
+		</link>
+		<link name="to_cart_api" target="cart_action">
+			<var name="action" value="addToCart"/>
+		</link>
+		<link name="submit_bom_save" target="manage_bom">
+			<var name="action" value="saveNew"/>
+		</link>
+	</include-definition>
+
+
+
+
+	<page name="manager_orders" template="manager/manager_orders"><!-- manager/manager_orders -->
+		<request>
+			<var name="date_from"/>
+			<var name="date_to"/>
+		</request>
+		<list item="user_jur">
+
+		</list>
+		<list item="purchase">
+			<list item="bought"/>
+		</list>
+		<include name="MANAGER_COMMON"/>
+	</page>
+
+
+
+
+
+
 	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
 	<!--/////////////                                                                      ////////////-->
 	<!--/////////////                       ИНТЕГРАЦИЯ И ПАРСИНГ                           ////////////-->

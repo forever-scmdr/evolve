@@ -3,6 +3,7 @@
 <groups>
 	<group name="common"/>
 	<group name="registered"/>
+	<group name="manager"/>
 	<group name="0dmin"/>
 </groups>
 <users>
