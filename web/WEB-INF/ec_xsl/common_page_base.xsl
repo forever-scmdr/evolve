@@ -81,8 +81,8 @@
 	<!-- ****************************    SEO (для всех страниц)    ******************************** -->
 
 	<xsl:variable name="source" select="concat('/', page/source_link)"/>
-	<xsl:variable name="eng_base" select="'http://localhost:8080'"/>
-	<xsl:variable name="base" select="'http://localhost:8080'"/>
+	<xsl:variable name="eng_base" select="'http://termobrest.net'"/>
+	<xsl:variable name="base" select="'https://termobrest.ru'"/>
 	<xsl:variable name="local_seo" select="//url_seo[contains($source, url)]"/>
 
 	<xsl:variable name="has_tag" select="page/variables/tag"/>
