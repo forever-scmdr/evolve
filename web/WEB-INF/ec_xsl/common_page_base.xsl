@@ -212,6 +212,8 @@ xmlns:fb="http://ogp.me/ns/fb#">
 		<link rel="stylesheet" href="css/styles-seo.css?version=1.5"/>
 		<link rel="stylesheet" href="css/fixes.css?version=1.2"/>
 		<link rel="stylesheet" href="fotorama/fotorama.css"/>
+
+		<script type="text/javascript" src="js/jquery-1.12.0.min.js"></script>
 		 
 		<!-- Yandex.Metrika counter -->
 		<script type="text/javascript">
@@ -545,7 +547,6 @@ xmlns:fb="http://ogp.me/ns/fb#">
 
 		</div>
 
-		<script type="text/javascript" src="js/jquery-1.12.0.min.js"></script>
 		
 	<xsl:if test="page/@name=('index','context_form_success','armtorg')">
 		<script type="text/javascript">

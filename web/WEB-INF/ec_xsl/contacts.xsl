@@ -113,7 +113,7 @@
 
 										$(document).ready(function(){
 											$(".form-control").focus(function(){
-                                                //e.preventDefault();
+
 												if (toLoadCaptcha){
 													reloadCaptcha();
 													toLoadCaptcha = false;
