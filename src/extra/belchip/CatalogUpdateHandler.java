@@ -121,9 +121,9 @@ public class CatalogUpdateHandler extends DefaultHandler {
 					needsSave = true;
 					product.setValue(Product.AVAILABLE, inStock);
 				}
-				if((overrideAvlb && product.getDoubleValue(Product.AVAILABLE2, 0) != inStock) || product.getDoubleValue(Product.AVAILABLE2) == null){
+				if((overrideAvlb && product.getDoubleValue(Product.AVAILABLE2, (double)0) != inStock) || product.getDoubleValue(Product.AVAILABLE2) == null){
 					needsSave = true;
-					product.setValue(Product.AVAILABLE2, inStock);
+					product.setValue(Product.AVAILABLE2, (double)inStock);
 				}
 				if(product.getByteValue(Product.NEW,(byte)0) != newProduct || product.getByteValue(Product.NEW) == null){
 					needsSave = true;

@@ -204,26 +204,24 @@
 		</link>
 
 		<link name="set_sort_relevance" target="$page" copy-page-vars="yes" type="exclusive">
-			<var name="sort1" value="available"/>
+			<var name="sort1" value="available2"/>
 			<var name="dir1" value="DESC"/>
+			<var name="sort2" value=""/>
+			<var name="dir2" value=""/>
 			<var name="page" value="1"/>
 		</link>
 		<link name="set_sort_name_asc" target="$page" copy-page-vars="yes" type="exclusive">
 			<var name="sort1" value="name"/>
-			<!--var name="sort2" value="name_extra"/-->
-			<var name="sort3" value="available"/>
+			<var name="sort2" value="available"/>
 			<var name="dir1" value="ASC"/>
-			<var name="dir2" value="ASC"/>
-			<var name="dir3" value="DESC"/>
+			<var name="dir2" value="DESC"/>
 			<var name="page" value="1"/>
 		</link>
 		<link name="set_sort_name_desc" target="$page" copy-page-vars="yes" type="exclusive">
 			<var name="sort1" value="name"/>
-			<!--var name="sort2" value="name_extra"/-->
-			<var name="sort3" value="available"/>
+			<var name="sort2" value="available"/>
 			<var name="dir1" value="DESC"/>
-			<var name="dir2" value="ASC"/>
-			<var name="dir3" value="DESC"/>
+			<var name="dir2" value="DESC"/>
 			<var name="page" value="1"/>
 		</link>
 		<link name="set_sort_price_asc" target="$page" copy-page-vars="yes" type="exclusive">
@@ -247,10 +245,8 @@
 		<link name="set_sort_available" target="$page" copy-page-vars="yes" type="exclusive">
 			<var name="sort1" value="available"/>
 			<var name="sort2" value="name"/>
-			<!--var name="sort3" value="name_extra"/-->
 			<var name="dir1" value="DESC"/>
 			<var name="dir2" value="ASC"/>
-			<var name="dir3" value="ASC"/>
 			<var name="page" value="1"/>
 		</link>
 		<link name="set_sort_available2" target="$page" copy-page-vars="yes" type="exclusive">
@@ -258,7 +254,6 @@
 			<var name="sort2" value="name"/>
 			<var name="dir1" value="DESC"/>
 			<var name="dir2" value="ASC"/>
-			<var name="dir3" value="ASC"/>
 			<var name="page" value="1"/>
 		</link>
 		<link name="set_sort_default" target="$page" copy-page-vars="yes" type="exclusive">
@@ -614,7 +609,7 @@
 			<var name="q" />
 			<var name="sec" />
 
-			<var name="sort1" value="available" />
+			<var name="sort1" value="available2" />
 			<var name="sort2" value="" />
 			<var name="sort3" value="" />
 
@@ -735,7 +730,7 @@
 			<var name="q" />
 			<var name="sec" />
 
-			<var name="sort1" value="available" />
+			<var name="sort1" value="available2" />
 			<var name="sort2" value="" />
 			<var name="sort3" value="" />
 

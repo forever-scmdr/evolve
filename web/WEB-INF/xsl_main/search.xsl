@@ -199,12 +199,12 @@
 					<div class="view__column">
 						<span>Сортировка:</span>
 						<select value="{$pv/sort1}{$pv/dir1}{$pv/sort2}{$pv/dir2}" onchange="window.location.href = $(this).find(':selected').attr('link')">
-							<option value="availableDESC" link="{page/set_sort_relevance}">Без сортировки</option>
+							<option value="available2DESC" link="{page/set_sort_relevance}">Без сортировки</option>
 							<option value="available2DESCnameASC" link="{page/set_sort_available2}">По наличию</option>
 							<option value="availableDESCpriceASC" link="{page/set_sort_price_asc}">Сначала дешевые</option>
 							<option value="availableDESCpriceDESC" link="{page/set_sort_price_desc}">Сначала дорогие</option>
-							<option value="nameASCname_extraASC" link="{page/set_sort_name_asc}">По алфавиту А→Я</option>
-							<option value="nameDESCname_extraASC" link="{page/set_sort_name_desc}">По алфавиту Я→А</option>
+							<option value="nameASCavailableDESC" link="{page/set_sort_name_asc}">По алфавиту А→Я</option>
+							<option value="nameDESCavailableDESC" link="{page/set_sort_name_desc}">По алфавиту Я→А</option>
 						</select>
 					</div>
 				</xsl:if>
