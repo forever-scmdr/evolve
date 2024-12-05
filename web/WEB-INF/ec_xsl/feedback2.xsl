@@ -55,18 +55,20 @@
 						<label for="xi">Текст отзыва:*</label>
 						<textarea type="" name="{$f/message/@input}" class="form-control" id="xi"><xsl:value-of select="$f/message"/></textarea>
 					</div>
-					<div>
-						<script type="text/javascript">
-							function reloadCaptcha(){
-								var d = new Date();
-								$(".captcha").attr("src", "/CaptchaImg.png?"+d.getTime());
-							}
-						</script>
-
-						<img id="captcha_image" class="captcha" alt="captcha image" src="/CaptchaImg.png"/>
-						<img src="images/button_reload.png" onclick="reloadCaptcha()" alt="reload" width="40" height="40"/>
-						<input name="answer" />
-					</div>
+								<div class="capcha_st">
+									<script type="text/javascript">
+										function reloadCaptcha(){
+											var d = new Date();
+											$(".captcha").attr("src", "/CaptchaImg.png?"+d.getTime());
+										}
+									</script>
+									<label>Введите числа с картинки:*</label>
+									<div class="capcha_refresh">
+									<img id="captcha_image" class="captcha" alt="captcha image" src="/CaptchaImg.png"/>
+									<img src="images/button_reload.png" onclick="reloadCaptcha()" alt="reload" width="40" height="40"/>
+									<input name="answer" maxlength="5" size="6" type="text" class="form-control_capcha" />
+									</div>
+								</div>
 			
 					<button type="submit" class="btn btn-primary btn-block" onclick="postForm($(this).closest('form'), '{$feed2_ajax_id}'); return false;">Отправить отзыв</button>
 				</form>

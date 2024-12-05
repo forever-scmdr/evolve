@@ -107,17 +107,31 @@
 									<label>Текст сообщения:*</label>
 									<textarea name="{$f/message/@input}" class="form-control"><xsl:value-of select="$f/message"/></textarea>
 								</div>
-								<div>
+								<div class="capcha_st">
 									<script type="text/javascript">
+										var toLoadCaptcha = true;
+
+										$(document).ready(function(){
+											$(".form-control").focus(function(){
+                                                //e.preventDefault();
+												if (toLoadCaptcha){
+													reloadCaptcha();
+													toLoadCaptcha = false;
+												}
+											});
+										});
+
 										function reloadCaptcha(){
 											var d = new Date();
 											$(".captcha").attr("src", "/CaptchaImg.png?"+d.getTime());
 										}
 									</script>
-
+									<label>Введите числа с картинки:*</label>
+									<div class="capcha_refresh">
 									<img id="captcha_image" class="captcha" alt="captcha image" src="/CaptchaImg.png"/>
 									<img src="images/button_reload.png" onclick="reloadCaptcha()" alt="reload" width="40" height="40"/>
-									<input name="answer" />
+									<input name="answer" maxlength="5" size="6" type="text" class="form-control_capcha" />
+									</div>
 								</div>
 								<button type="submit" class="btn btn-default">Отправить сообщение</button>
 							</form>
