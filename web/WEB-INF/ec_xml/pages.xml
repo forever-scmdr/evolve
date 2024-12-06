@@ -1256,6 +1256,7 @@
 		</link>
 	</page>
 
+
 	<page name="callback_ajax" template="callback_ajax">
 		<request>
 			<var name="result"/>
