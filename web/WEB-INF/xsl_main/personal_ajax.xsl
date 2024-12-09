@@ -8,30 +8,47 @@
 	<xsl:template match="/">
 		<xsl:if test="not($registered)">
 			<div class="result" id="personal_desktop">
-				<a href="{page/login_link}" class="icon-link">
-					<div class="icon"><img src="img/icon-lock.svg" alt="" /></div>
-					<span class="icon-link__item">Вход / Регистрация</span>
-				</a>
+				<xsl:call-template name="PERSONAL_NO_LOGIN"/>
+			</div>
+			<div class="result" id="personal_mobile">
+				<xsl:call-template name="PERSONAL_NO_LOGIN"/>
 			</div>
 		</xsl:if>
 		<xsl:if test="$registered">
 			<div class="result" id="personal_desktop">
-				<a href="{page/personal_link}" class="icon-link">
-					<div class="icon"><img src="img/icon-history.svg" alt="" /></div>
-					<span class="icon-link__item">Анкета</span>
-				</a> /
-				<a href="{page/purchase_history_link}" class="icon-link">
-					<div class="icon"><img src="img/icon-order.svg" alt="" /></div>
-					<span class="icon-link__item">Заказы</span>
-				</a> /
-				<a href="/logout.login?target=index" class="icon-link">
-					<div class="icon"><img src="img/icon-exit.svg" alt="" /></div>
-					<span class="icon-link__item">x</span>
-				</a>
+				<xsl:call-template name="PERSONAL_LOGIN"/>
+			</div>
+			<div class="result" id="personal_mobile">
+				<xsl:call-template name="PERSONAL_LOGIN"/>
 			</div>
 		</xsl:if>
 	</xsl:template>
 
+
+	<xsl:template name="PERSONAL_NO_LOGIN">
+		<a href="{page/login_link}" class="icon-link">
+			<div class="icon"><img src="img/icon-lock.svg" alt="" /></div>
+			<span class="icon-link__item">Вход / Регистрация</span>
+		</a>
+	</xsl:template>
+
+
+	<xsl:template name="PERSONAL_LOGIN">
+		<a href="{page/login_link}" class="icon-link">
+			<a href="{page/personal_link}" class="icon-link">
+				<div class="icon"><img src="img/icon-history.svg" alt="" /></div>
+				<span class="icon-link__item">Анкета</span>
+			</a> /
+			<a href="{page/purchase_history_link}" class="icon-link">
+				<div class="icon"><img src="img/icon-order.svg" alt="" /></div>
+				<span class="icon-link__item">Заказы</span>
+			</a> /
+			<a href="/logout.login?target=index" class="icon-link">
+				<div class="icon"><img src="img/icon-exit.svg" alt="" /></div>
+				<span class="icon-link__item">x</span>
+			</a>
+		</a>
+	</xsl:template>
 
 
 </xsl:stylesheet>

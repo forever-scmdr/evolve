@@ -402,7 +402,7 @@
 			<div class="menu-content">
 				<xsl:if test="$has_personal">
 					<ul>
-						<li>
+						<li id="personal_mobile">
 							<a href="{page/login_link}" class="icon-link">
 								<div class="icon">
 									<img src="img/icon-lock.svg" alt="" />

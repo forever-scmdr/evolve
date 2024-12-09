@@ -402,7 +402,18 @@ public class CartManageCommand extends BasicCartManageCommand implements ItemNam
 				proc.replace("$order_num", orderNum);
 				proc.replace("$order_date", DateDataType.outputDate(System.currentTimeMillis(), DateDataType.DAY_FORMATTER));
 				proc.replace("$customer_name", isPhys ? customer.outputValue(user_phys_.NAME) : customer.outputValue(user_jur_.ORGANIZATION));
-				proc.replace("$customer_address", isPhys ? customer.outputValue(user_phys_.ADDRESS) : customer.outputValue(user_jur_.ADDRESS));
+				StringBuilder customerData = new StringBuilder();
+				if (isPhys) {
+					customerData.append("Адрес: ").append(customer.outputValue(user_phys_.ADDRESS));
+				} else {
+					customerData.append("Юридический адрес: ").append(customer.outputValue(user_jur_.ADDRESS)).append('\n');
+					customerData.append("Расчетный счет: ").append(customer.outputValue(user_jur_.ACCOUNT)).append('\n');
+					customerData.append("Название банка: ").append(customer.outputValue(user_jur_.BANK)).append('\n');
+					customerData.append("Адрес банка: ").append(customer.outputValue(user_jur_.BANK_ADDRESS)).append('\n');
+					customerData.append("Код банка: ").append(customer.outputValue(user_jur_.BANK_CODE)).append('\n');
+					customerData.append("УНП: ").append(customer.outputValue(user_jur_.UNP)).append('\n');
+				}
+				proc.replace("$customer_address", customerData.toString());
 				ArrayList<Item> boughts = getSessionMapper().getItemsByName(BOUGHT_ITEM, cart.getId());
 				for (int i = 0; i < boughts.size() - 1; i++) {
 					proc.duplicateRowContaining("$prod_name");
@@ -410,6 +421,7 @@ public class CartManageCommand extends BasicCartManageCommand implements ItemNam
 				BigDecimal nds = BigDecimal.valueOf((double) 20);
 				BigDecimal ndsPercents = nds.add(BigDecimal.valueOf((double) 100));
 				BigDecimal ndsQuotient = BigDecimal.valueOf((double) 100).divide(ndsPercents, 6, RoundingMode.HALF_EVEN);
+				int pn = 0;
 				for (Item bought : boughts) {
 					Item product = getSessionMapper().getSingleItemByName(PRODUCT_ITEM, bought.getId());
 					BigDecimal sum = bought.getDecimalValue(bought_.SUM).setScale(2, RoundingMode.CEILING);
@@ -417,6 +429,7 @@ public class CartManageCommand extends BasicCartManageCommand implements ItemNam
 					BigDecimal justNdsSum = sum.subtract(noNdsSum).setScale(2, RoundingMode.CEILING);
 					BigDecimal noNdsPrice = noNdsSum.divide(BigDecimal.valueOf(bought.getDoubleValue(bought_.QTY)), 6, RoundingMode.HALF_EVEN)
 							.setScale(2, RoundingMode.CEILING);
+					proc.replace("$pn", ++pn + "");
 					proc.replace("$prod_name", bought.outputValue(bought_.NAME));
 					proc.replace("$prod_unit", product.getStringValue(described_product_.UNIT, "шт."));
 					proc.replace("$prod_qty", bought.outputValue(bought_.QTY));
@@ -435,6 +448,7 @@ public class CartManageCommand extends BasicCartManageCommand implements ItemNam
 				proc.replace("$cart_sum", sumNoNds.toPlainString());
 				proc.replace("$cart_sum_nds", justNds.toPlainString());
 				proc.replace("$cart_sum_full", cartSum.toPlainString());
+				proc.replace("$pnqty", pn + "");
 				String justNdsRubString = Strings.numberToRusWords(roublesJustNds.longValue()) + " "
 						+ Strings.numberEnding(roublesJustNds.longValue(), "рубль", "рубля", "рублей");
 				String justNdsCentString = Strings.numberToRusWords(centsJustNds.longValue()) + " "
