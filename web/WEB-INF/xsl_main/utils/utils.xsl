@@ -55,7 +55,7 @@
 
     <xsl:function name="f:is_numeric" as="xs:boolean">
         <xsl:param name="str"/>
-        <xsl:sequence select="string(number($str)) = string($str)"/>
+        <xsl:sequence select="f:num(string($str)) != 0 or string($str) = '0'"/>
     </xsl:function>
 
     <xsl:function name="f:currency_decimal">
