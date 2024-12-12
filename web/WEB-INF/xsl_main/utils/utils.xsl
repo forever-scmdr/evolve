@@ -167,12 +167,12 @@
 
     <xsl:function name="f:rub_kop" as="xs:string">
         <xsl:param name="price" as="xs:string"/>
-        <xsl:value-of select="f:rub_kop($price, '&#160;руб.&#160;', '&#160;коп.')"/>
+        <xsl:value-of select="f:rub_kop($price, '&#160;бел. руб.&#160;', '&#160;коп.')"/>
     </xsl:function>
 
     <xsl:template name="rub_kop_unit">
         <xsl:param name="price" as="xs:string"/>
-        <xsl:param name="rub" as="xs:string" select="'&#x20;руб.&#x20;'"/>
+        <xsl:param name="rub" as="xs:string" select="'&#x20;бел. руб.&#x20;'"/>
         <xsl:param name="kop" as="xs:string" select="'&#x20;коп.'"/>
         <xsl:param name="unit" as="xs:string" select="''"/>
         <xsl:variable name="parts" select="tokenize($price, '[\.,]')"/>
