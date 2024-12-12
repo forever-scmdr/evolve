@@ -142,7 +142,7 @@
 	<!--/////////////                                                                      ////////////-->
 
 	<assoc name="catalog_link" caption="Ссылка в каталоге" transitive="true" ag-id="6" ag-hash="-1147981728"/>
-	<assoc name="general_link" caption="Ссылка общего назначения" transitive="true"/>
+	<assoc name="general_link" caption="Ссылка общего назначения" transitive="true" ag-id="8" ag-hash="1484632305"/>
 
 	<item name="original_gallery" caption="Исходная галерея" ag-id="1209" ag-hash="743720676" >
 		<parameter name="watermark_filename"  type="string" caption="Название файла водяного знака"/>
@@ -604,9 +604,9 @@
 		<parameter name="payment" type="string" caption="название электронной системы оплаты"/>
 		<child item="purchase"/>
 		<child item="bom_catalog" single="true"/>
-		<on-create class="ecommander.fwk.ManageUsers.OnCreateRegistered"/>
-		<on-update class="ecommander.fwk.ManageUsers.OnUpdateRegistered"/>
-		<on-delete class="ecommander.fwk.ManageUsers.OnDeleteRegistered"/>
+		<on-create class="ecommander.fwk.ManageUsers$OnCreateRegistered"/>
+		<on-update class="ecommander.fwk.ManageUsers$OnUpdateRegistered"/>
+		<on-delete class="ecommander.fwk.ManageUsers$OnDeleteRegistered"/>
 	</item>
 
 	<item name="user_jur" caption="Юридическое лицо" super="user" ag-id="23" ag-hash="-266151405">
@@ -632,15 +632,15 @@
 		<parameter name="comment" type="string" caption="Дополнительно" />
 	</item>
 
-	<item name="manager" caption="Менеджер" description="отдельная группа manager">
+	<item name="manager" caption="Менеджер" key="email" description="отдельная группа manager" ag-id="2893" ag-hash="835260333">
 		<parameter name="email" type="string" caption="E-mail"/>
 		<parameter name="phone" type="string" caption="Телефон"/>
 		<parameter name="password" type="string" caption="Пароль"/>
 		<parameter name="registered" type="byte" caption="Флаг зарегистрированности" domain="0-1" default="0"/>
 		<child item="manager_users" single="true"/>
-		<on-create class="ecommander.fwk.ManageUsers.OnCreateRegistered"/>
-		<on-update class="ecommander.fwk.ManageUsers.OnUpdateRegistered"/>
-		<on-delete class="ecommander.fwk.ManageUsers.OnDeleteRegistered"/>
+		<on-create class="ecommander.fwk.ManageUsers$OnCreateManager"/>
+		<on-update class="ecommander.fwk.ManageUsers$OnUpdateManager"/>
+		<on-delete class="ecommander.fwk.ManageUsers$OnDeleteManager"/>
 	</item>
 
 
@@ -649,8 +649,11 @@
 		<child item="user"/>
 	</item>
 
+	<item name="manager_catalog" caption="Каталог менеджеров" children-sorting="DESC" children-per-page="50" ag-id="2894" ag-hash="993532295">
+		<child item="manager"/>
+	</item>
 
-	<item name="manager_users" caption="Пользователи менеджера">
+	<item name="manager_users" caption="Пользователи менеджера" ag-id="2895" ag-hash="-589640970">
 		<child item="user" assoc="general_link"/>
 	</item>
 
@@ -1236,6 +1239,7 @@
 		<child item="common" single="true"/>
 		<child item="custom_pages" single="true"/>
 		<child item="registered_catalog" single="true"/>
+		<child item="manager_catalog" single="true"/>
 		<child item="system" single="true" virtual="true"/>
 		<child item="modules" single="true"/>
 		<child item="url_seo_wrap" single="true"/>

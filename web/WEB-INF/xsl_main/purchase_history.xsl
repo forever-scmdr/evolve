@@ -118,7 +118,8 @@
 					</div>
 					<xsl:for-each select="bought">
 						<xsl:variable name="code" select="code"/>
-						<xsl:variable name="outer" select="if (outer_product) then parse-xml(concat('&lt;prod&gt;', outer_product, '&lt;/prod&gt;')) else none"/>
+						<xsl:variable name="outer_escaped" select="replace(outer_product, '&amp;', '&amp;amp;')"/>
+						<xsl:variable name="outer" select="if (outer_product) then parse-xml(concat('&lt;prod&gt;', $outer_escaped, '&lt;/prod&gt;')) else none"/>
 						<xsl:variable name="po" select="$outer/prod/product"/>
 						<xsl:variable name="prod" select="if ($po) then $po else $products[code = $code]"/>
 						<div class="past-order__product past-product" style="display: none">

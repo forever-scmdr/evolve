@@ -45,6 +45,7 @@
 	<xsl:variable name="view_disabled" select="$catalog/disable"/>
 
 	<xsl:variable name="active_menu_item"/><!-- переопределяется -->
+	<xsl:variable name="main_styles" select="'css/styles.css?version=1.65'"/><!-- переопределяется -->
 
 
 	<!-- ****************************    НАСТРОЙКИ ОТОБРАЖЕНИЯ    ******************************** -->
@@ -865,7 +866,7 @@
 				<xsl:call-template name="SEO"/>
 				<link rel="stylesheet" type="text/css" href="magnific_popup/magnific-popup.css"/>
 				<link rel="stylesheet" href="css/aos/aos.css"/>
-				<link rel="stylesheet" href="css/styles.css?version=1.65"/>
+				<link rel="stylesheet" href="{$main_styles}"/>
 				<link rel="stylesheet" href="css/fixes.css?version=1.0"/>
 				<link  href="css/fotorama.css" rel="stylesheet" />
 				<link rel="stylesheet" href="js/nanogallery/css/nanogallery2.woff.min.css"/>

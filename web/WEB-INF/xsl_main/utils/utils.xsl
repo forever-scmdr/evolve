@@ -254,6 +254,18 @@
         <xsl:sequence select="format-date($date, '[D01].[M01].[Y0001]')"/>
     </xsl:function>
 
+    <!-- Перевод даты из XSL вида в вид (2017-23-11) -->
+    <xsl:function name="f:format_date_us">
+        <xsl:param name="date" as="xs:date"/>
+        <xsl:sequence select="format-date($date, '[Y0001]-[D01]-[M01]')"/>
+    </xsl:function>
+
+    <!-- Перевод даты из вида (2017-23-11) в CMS вид (23.11.2017) -->
+    <xsl:function name="f:format_us_date">
+        <xsl:param name="date_str_us"/>
+        <xsl:sequence select="f:format_date(xs:date($date_str_us))"/>
+    </xsl:function>
+
     <!-- Перевод даты из CMS формата в запись число-месяц вида 15 февраля -->
     <xsl:function name="f:day_month_string" as="xs:string">
         <xsl:param name="date" as="xs:string" />
