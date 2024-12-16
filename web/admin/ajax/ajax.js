@@ -105,8 +105,8 @@ function initAjax(elementId) {
             insertAjax(elem.attr("href"));
         }
     });
-    $el.find("a[popup], " + idPrefix + "input[popup], " + idPrefix + "button[popup]").click(function (event) {
-        event.preventDefault();
+    $el.find("a[popup], input[popup], button[popup]").click(function (event) {
+        event.preventDefault()
         var link = $(this);
         var loaderId = link.attr("ajax-loader-id");
         var popupId = link.attr("popup");

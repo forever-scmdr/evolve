@@ -32,6 +32,34 @@
 				</div>
 			</div>
 		</div>
+		<!-- TODO удалить
+		<div class="mitaba">
+			<div class="popup" style="display: none; z-index: 2000" id="search-ajax-popup">
+				<div class="popup__body">
+					<div class="popup__content">
+						<a class="popup__close">×</a>
+						<div class="popup__title title title_2">
+							Добавить к заказу
+						</div>
+
+						<form method="post" action="{page/post_extra_query}" id="extra_search_form" class="search_repeat">
+							<textarea  class="input header-search__input" placeholder="Введите запрос" autocomplete="off" name="q" autofocus="" style="width:100%; height: 200px;">
+								<xsl:for-each select="line">
+									<xsl:value-of select="@key"/><xsl:text> </xsl:text><xsl:value-of select="@value"/><xsl:text>&#xa;</xsl:text>
+								</xsl:for-each>
+							</textarea>
+						</form>
+						<div>
+							<a href="#" class="button" onclick="postForm('extra_search_form', 'extra_search_form'); return false;">Найти</a>
+						</div>
+						<div id="search_bom_ajax">
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	 	-->
 	</xsl:template>
 
 
@@ -203,7 +231,7 @@
 						<!-- (начало) сами заказы -->
 
 						<div class="orders">
-							<xsl:for-each select="page/purchase">
+							<xsl:for-each select="page/user_jur/purchase">
 								<div class="orders__item past-order" id="pur_{@id}">
 									<form method="post" action="page/validate_bom_link" id="ph_search_{@id}" style="display: none" class="search_repeat">
 										<textarea name="q" style="display: none">
@@ -214,7 +242,7 @@
 									</form>
 									<div class="past-order__info">
 										<div class="past-order__title"><input type="checkbox" class="check_all" name="" value=""/><a href="#" class="order_toggle">Заказ №<xsl:value-of select="num"/></a></div>
-										<div class="past-order__redact">Изменен 11.11.2024 17:26 TODO</div>
+										<div class="past-order__redact">Изменен 11.11.2024 17:26</div>
 									</div>
 									<div class="past-order__info_datemain">
 										<div class="past-order__title"><a href="#" class="order_toggle"><xsl:value-of select="date"/></a></div>
@@ -241,13 +269,14 @@
 									</div>
 
 									<div class="past-order__info_firm">
-										<div class="past-order__title"><a href="#" class="order_toggle">ООО "РЕГУЛ-ГАЗ"</a>
+										<xsl:variable name="customer" select=".."/>
+										<div class="past-order__title"><a href="#" class="order_toggle"><xsl:value-of select="$customer/organization"/></a>
 											<!-- Вызов информации по клиенту начало -->
-											<svg onclick="infobox(1)" class="infobox" focusable="false" aria-hidden="true" viewBox="0 0 24 24" data-testid="help-popup-trigger-icon">
+											<svg onclick="infobox('{$customer/@id}')" class="infobox" focusable="false" aria-hidden="true" viewBox="0 0 24 24" data-testid="help-popup-trigger-icon">
 												<path d="M11 18h2v-2h-2v2zm1-16C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-2.21 0-4 1.79-4 4h2c0-1.1.9-2 2-2s2 .9 2 2c0 2-3 1.75-3 5h2c0-2.25 3-2.5 3-5 0-2.21-1.79-4-4-4z"></path>
 											</svg>
 											<!-- Вызов информации по клиенту конец --></div>
-										<div class="past-order__date">ИНН: 7716529550</div>
+										<div class="past-order__date">ИНН: <xsl:value-of select="$customer/inn"/></div>
 									</div>
 
 									<div class="past-order__price">
@@ -255,6 +284,16 @@
 										<div class="past-order__qty">Строки: <xsl:value-of select="count(bought)"/></div>
 									</div>
 									<div class="past-order__product past-product" style="display: none">
+										<div class="past-order__action" style="display: none; padding: 5px;">
+											<button class="button past-order__button submit_all_again" style="margin-right: 10px" onclick="">Отправить в 1С</button>
+											<button class="button past-order__button submit_all_again" popup="search-ajax-popup">Добавить позиции</button>
+											<a class="button" popup="modal_popup" href="feedback_ajax"  style="float: right;">Отменить заказ</a>
+										</div>
+									</div>
+									<div class="past-order__product past-product" style="display: none; padding-top: 5px">
+
+									</div>
+									<div class="past-order__product past-product" style="display: none; padding-top: 5px">
 										<div class="div-tr thead border-bottom">
 											<div class="div-td">Наименование</div>
 											<div class="div-td">Производитель</div>
@@ -379,7 +418,7 @@
 					var order = $(this).closest('.orders__item');
 					order.toggleClass('orders__item_active');
 					order.find('.past-order__action').toggle(0);
-					order.find('.past-order__product').toggle('fade', 200); // 'blind'
+					order.find('.past-order__product').toggle('fade', 200); // 'blind' TODO сделать другой селектор, чтобы можно было сохранять невидимым textarea
 				});
 			});
 		</script>

@@ -46,7 +46,7 @@
 						</a>
 					</td>
 					<td>
-						<form method="post" action="page/validate_bom_link" id="bl_search_{@id}" style="display: none" class="search_repeat">
+						<form method="post" action="{page/validate_bom_link}" id="bl_search_{@id}" style="display: none" class="search_repeat">
 							<textarea name="q">
 								<xsl:for-each select="line">
 									<xsl:value-of select="@key"/><xsl:text> </xsl:text><xsl:value-of select="@value"/><xsl:text>&#xa;</xsl:text>

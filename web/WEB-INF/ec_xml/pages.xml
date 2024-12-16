@@ -982,6 +982,7 @@
 		<request>
 			<var name="cur" scope="cookie"/>
 			<var name="q"/>
+			<var name="insert_mode" value="prepend"/><!-- Способ вставки в вызывающий документ prepend - вставить перед целевым дивом -->
 			<!--			<var name="dstr" value="DigiKey, Mouser Electronics, Farnell, Onlinecomponents.com, Newark, Arrow Electronics"/>-->
 			<var name="local" value="true"/>
 			<var name="show_distributor" value="yes"/> <!-- это настройка для вывода таблицы товаров (snippets/product.xsl) -->
@@ -2218,14 +2219,15 @@
 			<var name="date_to"/>
 		</request>
 		<list item="user_jur">
-
+			<list item="purchase">
+				<list item="bought"/>
+			</list>
 		</list>
-		<list item="purchase">
-			<list item="bought"/>
-		</list>
+		<link name="post_extra_query" target="search_api_ajax_bom">
+			<var name="insert_mode" value="append"/>
+		</link>
 		<include name="MANAGER_COMMON"/>
 	</page>
-
 
 
 

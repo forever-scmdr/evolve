@@ -87,7 +87,8 @@
 
 	<xsl:variable name="title" select="''" />
 	<xsl:variable name="meta_description" select="''" />
-	<xsl:variable name="main_host" select="if(page/url_seo_wrap/main_host != '') then page/url_seo_wrap/main_host else $base" />
+<!--	<xsl:variable name="main_host" select="if(page/url_seo_wrap/main_host != '') then page/url_seo_wrap/main_host else $base" />-->
+	<xsl:variable name="main_host" select="'http://localhost:8080'" />
 
 	<xsl:variable name="default_canonical" select="if(page/@name != 'index') then concat('/', tokenize($source_link, '\?')[1]) else ''" />
 <!--	<xsl:variable name="custom_canonical" select="//canonical_link[1]"/>-->

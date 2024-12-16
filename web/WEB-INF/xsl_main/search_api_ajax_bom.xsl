@@ -42,6 +42,7 @@
 	<xsl:variable name="products" select="$result_queries/product"/>
 	<xsl:variable name="has_results" select="if ($is_not_bom) then $products else true()"/>
 	<xsl:variable name="vars" select="page/variables"/>
+	<xsl:variable name="insert_mode" select="$vars/insert_mode"/><!-- способ вставки AJAX содержимого в вызывающий документ (после целевого дива, до, вместо, внутрь) -->
 
 
 
@@ -52,9 +53,9 @@
 			<xsl:variable name="invalid" select="$result_queries[not(product/@request_qty)]"/>
 			<xsl:variable name="visible_prods" select="product[position() = 1 or f:num(@request_qty) &gt; 0]"/>
 			<xsl:variable name="hidden_prods" select="product[position() &gt; 1 and not(@request_qty)]"/>
-			<div class="result" id="search_bom_ajax" mode="prepend" data-extra-selector="#new_{@id}">
+			<div class="result" id="search_bom_ajax" mode="{$insert_mode}" data-extra-selector="#new_{@id}">
 				<xsl:if test="not($invalid)">
-					<div query="{@q}" class="green" qty="{@qty}" query_id="{@id}">
+					<div query="{@q}" class="green" qty="{@qty}" query_id="{@id}" id="new_{@id}">
 						<xsl:if test="$visible_prods">
 							<div class="div-row blue blue_header">
 								<div class="div-td td-check">
