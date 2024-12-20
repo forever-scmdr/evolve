@@ -1,5 +1,6 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:f="f:f" version="2.0">
 	<xsl:import href="../utils/utils.xsl"/>
+	<xsl:import href="manager_order_ajax.xsl"/>
 	<xsl:import href="../common_page_base.xsl"/>
 <!--	<xsl:import href="snippets/custom_blocks.xsl"/>-->
 	<xsl:output method="html" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
@@ -32,34 +33,6 @@
 				</div>
 			</div>
 		</div>
-		<!-- TODO удалить
-		<div class="mitaba">
-			<div class="popup" style="display: none; z-index: 2000" id="search-ajax-popup">
-				<div class="popup__body">
-					<div class="popup__content">
-						<a class="popup__close">×</a>
-						<div class="popup__title title title_2">
-							Добавить к заказу
-						</div>
-
-						<form method="post" action="{page/post_extra_query}" id="extra_search_form" class="search_repeat">
-							<textarea  class="input header-search__input" placeholder="Введите запрос" autocomplete="off" name="q" autofocus="" style="width:100%; height: 200px;">
-								<xsl:for-each select="line">
-									<xsl:value-of select="@key"/><xsl:text> </xsl:text><xsl:value-of select="@value"/><xsl:text>&#xa;</xsl:text>
-								</xsl:for-each>
-							</textarea>
-						</form>
-						<div>
-							<a href="#" class="button" onclick="postForm('extra_search_form', 'extra_search_form'); return false;">Найти</a>
-						</div>
-						<div id="search_bom_ajax">
-
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	 	-->
 	</xsl:template>
 
 
@@ -231,131 +204,7 @@
 						<!-- (начало) сами заказы -->
 
 						<div class="orders">
-							<xsl:for-each select="page/user_jur/purchase">
-								<div class="orders__item past-order" id="pur_{@id}">
-									<form method="post" action="page/validate_bom_link" id="ph_search_{@id}" style="display: none" class="search_repeat">
-										<textarea name="q" style="display: none">
-											<xsl:for-each select="bought">
-												<xsl:value-of select="name"/><xsl:text> </xsl:text><xsl:value-of select="qty"/><xsl:text>&#xa;</xsl:text>
-											</xsl:for-each>
-										</textarea>
-									</form>
-									<div class="past-order__info">
-										<div class="past-order__title"><input type="checkbox" class="check_all" name="" value=""/><a href="#" class="order_toggle">Заказ №<xsl:value-of select="num"/></a></div>
-										<div class="past-order__redact">Изменен 11.11.2024 17:26</div>
-									</div>
-									<div class="past-order__info_datemain">
-										<div class="past-order__title"><a href="#" class="order_toggle"><xsl:value-of select="date"/></a></div>
-									</div>
-
-									<div class="past-order__info_pay">
-										<div class="past-order__title"><a href="#" class="order_toggle">Оплачен</a></div>
-										<div class="past-order__date"><a href="#">Скачать счет</a></div>
-									</div>
-
-									<div class="past-order__info_datepay">
-										<div class="past-order__title"><a href="#" class="order_toggle">06.12.2024 11:20</a></div>
-										<div class="past-order__date">112 013 156,79 руб</div>
-									</div>
-
-									<div class="past-order__info_status">
-										<div class="past-order__title"><a href="#" class="order_toggle">Отправлен в 1С</a></div>
-										<div class="past-order__date">07.12.2024 18:43</div>
-									</div>
-
-									<div class="past-order__info_gruz">
-										<div class="past-order__title"><a href="#" class="order_toggle">Отгружен частично</a></div>
-										<div class="past-order__date">11.11.2024 14:50</div>
-									</div>
-
-									<div class="past-order__info_firm">
-										<xsl:variable name="customer" select=".."/>
-										<div class="past-order__title"><a href="#" class="order_toggle"><xsl:value-of select="$customer/organization"/></a>
-											<!-- Вызов информации по клиенту начало -->
-											<svg onclick="infobox('{$customer/@id}')" class="infobox" focusable="false" aria-hidden="true" viewBox="0 0 24 24" data-testid="help-popup-trigger-icon">
-												<path d="M11 18h2v-2h-2v2zm1-16C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-2.21 0-4 1.79-4 4h2c0-1.1.9-2 2-2s2 .9 2 2c0 2-3 1.75-3 5h2c0-2.25 3-2.5 3-5 0-2.21-1.79-4-4-4z"></path>
-											</svg>
-											<!-- Вызов информации по клиенту конец --></div>
-										<div class="past-order__date">ИНН: <xsl:value-of select="$customer/inn"/></div>
-									</div>
-
-									<div class="past-order__price">
-										<div class="past-order__sum"><xsl:value-of select="sum"/> руб</div>
-										<div class="past-order__qty">Строки: <xsl:value-of select="count(bought)"/></div>
-									</div>
-									<div class="past-order__product past-product" style="display: none">
-										<div class="past-order__action" style="display: none; padding: 5px;">
-											<button class="button past-order__button submit_all_again" style="margin-right: 10px" onclick="">Отправить в 1С</button>
-											<button class="button past-order__button submit_all_again" popup="search-ajax-popup">Добавить позиции</button>
-											<a class="button" popup="modal_popup" href="feedback_ajax"  style="float: right;">Отменить заказ</a>
-										</div>
-									</div>
-									<div class="past-order__product past-product" style="display: none; padding-top: 5px">
-
-									</div>
-									<div class="past-order__product past-product" style="display: none; padding-top: 5px">
-										<div class="div-tr thead border-bottom">
-											<div class="div-td">Наименование</div>
-											<div class="div-td">Производитель</div>
-											<div class="div-td">Площадка</div>
-											<div class="div-td">Цена</div>
-											<div class="div-td"></div>
-										</div>
-									</div>
-									<xsl:for-each select="bought">
-										<xsl:variable name="code" select="code"/>
-										<xsl:variable name="outer_escaped" select="replace(outer_product, '&amp;', '&amp;amp;')"/>
-										<xsl:variable name="outer" select="if (outer_product) then parse-xml(concat('&lt;prod&gt;', $outer_escaped, '&lt;/prod&gt;')) else none"/>
-										<xsl:variable name="po" select="$outer/prod/product"/>
-										<xsl:variable name="prod" select="if ($po) then $po else $products[code = $code]"/>
-										<div class="past-order__product past-product" style="display: none">
-											<div class="div-tr">
-												<div class="div-td">
-													<div class="thn">Наименование</div>
-													<div class="thd">
-														<xsl:if test="$prod and not($po)">
-															<a href="{$prod/show_product}"><xsl:value-of select="$prod/name"/></a>
-														</xsl:if>
-														<xsl:if test="not($prod)">
-															<xsl:value-of select="name"/>
-														</xsl:if>
-														<xsl:if test="$prod and $po">
-															<xsl:value-of select="$prod/name"/>
-														</xsl:if>
-													</div>
-												</div>
-												<div class="div-td">
-													<div class="thn">Производитель</div>
-													<div class="thd">
-														<xsl:value-of select="$prod/vendor"/>
-													</div>
-												</div>
-												<div class="div-td">
-													<div class="thn">Площадка</div>
-													<div class="thd">
-														<xsl:value-of select="$prod/category_id"/>
-													</div>
-												</div>
-												<div class="div-td">
-													<div class="thn">Цена</div>
-													<div class="thd">
-														<div>Цена: <xsl:value-of select="price"/> руб. </div>
-														<div>Кол-во: <xsl:value-of select="qty"/> шт. </div>
-														<div>Сумма: <xsl:value-of select="sum"/> руб. </div>
-													</div>
-												</div>
-												<div class="div-td">
-													<div class="thn"></div>
-													<div class="thd">
-														<a class="button" href="{repeat_search}">Найти предложения</a>
-													</div>
-												</div>
-											</div>
-										</div>
-									</xsl:for-each>
-
-								</div>
-							</xsl:for-each>
+							<xsl:apply-templates select="page/user_jur/purchase"/>
 						</div>
 
 						<!-- (конец) сами заказы -->
@@ -412,14 +261,87 @@
 
 	<xsl:template name="EXTRA_SCRIPTS">
 		<script>
-			$(document).ready(function() {
-				$('.order_toggle').click(function(event) {
+			function checkIfHasFound(order) {
+				<xsl:text disable-output-escaping="yes">
+				if (order.find('.extra-query').is(":visible") &amp;&amp; order.find('.blue').length) {
+				</xsl:text>
+					order.find('.extra_buy_button').show();
+				} else {
+					order.find('.extra_buy_button').hide();
+				}
+			}
+			// Заказ всех выбранных позиций
+			var allForms = [];
+			var orderSelector = '';
+			function allOrder(order, formAction) {
+				allForms = [];
+				orderSelector = '#' + order.attr('id');
+				order.find('.green').find('form').each(function() {
+					var isNotZero = $(this).find('input[type=text]').val() != '0';
+					var checked = $(this).closest('.red').find('input[type=checkbox]').is(':checked');
+					<xsl:text disable-output-escaping="yes">
+					if (isNotZero &amp;&amp; checked) {
+					</xsl:text>
+						$(this).attr('action', formAction);
+						allForms.push($(this));
+						//alert(formAction);
+					}
+				});
+				submitRec();
+			}
+			// рекурсивная функция поочередного заказа всех выделенных товаров
+			function submitRec() {
+				if (allForms.length == 0) return;
+				var theForm = allForms.shift();
+				//alert(theForm.find('textarea').html());
+				postForm(theForm, theForm.attr('id'), function() {
+					submitRec();
+					initPageScripts(orderSelector);
+				});
+			}
+
+
+			function initPageScripts(rootElSelector) {
+				var rootEl = null;
+				if (rootElSelector == null || rootElSelector == '' || typeof rootElSelector == 'undefined') {
+					rootEl = $("body");
+				} else {
+					rootEl = $(rootElSelector);
+				}
+				if (rootEl == null || rootEl.length == 0) {
+					rootEl = $("body");
+				}
+				rootEl.find('.order_toggle').click(function(event) {
 					event.preventDefault();
 					var order = $(this).closest('.orders__item');
 					order.toggleClass('orders__item_active');
 					order.find('.past-order__action').toggle(0);
-					order.find('.past-order__product').toggle('fade', 200); // 'blind' TODO сделать другой селектор, чтобы можно было сохранять невидимым textarea
+					order.find('.past-product').toggle('fade', 200);
+					order.find('.extra-query').hide();
+					order.find('.extra_buy_button').hide();
 				});
+				rootEl.find('.extra_query_toggle').click(function(event) {
+					event.preventDefault();
+					var order = $(this).closest('.orders__item');
+					order.find('.extra-query').toggle('fade', 100, function() { checkIfHasFound(order) } );
+				});
+				rootEl.find('.extra_query_button').click(function(event) {
+					event.preventDefault();
+					var order = $(this).closest('.orders__item');
+					var form = order.find('.extra_query_form');
+					// удалить предыдущий поиск
+					order.find('.green').remove();
+					postForm(form, form.attr('id'), function() { checkIfHasFound(order) });
+				});
+				rootEl.find('.extra_buy_button').click(function(event) {
+					event.preventDefault();
+					var order = $(this).closest('.orders__item');
+					allOrder(order, $(this).attr('action'));
+				});
+			}
+
+			$(document).ready(function() {
+				initPageScripts();
 			});
 		</script>
 	</xsl:template>

@@ -141,6 +141,8 @@ public class OuterInputData {
      */
     private void parseQuery() {
         String[] lines = StringUtils.split(unparsedQuery, "\r\n");
+        if (lines == null)
+            return;
         for (String line : lines) {
             String[] parts = StringUtils.split(line, "\t ");
             if (parts.length > 1) {

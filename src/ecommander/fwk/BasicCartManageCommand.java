@@ -88,6 +88,7 @@ public abstract class BasicCartManageCommand extends Command {
 
 
 	protected Item cart;
+	protected Item lastBought; // последний добавленный в корзину bought
 	protected Strategy strategy = Strategy.deny_overbuy;
 
 
@@ -111,8 +112,10 @@ public abstract class BasicCartManageCommand extends Command {
 			prodId = Long.parseLong(idStr);
 		} catch (Exception e) {/**/}
 		Item bought = addProduct(prodId, quantity, outerProductString);
-		if (bought != null)
+		if (bought != null) {
+			lastBought = bought;
 			recalculateCart();
+		}
 		return getResult("ajax");
 	}
 
@@ -469,7 +472,7 @@ public abstract class BasicCartManageCommand extends Command {
 	 * @return
 	 * @throws Exception
 	 */
-    private Item addProduct(long prodId, double qty, String outerParams) throws Exception {
+    protected Item addProduct(long prodId, double qty, String outerParams) throws Exception {
         checkStrategy();
         ensureCart();
         // Проверка, есть ли уже такой девайс в корзине (если есть, изменить количество)

@@ -545,13 +545,14 @@ public class ExecutableItemPE extends ItemPE implements ExecutableItemContainer,
 			boolean needLoading = !hasParent() || (loadedIds != null && loadedIds.size() > 0);
 			// Если есть ссылка, то нет нужды в конструировании запроса
 			if (hasReference()) {
+				ArrayList<Item> directlyLoadedItems = null;
 				if (getReference().isUrlKeyUnique()) {
-					return ItemQuery.loadByUniqueKey(getReference().getKeysUnique());
+					directlyLoadedItems = ItemQuery.loadByUniqueKey(getReference().getKeysUnique());
 				} else {
 					if (getReference().isVarParamReference()) {
-						return ItemQuery.loadByParamValue(getItemName(), getReference().getParamName(), getReference().getValuesArray());
+						directlyLoadedItems = ItemQuery.loadByParamValue(getItemName(), getReference().getParamName(), getReference().getValuesArray());
 					} else if (getReference().isUrlReference()) {
-						return ItemQuery.loadByIdsString(getReference().getValuesArray(), getItemName());
+						directlyLoadedItems = ItemQuery.loadByIdsString(getReference().getValuesArray(), getItemName());
 					} else {
 						List<Long> refIds = getReference().getItemIds();
 						if (refIds.size() == 0)
@@ -559,6 +560,13 @@ public class ExecutableItemPE extends ItemPE implements ExecutableItemContainer,
 						else
 							query.setReference(refIds);
 					}
+				}
+				// Это для частного случая когда загружается по ссылке один айтем, а в нем вложен другой айтем, тоже загружаемый по ссылке
+				if (directlyLoadedItems != null) {
+					if (directlyLoadedItems.size() == 1 && loadedIds != null && loadedIds.size() == 1) {
+						directlyLoadedItems.get(0).setContextPrimaryParentId(loadedIds.get(0));
+					}
+					return directlyLoadedItems;
 				}
 			}
 			// Добавление критерия предка

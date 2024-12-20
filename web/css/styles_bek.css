@@ -127,10 +127,21 @@ input[type=checkbox] {
 	border-radius: 2px;
 }
 
+.button_alt {
+	display: inline-block;
+	white-space: nowrap;
+	line-height: 1;
+	padding: 8px 16px;
+	background-color: #ad5;
+	color: #212121;
+	border: 1px solid #ad5;
+	border-radius: 2px;
+}
+
 .header-search__button {
     border-radius: 4px 4px 4px 4px;
 }
-	.button_secondary {
+.button_secondary {
 		background-color: #212121;
 		color: #212121;
 		border: 1px solid #fc3; }
@@ -150,6 +161,10 @@ input[type=checkbox] {
 .button:hover {
 	background-color: #ffd65c;
 	border-color: #ffd65c; }
+
+.button_alt:hover {
+	background-color: #bbee66;
+	border-color: #bbee66; }
 
 .button_2 {
 	color: #000;

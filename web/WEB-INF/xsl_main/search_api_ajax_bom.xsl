@@ -42,8 +42,10 @@
 	<xsl:variable name="products" select="$result_queries/product"/>
 	<xsl:variable name="has_results" select="if ($is_not_bom) then $products else true()"/>
 	<xsl:variable name="vars" select="page/variables"/>
-	<xsl:variable name="insert_mode" select="$vars/insert_mode"/><!-- способ вставки AJAX содержимого в вызывающий документ (после целевого дива, до, вместо, внутрь) -->
-
+	<!-- способ вставки AJAX содержимого в вызывающий документ (после целевого дива, до, вместо, внутрь) -->
+	<xsl:variable name="insert_mode" select="$vars/insert_mode"/>
+	<!-- Дополнительный ID блока для вставки результирующего контента. На случай, если на странице много блоков, куда можно вставлять результат этого запроса -->
+	<xsl:variable name="container_extra_id" select="if ($vars/container_extra_id) then $vars/container_extra_id else ''"/>
 
 
 
@@ -53,7 +55,8 @@
 			<xsl:variable name="invalid" select="$result_queries[not(product/@request_qty)]"/>
 			<xsl:variable name="visible_prods" select="product[position() = 1 or f:num(@request_qty) &gt; 0]"/>
 			<xsl:variable name="hidden_prods" select="product[position() &gt; 1 and not(@request_qty)]"/>
-			<div class="result" id="search_bom_ajax" mode="{$insert_mode}" data-extra-selector="#new_{@id}">
+			<div class="result" id="search_bom_ajax{$container_extra_id}" mode="{$insert_mode}">
+				<xsl:if test="$insert_mode = ('before', 'after')"><xsl:attribute name="data-extra-selector">#new_<xsl:value-of select="@id"/></xsl:attribute></xsl:if>
 				<xsl:if test="not($invalid)">
 					<div query="{@q}" class="green" qty="{@qty}" query_id="{@id}" id="new_{@id}">
 						<xsl:if test="$visible_prods">

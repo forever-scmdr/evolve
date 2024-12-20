@@ -257,10 +257,11 @@ function processResult(data, additionalHandling, lockElementIds, status, arg3) {
                         targetEl.val(newHtml);
                     } else {
                         if (mode == "replace") {
-                            targetEl.replaceWith(newHtml);
-                        } else if (mode == "append") {
+                            targetEl.before(newHtml);
+                            targetEl.remove();
+                        } else if (mode == "after") {
                             targetEl.after(newHtml);
-                        } else if (mode == "prepend") {
+                        } else if (mode == "before") {
                             targetEl.before(newHtml);
                         } else {
                             targetEl.html(newHtml);
@@ -269,8 +270,9 @@ function processResult(data, additionalHandling, lockElementIds, status, arg3) {
                 }
                 ajaxInitIds.push(id);
             });
-            if (!parsedData.find('#JSON').length !== 0)
+            if (parsedData.find('#JSON').length !== 0) {
                 possibleJsonData = parsedData.find('#JSON').html();
+            }
         } catch (e) {
             console.log(e);
             possibleJsonData = data;

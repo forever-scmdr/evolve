@@ -982,8 +982,11 @@
 		<request>
 			<var name="cur" scope="cookie"/>
 			<var name="q"/>
-			<var name="insert_mode" value="prepend"/><!-- Способ вставки в вызывающий документ prepend - вставить перед целевым дивом -->
+			<var name="insert_mode" value="before"/><!-- Способ вставки в вызывающий документ before - вставить перед целевым дивом -->
 			<!--			<var name="dstr" value="DigiKey, Mouser Electronics, Farnell, Onlinecomponents.com, Newark, Arrow Electronics"/>-->
+			<!-- Дополнительный ID блока для вставки результирующего контента.
+				 На случай, если на странице много блоков, куда можно вставлять результат этого запроса -->
+			<var name="container_extra_id" value=""/>
 			<var name="local" value="true"/>
 			<var name="show_distributor" value="yes"/> <!-- это настройка для вывода таблицы товаров (snippets/product.xsl) -->
 			<var name="new" value="false"/><!-- надо посылать новый запрос на сервер findhips -->
@@ -2211,25 +2214,78 @@
 	</include-definition>
 
 
-
+	<!-- *****************		Все заказы одного менеджера		****************** -->
 
 	<page name="manager_orders" template="manager/manager_orders"><!-- manager/manager_orders -->
 		<request>
 			<var name="date_from"/>
 			<var name="date_to"/>
 		</request>
-		<list item="user_jur">
-			<list item="purchase">
+		<list item="user_jur" id="user">
+			<list item="purchase" id="purchase">
 				<list item="bought"/>
+				<link name="post_extra_query" target="search_api_ajax_bom">
+					<var name="container_extra_id" ref="purchase"/>
+					<var name="insert_mode" value="before"/>
+				</link>
+				<link name="add_to_purchase" target="manager_orders_action">
+					<var name="action" value="addToCart"/>
+					<var name="customer" ref="user"/>
+					<var name="order" ref="purchase"/>
+				</link>
 			</list>
 		</list>
-		<link name="post_extra_query" target="search_api_ajax_bom">
-			<var name="insert_mode" value="append"/>
-		</link>
 		<include name="MANAGER_COMMON"/>
 	</page>
 
 
+	<!-- *****************		Один заказ AJAX для обновления на странице manager_orders		****************** -->
+
+	<page name="manager_order_ajax" template="manager/manager_order_ajax">
+		<request>
+			<var name="customer"/>
+			<var name="order"/>
+		</request>
+		<single item="user_jur" var="customer">
+			<single item="purchase" var="order" id="purchase">
+				<list item="bought"/>
+				<link name="post_extra_query" target="search_api_ajax_bom">
+					<var name="container_extra_id" ref="purchase"/>
+					<var name="insert_mode" value="before"/>
+				</link>
+			</single>
+		</single>
+		<link name="add_to_purchase" target="manager_orders_action">
+			<var name="action" value="addToCart"/>
+		</link>
+	</page>
+
+
+	<!-- *****************		Команда работы с заказами менеджера		****************** -->
+
+	<page name="manager_orders_action">
+		<request>
+			<var name="strategy" value="ignore_overbuy"/>
+			<var name="customer"/>
+			<var name="order"/>
+			<var name="action"/>
+			<var name="code"/>
+			<var name="qty"/>
+			<var name="order_dir" value="WEB-INF/js_orders"/>
+		</request>
+		<single item="user" var="customer">
+			<single item="purchase" id="order" var="order">
+				<list item="bought" id="bought"/>
+			</single>
+		</single>
+		<link name="refresh_order" target="manager_order_ajax">
+			<var name="customer" var="customer"/>
+			<var name="order" var="order"/>
+		</link>
+		<command class="ecommander.special.portal.extra.ManagerCartManageCommand" method-var="action">
+			<result name="refresh_order" type="redirect"/>
+		</command>
+	</page>
 
 
 
