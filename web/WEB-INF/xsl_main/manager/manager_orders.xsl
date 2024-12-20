@@ -294,7 +294,7 @@
 				if (allForms.length == 0) return;
 				var theForm = allForms.shift();
 				//alert(theForm.find('textarea').html());
-				postForm(theForm, theForm.attr('id'), function() {
+				postForm(theForm, orderSelector, function() {
 					submitRec();
 					initPageScripts(orderSelector);
 				});

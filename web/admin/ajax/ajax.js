@@ -326,24 +326,42 @@ function addVariableToUrl(url, name, value) {
 function lock(lockElementIds) {
     if (Object.prototype.toString.call(lockElementIds) === '[object Array]') {
         for (var i = 0; i < lockElementIds.length; i++) {
-            if ($('#' + lockElementIds[i]).length == 1)
-                coverWithLoader($('#' + lockElementIds[i]));
+            var lockElId = lockElementIds[i];
+            if (lockElId.indexOf("#") != 0 && lockElId.indexOf(".") != 0) {
+                lockElId = "#" + lockElId;
+            }
+            $(lockElId).each(function () {
+               coverWithLoader(this);
+            });
         }
     } else {
-        if ($('#' + lockElementIds).length == 1)
-            coverWithLoader($('#' + lockElementIds));
+        if (lockElementIds.indexOf("#") != 0 && lockElementIds.indexOf(".") != 0) {
+            lockElementIds = "#" + lockElementIds;
+        }
+        $(lockElementIds).each(function () {
+            coverWithLoader(this);
+        });
     }
 }
 
 function unlock(lockElementIds) {
     if (Object.prototype.toString.call(lockElementIds) === '[object Array]') {
         for (var i = 0; i < lockElementIds.length; i++) {
-            if ($('#' + lockElementIds[i]).length == 1)
-                destroyLoader($('#' + lockElementIds[i]));
+            var lockElId = lockElementIds[i];
+            if (lockElId.indexOf("#") != 0 && lockElId.indexOf(".") != 0) {
+                lockElId = "#" + lockElId;
+            }
+            $(lockElId).each(function () {
+                destroyLoader(this);
+            });
         }
     } else {
-        if ($('#' + lockElementIds).length == 1)
-            destroyLoader($('#' + lockElementIds));
+        if (lockElementIds.indexOf("#") != 0 && lockElementIds.indexOf(".") != 0) {
+            lockElementIds = "#" + lockElementIds;
+        }
+        $(lockElementIds).each(function () {
+            destroyLoader(this);
+        });
     }
 }
 
